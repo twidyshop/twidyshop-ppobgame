@@ -166,7 +166,10 @@ app.post('/api/webhook', async (req, res) => {
                 } else {
                     trx.status = 'DIPROSES';
                 }
-                trx.sn = result.sn || 'Berhasil diproses sistem';
+                
+                // Menangkap SN lebih pintar
+                const resultSn = result.sn || result.message;
+                trx.sn = (resultSn && resultSn.trim() !== '') ? resultSn : 'Diproses (Menunggu Pembaruan)';
                 saveDB(db);
             } catch (err) {
                 console.error("Digiflazz Execution Error:", err.message);
@@ -178,6 +181,47 @@ app.post('/api/webhook', async (req, res) => {
     }
     return res.status(200).send("OK");
   } catch (e) {
+    return res.status(500).send("Error");
+  }
+});
+
+// TAMBAHAN: Webhook Digiflazz untuk menerima update SN dan status secara Real-Time
+app.post('/api/digiflazz-webhook', (req, res) => {
+  try {
+    const payload = req.body;
+    
+    // Pastikan ini adalah data transaksi dari Digiflazz
+    if (!payload || !payload.data || !payload.data.ref_id) {
+        return res.status(200).send("OK");
+    }
+
+    const { ref_id, status, sn, message } = payload.data;
+    
+    let db = readDB();
+    let trx = db.find(t => t.order_id === ref_id);
+    if (!trx) return res.status(200).send("OK"); // Order tidak ditemukan di database kita
+
+    // Update Status
+    if (status === 'Sukses') {
+        trx.status = 'SUKSES';
+    } else if (status === 'Gagal') {
+        trx.status = 'GAGAL';
+    } else {
+        trx.status = 'DIPROSES';
+    }
+    
+    // Update SN / Ket terbaru dari Digiflazz
+    const currentSn = sn || message;
+    if (currentSn && currentSn.trim() !== '') {
+        trx.sn = currentSn;
+    } else if (status === 'Sukses') {
+        trx.sn = 'Transaksi Berhasil';
+    }
+    
+    saveDB(db);
+    return res.status(200).send("OK");
+  } catch (error) {
+    console.error("Digiflazz Webhook Error:", error.message);
     return res.status(500).send("Error");
   }
 });
