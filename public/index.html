@@ -337,21 +337,47 @@
         </div>
     </footer>
 
-    <!-- Template Struk Digital (Tersembunyi) -->
+    <!-- Template Struk Digital (Rapi & Sejajar) -->
     <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 25px; width: 340px; font-family: monospace; text-align: center; border-radius: 8px;">
-        <h2 style="margin: 0; font-size: 22px;">TWIDY SHOP</h2>
-        <p style="margin: 0; font-size: 13px;">twidyshop.my.id</p>
-        <p id="struk-waktu" style="font-size: 12px; margin-bottom: 20px;"></p>
-        <h3 style="border-bottom: 1px dashed black; padding-bottom: 10px; font-size: 18px;">STRUK PEMBELIAN</h3>
-        <div style="text-align: left; font-size: 14px; line-height: 1.8; margin-top: 15px;">
-            <div style="display: flex; justify-content: space-between;"><strong>TRXID</strong> <span id="struk-trxid"></span></div>
-            <div style="display: flex; justify-content: space-between;"><strong>PRODUK</strong> <span id="struk-produk"></span></div>
-            <div style="display: flex; justify-content: space-between;"><strong>TUJUAN</strong> <span id="struk-tujuan"></span></div>
-            <div style="display: flex; justify-content: space-between;"><strong>HARGA</strong> <span>Rp <span id="struk-harga"></span></span></div>
+        <h2 style="margin: 0; font-size: 22px; font-weight: bold;">TWIDY SHOP</h2>
+        <p style="margin: 2px 0 0 0; font-size: 13px;">twidyshop.my.id</p>
+        <p id="struk-waktu" style="font-size: 12px; margin: 4px 0 15px 0;"></p>
+        
+        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin-bottom: 15px;">
+            <h3 style="margin: 0; font-size: 15px; font-weight: bold; letter-spacing: 1px;">STRUK PEMBELIAN</h3>
         </div>
-        <p style="margin-top: 25px; border-top: 1px dashed black; padding-top: 15px; font-weight: bold;">*** SN / Reff ***</p>
-        <h3 id="struk-sn" style="margin: 5px 0; word-break: break-all;"></h3>
-        <p style="font-size: 11px; margin-top: 25px; line-height: 1.5;">SIMPAN STRUK INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
+
+        <table style="width: 100%; font-size: 13px; text-align: left; border-collapse: collapse; line-height: 1.6;">
+            <tr>
+                <td style="width: 75px; vertical-align: top; font-weight: bold;">TRXID</td>
+                <td style="width: 10px; vertical-align: top;">:</td>
+                <td id="struk-trxid" style="vertical-align: top; word-break: break-all;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; font-weight: bold;">PRODUK</td>
+                <td style="vertical-align: top;">:</td>
+                <td id="struk-produk" style="vertical-align: top; word-break: break-word;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; font-weight: bold;">TUJUAN</td>
+                <td style="vertical-align: top;">:</td>
+                <td id="struk-tujuan" style="vertical-align: top; word-break: break-all;"></td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; font-weight: bold;">HARGA</td>
+                <td style="vertical-align: top;">:</td>
+                <td style="vertical-align: top;">Rp <span id="struk-harga"></span></td>
+            </tr>
+        </table>
+
+        <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
+            <p style="margin: 0; font-size: 12px; font-weight: bold;">*** SN / Reff ***</p>
+            <h3 id="struk-sn" style="margin: 6px 0 0 0; font-size: 14px; word-break: break-all;"></h3>
+        </div>
+
+        <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
+            <p style="font-size: 11px; margin: 0; line-height: 1.5;">SIMPAN STRUK INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br><br>Terima Kasih ^_^</p>
+        </div>
     </div>
 
     <script>
@@ -378,10 +404,10 @@
                 { id: 'byu', name: 'by.U', brandKey: 'by.U', img: 'assets/byu.png', hasServer: false, desc: 'Pulsa & Paket Data by.U digital.' }
             ],
             emoney: [
-                { id: 'gopay', name: 'GO PAY', brandKey: 'GOPAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
+                { id: 'gopay', name: 'GO PAY', brandKey: 'GO PAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
                 { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
                 { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
-                { id: 'shopee', name: 'SHOPEEPAY', brandKey: 'SHOPEEPAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
+                { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
                 { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
             ],
             pln: [
@@ -537,7 +563,7 @@
                 return;
             }
 
-            activeNominals = allDigiflazzProducts.filter(p => p.brand.toLowerCase().includes(activeItem.brandKey.toLowerCase()));
+            activeNominals = allDigiflazzProducts.filter(p => p.brand.toLowerCase().trim() === activeItem.brandKey.toLowerCase().trim());
             activeNominals.sort((a, b) => a.price - b.price);
 
             if(activeNominals.length === 0) {
