@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twidy Shop - Top Up Game</title>
+    <title>Twidy Shop - Auto Sync Digiflazz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -76,126 +76,99 @@
             <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
         </div>
         
-        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
-            <i class="fas fa-shield-check"></i> Fast • Safe • Trusted
+        <div class="flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-3.5 py-1.5 rounded-full border border-green-400/20">
+            <i class="fas fa-shield-check"></i> <span class="hidden sm:inline">Connected to</span> Digiflazz
         </div>
     </nav>
 
     <!-- CONTENT VIEWS -->
-    <main class="flex-grow max-w-[1400px] w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+    <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 sm:p-4 md:p-6 lg:p-8 space-y-6">
         
         <!-- VIEW 1: TOPUP -->
         <div id="view-topup" class="space-y-6">
             <!-- Hero Section -->
-            <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden min-h-[280px] flex items-center">
-                <div class="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/3 opacity-80 md:opacity-100 pointer-events-none flex justify-end">
+            <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden min-h-[240px] md:min-h-[280px] flex items-center">
+                <div class="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/3 opacity-60 md:opacity-100 pointer-events-none flex justify-end">
                     <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='https://via.placeholder.com/600x300?text=hero-anime.png'">
                 </div>
                 
-                <div class="relative z-10 p-6 md:p-10 max-w-2xl w-full">
-                    <div class="inline-flex items-center gap-2 text-xs font-bold text-blue-300 bg-blue-900/40 px-3 py-1.5 rounded-md border border-blue-800/50 mb-4 tracking-wider uppercase">
-                        <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP
+                <div class="relative z-10 p-5 sm:p-8 md:p-10 max-w-2xl w-full">
+                    <div class="inline-flex items-center gap-2 text-xs font-bold text-blue-300 bg-blue-900/40 px-3 py-1.5 rounded-md border border-blue-800/50 mb-3 md:mb-4 tracking-wider uppercase">
+                        <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP AUTO-SYNC
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-[1.1] text-white">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 md:mb-4 leading-[1.1] text-white">
                         Top Up Game<br/>
-                        <span class="text-blue-500">Lebih Mudah!</span>
+                        <span class="text-blue-500">Otomatis Digiflazz!</span>
                     </h1>
-                    <p class="text-gray-300 mb-8 text-sm md:text-base max-w-md">
-                        Proses cepat, harga terbaik, 100% aman.<br/>
-                        Semua kebutuhan game favoritmu, ada di sini!
+                    <p class="text-gray-300 mb-6 text-xs sm:text-sm md:text-base max-w-md">
+                        Produk dan harga sinkron langsung dari server production Digiflazz secara real-time.
                     </p>
-                    
-                    <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-200">
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-bolt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Proses Cepat</div><div class="text-[10px] text-gray-400 font-normal">Hitungan detik</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-shield-alt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">100% Aman</div><div class="text-[10px] text-gray-400 font-normal">Data terlindungi</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-tag text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Harga Terbaik</div><div class="text-[10px] text-gray-400 font-normal">Selalu hemat</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-headset text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Customer Support</div><div class="text-[10px] text-gray-400 font-normal">Siap membantu</div></div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <!-- Main Layout: 3 Columns -->
             <div id="topup" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-2">
                 
-                <!-- Left Column: Game List -->
+                <!-- Left Column: Game List (Brands) -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max">
-                    <div class="relative mb-4">
-                        <i class="fas fa-search absolute left-3 top-3.5 text-textMuted"></i>
-                        <input type="text" placeholder="Cari game..." class="w-full bg-bgInput text-sm pl-9 pr-3 py-3 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
+                    <div class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3 px-1">Pilih Brand / Game</div>
+                    <div class="relative mb-3">
+                        <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
+                        <input type="text" id="gameSearch" placeholder="Cari game..." oninput="filterGames()" class="w-full bg-bgInput text-xs sm:text-sm pl-9 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
                     
-                    <ul class="space-y-1 text-sm font-semibold" id="gameList">
-                        <!-- JS Generated Sidebar -->
+                    <ul class="space-y-1.5 text-sm font-semibold max-h-[300px] lg:max-h-[500px] overflow-y-auto pr-1" id="gameList">
+                        <li><div class="p-3 text-xs text-textMuted text-center">Memuat produk Digiflazz...</div></li>
                     </ul>
-                    
-                    <a href="#" class="mt-4 flex items-center gap-2 p-3 text-sm text-textMuted hover:text-white transition">
-                        <i class="fas fa-border-all"></i> Game Lainnya
-                    </a>
                 </div>
 
-                <!-- Middle Column: Form -->
+                <!-- Middle Column: Form & Nominal -->
                 <div class="lg:col-span-6 space-y-6">
-                    <div class="bg-bgCard rounded-xl p-6 border border-borderDim flex flex-col sm:flex-row gap-5 items-start sm:items-center">
-                        <img id="activeGameImg" src="assets/ml-logo.png" alt="Game Logo" class="w-20 h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+                    <div class="bg-bgCard rounded-xl p-4 sm:p-6 border border-borderDim flex flex-col sm:flex-row gap-4 sm:gap-5 items-start sm:items-center">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-2xl font-bold flex-shrink-0" id="activeGameLogo">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
                         <div class="flex-1">
-                            <h2 id="activeGameTitle" class="text-2xl font-bold mb-1 text-white">Mobile Legends</h2>
-                            <p id="activeGameDesc" class="text-textMuted text-sm mb-4">Top Up Diamond Mobile Legends dengan mudah dan cepat!</p>
-                            <div class="flex flex-wrap gap-4 text-xs font-semibold">
-                                <span class="flex items-center gap-1.5 text-green-400 bg-green-400/10 px-2 py-1 rounded"><i class="fas fa-bolt"></i> Proses Instan</span>
-                                <span class="flex items-center gap-1.5 text-blue-400 bg-blue-400/10 px-2 py-1 rounded"><i class="fas fa-tag"></i> Harga Terbaik</span>
-                                <span class="flex items-center gap-1.5 text-blue-400 bg-blue-400/10 px-2 py-1 rounded"><i class="fas fa-shield-check"></i> 100% Aman</span>
+                            <h2 id="activeGameTitle" class="text-xl sm:text-2xl font-bold mb-1 text-white">Pilih Game</h2>
+                            <p id="activeGameDesc" class="text-textMuted text-xs sm:text-sm mb-3">Silakan pilih game dari daftar di sebelah kiri.</p>
+                            <div class="flex flex-wrap gap-2 text-[11px] font-semibold">
+                                <span class="flex items-center gap-1 text-green-400 bg-green-400/10 px-2 py-0.5 rounded"><i class="fas fa-bolt"></i> Auto Digiflazz</span>
+                                <span class="flex items-center gap-1 text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded"><i class="fas fa-tag"></i> Harga Real-time</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
-                        <div class="flex border-b border-borderDim bg-[#101726]">
-                            <div class="flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-3 border-b-2 border-blue-500 text-white bg-bgCard">
-                                <span class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">1</span> Masukkan ID
+                        <div class="flex border-b border-borderDim bg-[#101726] text-xs sm:text-sm">
+                            <div class="flex-1 py-3.5 font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
+                                <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> ID Tujuan
                             </div>
-                            <div class="flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-3 text-textMuted">
-                                <span class="w-6 h-6 rounded-full bg-borderDim text-textMuted text-xs flex items-center justify-center">2</span> Pilih Nominal
-                            </div>
-                            <div class="flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-3 text-textMuted hidden sm:flex">
-                                <span class="w-6 h-6 rounded-full bg-borderDim text-textMuted text-xs flex items-center justify-center">3</span> Pembayaran
+                            <div class="flex-1 py-3.5 font-semibold flex items-center justify-center gap-2 text-textMuted">
+                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Nominal
                             </div>
                         </div>
 
-                        <div class="p-6 space-y-8">
+                        <div class="p-4 sm:p-6 space-y-6">
                             <div>
-                                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                                    <i class="fas fa-user text-textMuted"></i> User ID
+                                <h3 class="text-xs sm:text-sm font-bold text-white mb-3 flex items-center gap-2">
+                                    <i class="fas fa-user text-textMuted"></i> Data Akun / Tujuan
                                 </h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                     <div>
-                                        <label class="block text-xs text-textMuted mb-1.5"><i class="far fa-id-card mr-1"></i> Masukkan User ID Anda</label>
-                                        <input type="text" id="userId" placeholder="Masukkan User ID Anda" class="w-full bg-bgInput p-3.5 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none transition text-white" />
+                                        <label class="block text-xs text-textMuted mb-1">User ID</label>
+                                        <input type="text" id="userId" placeholder="Masukkan User ID" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs sm:text-sm focus:border-blue-500 outline-none transition text-white" />
                                     </div>
                                     <div id="serverContainer">
-                                        <label class="block text-xs text-textMuted mb-1.5"><i class="fas fa-server mr-1"></i> Server ID</label>
-                                        <input type="text" id="serverId" placeholder="Contoh: 1234 (opsional)" class="w-full bg-bgInput p-3.5 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none transition text-white" />
+                                        <label class="block text-xs text-textMuted mb-1">Server ID (Jika ada)</label>
+                                        <input type="text" id="serverId" placeholder="Contoh: 2040" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs sm:text-sm focus:border-blue-500 outline-none transition text-white" />
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-sm font-bold text-white">Pilih Nominal</h3>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="nominalContainer">
-                                    <!-- Generated by JS -->
+                                <h3 class="text-xs sm:text-sm font-bold text-white mb-3">Pilih Nominal Produk</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[350px] overflow-y-auto pr-1" id="nominalContainer">
+                                    <div class="text-xs text-textMuted p-4 text-center col-span-2">Pilih game terlebih dahulu.</div>
                                 </div>
                             </div>
                         </div>
@@ -204,89 +177,55 @@
 
                 <!-- Right Column: Cart & Payment -->
                 <div class="lg:col-span-3 space-y-6">
-                    <div class="bg-bgCard rounded-xl p-5 border border-borderDim h-max">
-                        <h3 class="font-bold text-sm mb-4 pb-4 border-b border-borderDim flex items-center justify-between text-white">
-                            <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Keranjang Saya</span>
-                            <span class="bg-blue-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">1</span>
+                    <div class="bg-bgCard rounded-xl p-4 sm:p-5 border border-borderDim h-max">
+                        <h3 class="font-bold text-xs sm:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
+                            <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Ringkasan Pesanan</span>
                         </h3>
                         
-                        <div class="flex gap-4 mb-6">
-                            <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-12 h-12 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/48?text=Logo'">
-                            <div class="flex-1">
-                                <div id="cartGameName" class="text-xs text-textMuted mb-1 font-medium">Mobile Legends</div>
-                                <div class="text-sm font-bold text-white leading-none" id="cartProduct">86 Diamonds</div>
-                                <div class="text-[11px] text-blue-400 mt-1" id="cartBonus">+0 Bonus</div>
+                        <div class="flex gap-3 mb-4 items-center">
+                            <div class="w-10 h-10 rounded bg-blue-600/10 border border-borderDim flex items-center justify-center text-blue-400 flex-shrink-0" id="cartLogo">
+                                <i class="fas fa-gamepad"></i>
                             </div>
-                            <button onclick="resetCart()" class="text-textMuted hover:text-red-400 text-xs self-start" title="Hapus item"><i class="far fa-trash-alt"></i></button>
+                            <div class="flex-1 min-w-0">
+                                <div id="cartGameName" class="text-[11px] text-textMuted truncate">Belum ada game dipilih</div>
+                                <div class="text-xs sm:text-sm font-bold text-white truncate" id="cartProduct">-</div>
+                            </div>
                         </div>
 
-                        <div class="bg-bgInput rounded-lg p-3 mb-6">
-                            <div class="text-xs text-textMuted mb-1">Total Pembayaran</div>
-                            <div class="text-xl font-bold text-blue-400" id="cartPrice">Rp 20.500</div>
+                        <div class="bg-bgInput rounded-lg p-3 mb-4 border border-borderDim/50">
+                            <div class="text-[11px] text-textMuted mb-0.5">Total Pembayaran</div>
+                            <div class="text-lg sm:text-xl font-bold text-blue-400" id="cartPrice">Rp 0</div>
                         </div>
 
-                        <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-4 rounded-lg transition text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                        <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg">
                             <i class="fas fa-wallet"></i> Bayar Sekarang &rarr;
                         </button>
                     </div>
 
                     <!-- Payment Methods -->
-                    <div class="bg-bgCard rounded-xl p-5 border border-borderDim">
-                        <h3 class="font-bold text-sm mb-1 text-white">Metode Pembayaran</h3>
-                        <p class="text-xs text-textMuted mb-4">Pilih metode pembayaran favoritmu</p>
+                    <div class="bg-bgCard rounded-xl p-4 sm:p-5 border border-borderDim">
+                        <h3 class="font-bold text-xs sm:text-sm mb-1 text-white">Metode Pembayaran</h3>
+                        <p class="text-[11px] text-textMuted mb-3">Didukung oleh Midtrans Snap</p>
                         
-                        <div class="grid grid-cols-3 gap-2.5 mb-3" id="paymentMethodsContainer">
+                        <div class="grid grid-cols-3 gap-2" id="paymentMethodsContainer">
                             <label class="cursor-pointer">
                                 <input type="radio" name="paymentMethod" value="qris" class="peer sr-only pay-radio" checked>
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-white font-bold text-xs">QRIS</span>
-                                </div>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="dana" class="peer sr-only pay-radio">
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-blue-400 font-bold italic text-xs">DANA</span>
-                                </div>
-                            </label>
-                            <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="ovo" class="peer sr-only pay-radio">
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-purple-400 font-bold italic text-xs">OVO</span>
+                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-10 transition hover:border-gray-500">
+                                    <span class="text-white font-bold text-[11px]">QRIS</span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="paymentMethod" value="gopay" class="peer sr-only pay-radio">
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-green-400 font-bold italic text-xs">GoPay</span>
+                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-10 transition hover:border-gray-500">
+                                    <span class="text-green-400 font-bold italic text-[11px]">GoPay</span>
                                 </div>
                             </label>
                             <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="shopeepay" class="peer sr-only pay-radio">
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-orange-400 font-bold italic text-xs">ShopeePay</span>
+                                <input type="radio" name="paymentMethod" value="bca" class="peer sr-only pay-radio">
+                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-10 transition hover:border-gray-500">
+                                    <span class="text-blue-400 font-bold text-[11px]">BCA VA</span>
                                 </div>
                             </label>
-                            <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="linkaja" class="peer sr-only pay-radio">
-                                <div class="bg-bgInput border border-borderDim rounded p-2 flex justify-center items-center h-12 transition hover:border-gray-500">
-                                    <span class="text-red-500 font-bold italic text-xs">LinkAja!</span>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="text-center text-xs text-blue-400 cursor-pointer hover:underline font-medium">+ 4 metode lainnya</div>
-                    </div>
-                    
-                    <!-- Support WhatsApp -->
-                    <div class="relative bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-xl p-5 overflow-hidden border border-purple-500/30">
-                        <div class="relative z-10 w-2/3">
-                            <h3 class="font-bold text-sm text-white mb-1">Ada pertanyaan?</h3>
-                            <p class="text-xs text-purple-200 mb-4 leading-tight">Tim kami siap membantu menyelesaikan masalahmu!</p>
-                            <a href="https://wa.me/628970108026?text=Halo%20Twidy%20Shop,%20saya%20ingin%20bertanya%20mengenai%20top%20up%20game." target="_blank" class="bg-white text-blue-900 text-xs font-bold py-2 px-4 rounded-full hover:bg-gray-100 transition shadow-lg inline-flex items-center gap-2">
-                                <i class="fab fa-whatsapp"></i> Hubungi Kami
-                            </a>
-                        </div>
-                        <div class="absolute right-0 bottom-0 w-48 md:w-56 pointer-events-none overflow-hidden">
-                            <img src="assets/support-anime.png" alt="Support Anime" class="w-full h-auto object-contain object-bottom opacity-95" onerror="this.style.display='none'">
                         </div>
                     </div>
                 </div>
@@ -294,134 +233,42 @@
         </div>
 
         <!-- VIEW 2: PROMO -->
-        <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
-                <div class="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-2xl">
+        <div id="view-promo" class="space-y-6 hidden min-h-[50vh]">
+            <div class="bg-bgCard rounded-xl p-6 sm:p-8 border border-borderDim text-center max-w-xl mx-auto space-y-4">
+                <div class="w-14 h-14 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl">
                     <i class="fas fa-tags"></i>
                 </div>
-                <h2 class="text-3xl font-extrabold text-white">Promo & Diskon Spesial</h2>
-                <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik, diskon diamond mingguan, dan cashback saldo e-wallet khusus untuk pelanggan setia Twidy Shop!</p>
-                <div class="bg-bgInput p-4 rounded-lg border border-borderDim text-blue-400 font-bold text-lg">
-                    🎉 Diskon 10% Semua Game dengan Kode: <span class="text-white underline">TWIDYHEMAT</span>
-                </div>
-                <button onclick="navigate('topup')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">
-                    Mulai Top Up Sekarang &rarr;
+                <h2 class="text-2xl font-bold text-white">Promo Spesial</h2>
+                <p class="text-textMuted text-xs sm:text-sm">Semua harga di Twidy Shop sudah disinkronkan langsung dengan harga terbaik dari Digiflazz!</p>
+                <button onclick="navigate('topup')" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-bold text-xs sm:text-sm hover:bg-blue-500 transition">
+                    Kembali Top Up &rarr;
                 </button>
             </div>
         </div>
 
         <!-- VIEW 3: PANDUAN -->
-        <div id="view-panduan" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-8 border border-borderDim max-w-3xl mx-auto space-y-6">
-                <div class="flex items-center gap-3 border-b border-borderDim pb-4">
-                    <div class="w-12 h-12 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center text-xl">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Panduan Cara Top Up</h2>
-                        <p class="text-textMuted text-xs">Ikuti langkah mudah di bawah untuk melakukan transaksi.</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4 text-sm text-gray-300">
-                    <div class="flex gap-4 items-start bg-bgInput p-4 rounded-lg border border-borderDim">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
-                        <div>
-                            <div class="font-bold text-white mb-1">Pilih Game & Masukkan User ID</div>
-                            <p class="text-xs text-textMuted">Pilih game favoritmu di menu sebelah kiri, lalu masukkan User ID (serta Server ID jika bermain Mobile Legends).</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 items-start bg-bgInput p-4 rounded-lg border border-borderDim">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
-                        <div>
-                            <div class="font-bold text-white mb-1">Pilih Nominal & Metode Pembayaran</div>
-                            <p class="text-xs text-textMuted">Pilih jumlah diamond atau item yang diinginkan, lalu tentukan metode pembayaran favoritmu (QRIS, DANA, OVO, dll).</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 items-start bg-bgInput p-4 rounded-lg border border-borderDim">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold flex-shrink-0">3</div>
-                        <div>
-                            <div class="font-bold text-white mb-1">Selesaikan Pembayaran & Selesai!</div>
-                            <p class="text-xs text-textMuted">Klik "Bayar Sekarang", lakukan pembayaran pada popup Midtrans. Item akan masuk otomatis dalam hitungan detik.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center pt-2">
-                    <button onclick="navigate('topup')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">
-                        Kembali ke Halaman Utama &rarr;
-                    </button>
-                </div>
+        <div id="view-panduan" class="space-y-6 hidden min-h-[50vh]">
+            <div class="bg-bgCard rounded-xl p-6 sm:p-8 border border-borderDim max-w-xl mx-auto space-y-4">
+                <h2 class="text-xl font-bold text-white">Panduan Transaksi</h2>
+                <p class="text-textMuted text-xs sm:text-sm">1. Pilih game & produk dari panel kiri.<br>2. Masukkan User ID game.<br>3. Pilih nominal & klik bayar via Midtrans.<br>4. Saldo/item diproses otomatis oleh Digiflazz setelah lunas.</p>
+                <button onclick="navigate('topup')" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-bold text-xs sm:text-sm hover:bg-blue-500 transition">
+                    Kembali Top Up &rarr;
+                </button>
             </div>
         </div>
-
     </main>
 
     <!-- Footer -->
-    <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
-        <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2 text-textMuted">
-                <div class="w-6 h-6 bg-blue-600/50 rounded flex items-center justify-center font-bold text-sm text-white">T</div>
-                <span class="font-bold text-white text-sm">TWIDY SHOP</span>
-                <span class="text-xs ml-2">Top Up Game &bull; Voucher &bull; Digital Product</span>
-            </div>
-            
-            <div class="text-xs text-textMuted">
-                &copy; 2026 Twidy Shop. All rights reserved. <br/>
-                <span class="opacity-60">Made with ❤️ by Twidy</span>
-            </div>
-        </div>
+    <footer class="mt-12 bg-[#080b14] py-6 border-t border-borderDim text-center text-xs text-textMuted">
+        &copy; 2026 Twidy Shop. All rights reserved. Powered by Digiflazz & Midtrans.
     </footer>
 
     <script>
-        const gamesData = {
-            'ml': {
-                id: 'ml', name: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, code: 'ML_DIAMOND',
-                desc: 'Top Up Diamond Mobile Legends dengan mudah dan cepat!', 
-                iconBadge: '<img src="assets/ml-logo.png" class="w-6 h-6 rounded object-cover border border-borderDim">',
-                nominals: [
-                    { id: 1, name: '86 Diamonds', bonus: 0, price: 20500 },
-                    { id: 2, name: '172 Diamonds', bonus: 0, price: 41000 },
-                    { id: 3, name: '257 Diamonds', bonus: 6, price: 61500 },
-                    { id: 4, name: '344 Diamonds', bonus: 14, price: 82000 },
-                    { id: 5, name: '429 Diamonds', bonus: 28, price: 102000 }
-                ]
-            },
-            'ff': {
-                id: 'ff', name: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, code: 'FF_DIAMOND',
-                desc: 'Top Up Diamond Free Fire instan dan terpercaya!', 
-                iconBadge: '<img src="assets/ff-logo.png" class="w-6 h-6 rounded object-cover border border-borderDim">',
-                nominals: [
-                    { id: 1, name: '70 Diamonds', bonus: 0, price: 10000 },
-                    { id: 2, name: '140 Diamonds', bonus: 0, price: 20000 },
-                    { id: 3, name: '355 Diamonds', bonus: 0, price: 50000 },
-                    { id: 4, name: '720 Diamonds', bonus: 0, price: 100000 }
-                ]
-            },
-            'pubg': {
-                id: 'pubg', name: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, code: 'PUBG_UC',
-                desc: 'Top Up UC PUBG Mobile harga promo!', 
-                iconBadge: '<img src="assets/pubg-logo.png" class="w-6 h-6 rounded object-cover border border-borderDim">',
-                nominals: [
-                    { id: 1, name: '60 UC', bonus: 0, price: 14000 },
-                    { id: 2, name: '325 UC', bonus: 0, price: 70000 },
-                    { id: 3, name: '660 UC', bonus: 0, price: 140000 }
-                ]
-            },
-            'valo': {
-                id: 'valo', name: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, code: 'VALO_POINT',
-                desc: 'Beli Valorant Points cepat dan aman.', 
-                iconBadge: '<img src="assets/valo-logo.png" class="w-6 h-6 rounded object-cover border border-borderDim">',
-                nominals: [
-                    { id: 1, name: '300 Points', bonus: 0, price: 45000 },
-                    { id: 2, name: '625 Points', bonus: 0, price: 90000 },
-                    { id: 3, name: '1120 Points', bonus: 0, price: 150000 }
-                ]
-            }
-        };
-
-        let activeGame = gamesData['ml'];
-        let selectedNominal = activeGame.nominals[0];
+        let allDigiflazzProducts = [];
+        let groupedGames = {};
+        let activeBrand = '';
+        let activeNominals = [];
+        let selectedProduct = null;
         let snapClientKeyLoaded = false;
 
         function navigate(viewName) {
@@ -429,27 +276,15 @@
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
-            
-            ['home', 'topup', 'promo', 'panduan'].forEach(n => {
-                const navEl = document.getElementById('nav-' + n);
-                if(navEl) navEl.classList.remove('text-blue-500');
-            });
-
-            if(viewName === 'home' || viewName === 'topup') {
-                document.getElementById('view-topup').classList.remove('hidden');
-                const targetNav = document.getElementById('nav-' + viewName);
-                if(targetNav) targetNav.classList.add('text-blue-500');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                const targetView = document.getElementById('view-' + viewName);
-                if(targetView) targetView.classList.remove('hidden');
-                const targetNav = document.getElementById('nav-' + viewName);
-                if(targetNav) targetNav.classList.add('text-blue-500');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('view-topup').classList.remove('hidden');
+            if(viewName !== 'topup') {
+                document.getElementById('view-topup').classList.add('hidden');
+                document.getElementById('view-' + viewName).classList.remove('hidden');
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function loadMidtransScript() {
+        async function loadMidtransConfig() {
             if (snapClientKeyLoaded) return;
             try {
                 const res = await fetch('/api/config');
@@ -463,62 +298,107 @@
                     snapClientKeyLoaded = true;
                 }
             } catch (error) {
-                console.error('Failed to load Midtrans config', error);
+                console.error('Gagal memuat konfigurasi Midtrans', error);
             }
         }
 
-        function initApp() {
-            setTimeout(loadMidtransScript, 500);
-            renderSidebar();
-            changeGame('ml');
+        async function fetchDigiflazzProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                
+                if (data.data) {
+                    // Filter hanya kategori Games dan produk aktif
+                    allDigiflazzProducts = data.data.filter(item => item.category === 'Games' && item.buyer_product_status);
+                    
+                    // Kelompokkan berdasarkan brand
+                    groupedGames = {};
+                    allDigiflazzProducts.forEach(prod => {
+                        const brand = prod.brand || 'Lainnya';
+                        if (!groupedGames[brand]) {
+                            groupedGames[brand] = [];
+                        }
+                        groupedGames[brand].push(prod);
+                    });
+
+                    renderGameSidebar(groupedGames);
+                    
+                    // Pilih brand pertama secara otomatis jika ada
+                    const brands = Object.keys(groupedGames);
+                    if (brands.length > 0) {
+                        selectBrand(brands[0]);
+                    }
+                }
+            } catch (err) {
+                console.error('Gagal mengambil produk Digiflazz:', err);
+                document.getElementById('gameList').innerHTML = '<li><div class="p-3 text-xs text-red-400 text-center">Gagal memuat produk dari server.</div></li>';
+            }
         }
 
-        function renderSidebar() {
+        function renderGameSidebar(gamesMap, filter = '') {
             const list = document.getElementById('gameList');
-            let html = `<li><a href="#" onclick="navigate('topup')" class="flex items-center gap-3 p-3 rounded-lg text-textMuted hover:bg-borderDim/30 hover:text-white transition"><div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center"><i class="fas fa-th-large text-white text-xs"></i></div>Semua Game</a></li>`;
+            let html = '';
             
-            for (const key in gamesData) {
-                const g = gamesData[key];
-                const isActive = activeGame.id === g.id;
-                const activeClass = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
-                html += `<li><a href="#topup" onclick="changeGame('${g.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClass}">${g.iconBadge} ${g.name}</a></li>`;
+            for (const brand in gamesMap) {
+                if (filter && !brand.toLowerCase().includes(filter.toLowerCase())) continue;
+                
+                const isActive = activeBrand === brand;
+                const activeClass = isActive ? 'bg-blue-600/20 text-white border border-blue-500/40' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
+                
+                html += `<li>
+                    <button onclick="selectBrand('${brand}')" class="w-full text-left flex items-center justify-between p-2.5 rounded-lg text-xs sm:text-sm font-medium ${activeClass}">
+                        <span class="truncate"><i class="fas fa-gamepad mr-2 text-blue-400"></i>${brand}</span>
+                        <span class="text-[10px] bg-borderDim px-2 py-0.5 rounded-full text-textMuted">${gamesMap[brand].length}</span>
+                    </button>
+                </li>`;
             }
-            list.innerHTML = html;
+            
+            list.innerHTML = html || '<li><div class="p-3 text-xs text-textMuted text-center">Game tidak ditemukan</div></li>';
         }
 
-        function changeGame(gameId) {
-            activeGame = gamesData[gameId];
-            selectedNominal = activeGame.nominals[0];
-            
-            document.getElementById('activeGameTitle').innerText = activeGame.name;
-            document.getElementById('activeGameDesc').innerText = activeGame.desc;
-            document.getElementById('activeGameImg').src = activeGame.img;
-            
-            document.getElementById('serverContainer').style.display = activeGame.hasServer ? 'block' : 'none';
-            document.getElementById('userId').value = '';
-            document.getElementById('serverId').value = '';
+        function filterGames() {
+            const keyword = document.getElementById('gameSearch').value;
+            renderGameSidebar(groupedGames, keyword);
+        }
 
-            renderSidebar();
+        function selectBrand(brandName) {
+            activeBrand = brandName;
+            activeNominals = groupedGames[brandName] || [];
+            
+            // Urutkan berdasarkan harga termurah
+            activeNominals.sort((a, b) => a.price - b.price);
+
+            document.getElementById('activeGameTitle').innerText = brandName;
+            document.getElementById('activeGameDesc').innerText = `Top Up resmi ${brandName} via Digiflazz Production.`;
+            document.getElementById('activeGameLogo').innerHTML = `<i class="fas fa-shield-alt"></i>`;
+            
+            renderGameSidebar(groupedGames, document.getElementById('gameSearch').value);
             renderNominals();
-            updateCartUI();
+            
+            if (activeNominals.length > 0) {
+                selectProduct(activeNominals[0].buyer_sku_code);
+            }
         }
 
         function renderNominals() {
             const container = document.getElementById('nominalContainer');
-            container.innerHTML = activeGame.nominals.map(item => `
+            if (activeNominals.length === 0) {
+                container.innerHTML = '<div class="text-xs text-textMuted col-span-2 p-4 text-center">Tidak ada produk tersedia.</div>';
+                return;
+            }
+
+            container.innerHTML = activeNominals.map(item => `
                 <label class="cursor-pointer block relative">
-                    <input type="radio" name="nominal" class="peer sr-only nominal-radio" value="${item.id}" ${item.id === selectedNominal.id ? 'checked' : ''} onchange="selectNominal(${item.id})">
-                    <div class="p-4 rounded-xl border border-borderDim bg-bgInput flex justify-between items-center transition-all duration-200 hover:border-gray-500 hover:bg-borderDim/20">
-                        <div class="flex items-center gap-4">
-                            <div class="radio-dot w-5 h-5 rounded-full border-2 border-textMuted flex items-center justify-center transition-colors"></div>
-                            <div>
-                                <div class="text-sm font-bold text-white flex items-center gap-2">
-                                    ${item.name}
-                                </div>
-                                <div class="text-[11px] text-blue-400 font-semibold mt-0.5">${item.bonus > 0 ? '+'+item.bonus+' Bonus' : 'Reguler'}</div>
+                    <input type="radio" name="nominal" class="peer sr-only nominal-radio" value="${item.buyer_sku_code}" ${selectedProduct && selectedProduct.buyer_sku_code === item.buyer_sku_code ? 'checked' : ''} onchange="selectProduct('${item.buyer_sku_code}')">
+                    <div class="p-3.5 sm:p-4 rounded-xl border border-borderDim bg-bgInput flex justify-between items-center transition-all duration-200 hover:border-gray-500">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="radio-dot w-4 h-4 rounded-full border-2 border-textMuted flex items-center justify-center transition-colors flex-shrink-0"></div>
+                            <div class="min-w-0">
+                                <div class="text-xs sm:text-sm font-bold text-white truncate">${item.product_name}</div>
+                                <div class="text-[10px] text-green-400 font-medium">${item.note || 'Stok Tersedia'}</div>
                             </div>
                         </div>
-                        <div class="text-sm font-bold text-white bg-borderDim/30 px-3 py-1.5 rounded-lg border border-borderDim/50">
+                        <div class="text-xs sm:text-sm font-bold text-blue-400 bg-borderDim/40 px-2.5 py-1 rounded-lg flex-shrink-0 ml-2">
                             Rp ${item.price.toLocaleString('id-ID')}
                         </div>
                     </div>
@@ -526,43 +406,33 @@
             `).join('');
         }
 
-        function selectNominal(id) {
-            selectedNominal = activeGame.nominals.find(n => n.id === id);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            document.getElementById('cartGameName').innerText = activeGame.name;
-            document.getElementById('cartImg').src = activeGame.img;
-            document.getElementById('cartProduct').innerText = selectedNominal.name;
-            document.getElementById('cartBonus').innerText = selectedNominal.bonus > 0 ? `+${selectedNominal.bonus} Bonus` : 'Reguler';
-            document.getElementById('cartPrice').innerText = `Rp ${selectedNominal.price.toLocaleString('id-ID')}`;
-            renderNominals();
-        }
-
-        function resetCart() {
-            selectedNominal = activeGame.nominals[0];
-            updateCartUI();
+        function selectProduct(skuCode) {
+            selectedProduct = activeNominals.find(n => n.buyer_sku_code === skuCode);
+            if (selectedProduct) {
+                document.getElementById('cartGameName').innerText = selectedProduct.brand;
+                document.getElementById('cartProduct').innerText = selectedProduct.product_name;
+                document.getElementById('cartPrice').innerText = `Rp ${selectedProduct.price.toLocaleString('id-ID')}`;
+            }
         }
 
         document.getElementById('btnPay').addEventListener('click', async () => {
-            const userId = document.getElementById('userId').value;
-            const serverId = document.getElementById('serverId').value;
+            const userId = document.getElementById('userId').value.trim();
+            const serverId = document.getElementById('serverId').value.trim();
             const selectedPayMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
             if (!userId) {
-                alert('Mohon masukkan User ID Anda!');
+                alert('Mohon masukkan User ID game terlebih dahulu!');
                 document.getElementById('userId').focus();
                 return;
             }
-            if(activeGame.hasServer && !serverId) {
-                alert('Mohon masukkan Server ID Anda!');
-                document.getElementById('serverId').focus();
+
+            if (!selectedProduct) {
+                alert('Pilih nominal produk terlebih dahulu!');
                 return;
             }
 
             const btn = document.getElementById('btnPay');
-            const origText = btn.innerHTML;
+            const origHtml = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
@@ -573,39 +443,41 @@
                     body: JSON.stringify({ 
                         userId, 
                         serverId, 
-                        price: selectedNominal.price, 
-                        game: activeGame.name,
-                        productCode: activeGame.code,
+                        price: selectedProduct.price, 
+                        game: selectedProduct.brand,
+                        productCode: selectedProduct.buyer_sku_code,
                         paymentMethod: selectedPayMethod
                     })
                 });
                 
                 const data = await res.json();
-                btn.innerHTML = origText;
+                btn.innerHTML = origHtml;
                 btn.disabled = false;
 
                 if (data.token) {
                     if (typeof window.snap !== 'undefined') {
                         window.snap.pay(data.token, {
-                            onSuccess: function(result){ alert('Pembayaran Berhasil! Sistem sedang memproses topup.'); },
+                            onSuccess: function(result){ alert('Pembayaran Berhasil! Sistem memproses top up otomatis.'); },
                             onPending: function(result){ alert('Menunggu pembayaran Anda.'); },
                             onError: function(result){ alert('Pembayaran Gagal.'); },
-                            onClose: function(){ alert('Anda menutup popup tanpa menyelesaikan pembayaran.'); }
+                            onClose: function(){ alert('Popup pembayaran ditutup.'); }
                         });
                     } else {
-                        window.open(`https://app.midtrans.com/snap/v2/vtweb/${data.token}`, '_blank');
+                        alert('Token Midtrans diterima, namun popup gagal dimuat.');
                     }
                 } else {
-                    alert('Gagal membuat transaksi: ' + (data.error || 'Periksa kembali konfigurasi server.'));
+                    alert('Gagal membuat transaksi: ' + (data.error || 'Kesalahan server.'));
                 }
             } catch (error) {
                 alert('Terjadi kesalahan jaringan.');
-                btn.innerHTML = origText;
+                btn.innerHTML = origHtml;
                 btn.disabled = false;
             }
         });
 
-        initApp();
+        // Inisialisasi awal
+        loadMidtransConfig();
+        fetchDigiflazzProducts();
     </script>
 </body>
 </html>
