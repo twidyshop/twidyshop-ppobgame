@@ -24,7 +24,7 @@ app.get('/api/config', (req, res) => {
   res.json({ clientKey: process.env.MIDTRANS_CLIENT_KEY });
 });
 
-// Endpoint untuk Tarik Produk / Price-List (Logika disesuaikan persis referensi)
+// Endpoint untuk Tarik Produk / Price-List (Disesuaikan agar frontend membaca .data dengan benar)
 app.get('/api/products', async (req, res) => {
   const user = process.env.DIGIFLAZZ_USERNAME;
   const key = process.env.DIGIFLAZZ_API_KEY;
@@ -47,11 +47,15 @@ app.get('/api/products', async (req, res) => {
       if (raw.data && Array.isArray(raw.data)) {
         cachedProducts = raw.data;
         cacheTimestamp = now;
+      } else if (Array.isArray(raw)) {
+        cachedProducts = raw;
+        cacheTimestamp = now;
       } else {
         return res.status(400).json({ message: 'Gagal ambil data dari Digiflazz', error: raw });
       }
     }
-    res.json(cachedProducts);
+    // Mengirim objek berformat { data: [...] } agar sinkron dengan index.html
+    res.json({ data: cachedProducts });
   } catch (err) {
     console.error("Digiflazz Error:", err.response?.data || err.message);
     res.status(500).json({ message: err.message, detail: err.response?.data });
