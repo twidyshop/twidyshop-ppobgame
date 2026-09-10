@@ -6,6 +6,7 @@
     <title>Twidy Shop - Top Up Game & Produk Digital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -265,7 +266,7 @@
 
         <!-- VIEW 2: CEK RIWAYAT TRANSAKSI -->
         <div id="view-riwayat" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim max-w-4xl mx-auto space-y-6">
+            <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim max-w-5xl mx-auto space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <div>
                         <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-search text-blue-500"></i> Cek Riwayat Pesanan</h2>
@@ -290,11 +291,12 @@
                                 <th class="p-3">Total</th>
                                 <th class="p-3">Status</th>
                                 <th class="p-3">SN / Token PLN</th>
+                                <th class="p-3 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
                             <tr>
-                                <td colspan="6" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</td>
+                                <td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -334,6 +336,23 @@
             <div class="text-xs text-textMuted text-center md:text-right">&copy; 2026 Twidy Shop. All rights reserved.</div>
         </div>
     </footer>
+
+    <!-- Template Struk Digital (Tersembunyi) -->
+    <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 25px; width: 340px; font-family: monospace; text-align: center; border-radius: 8px;">
+        <h2 style="margin: 0; font-size: 22px;">TWIDY SHOP</h2>
+        <p style="margin: 0; font-size: 13px;">twidyshop.my.id</p>
+        <p id="struk-waktu" style="font-size: 12px; margin-bottom: 20px;"></p>
+        <h3 style="border-bottom: 1px dashed black; padding-bottom: 10px; font-size: 18px;">STRUK PEMBELIAN</h3>
+        <div style="text-align: left; font-size: 14px; line-height: 1.8; margin-top: 15px;">
+            <div style="display: flex; justify-content: space-between;"><strong>TRXID</strong> <span id="struk-trxid"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>PRODUK</strong> <span id="struk-produk"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>TUJUAN</strong> <span id="struk-tujuan"></span></div>
+            <div style="display: flex; justify-content: space-between;"><strong>HARGA</strong> <span>Rp <span id="struk-harga"></span></span></div>
+        </div>
+        <p style="margin-top: 25px; border-top: 1px dashed black; padding-top: 15px; font-weight: bold;">*** SN / Reff ***</p>
+        <h3 id="struk-sn" style="margin: 5px 0; word-break: break-all;"></h3>
+        <p style="font-size: 11px; margin-top: 25px; line-height: 1.5;">SIMPAN STRUK INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
+    </div>
 
     <script>
         const categoriesData = {
@@ -568,16 +587,39 @@
             }
         }
 
+        // Fungsi Cetak Struk ke PNG
+        function downloadStruk(orderId, waktu, produk, tujuan, harga, sn) {
+            document.getElementById('struk-trxid').innerText = orderId;
+            document.getElementById('struk-waktu').innerText = waktu;
+            document.getElementById('struk-produk').innerText = produk;
+            document.getElementById('struk-tujuan').innerText = tujuan;
+            document.getElementById('struk-harga').innerText = harga;
+            document.getElementById('struk-sn').innerText = sn;
+
+            html2canvas(document.querySelector("#struk-container")).then(canvas => {
+                let link = document.createElement('a');
+                link.download = `Struk-${orderId}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+
+        // Fungsi Bantuan WhatsApp
+        function hubungiCS(orderId) {
+            const pesan = `Halo Admin Twidy Shop, saya butuh bantuan untuk pesanan saya dengan TRXID: ${orderId}`;
+            window.open(`https://wa.me/628970108026?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+
         async function searchTransaction() {
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
 
             if(!query) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor Tujuan terlebih dahulu.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor Tujuan terlebih dahulu.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
 
             try {
                 const res = await fetch('/api/transactions');
@@ -586,7 +628,7 @@
                 const filtered = data.filter(t => t.order_id.toLowerCase().includes(query.toLowerCase()) || t.target_id.toLowerCase().includes(query.toLowerCase()));
 
                 if(filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID / No Tujuan Anda.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID / No Tujuan Anda.</td></tr>';
                     return;
                 }
 
@@ -596,19 +638,31 @@
                     if(t.status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
                     if(t.status === 'DIPROSES') badgeColor = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
 
+                    const escapedProductName = t.product_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const escapedSn = t.sn ? t.sn.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '-';
+                    const dateStr = new Date(t.created_at).toLocaleString('id-ID');
+
                     return `
                         <tr class="border-b border-borderDim">
-                            <td class="p-3 font-mono"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${new Date(t.created_at).toLocaleString()}</div></td>
+                            <td class="p-3 font-mono"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
                             <td class="p-3 font-medium">${t.target_id}</td>
                             <td class="p-3">${t.product_name}</td>
                             <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
                             <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
                             <td class="p-3 font-mono text-xs text-green-300 font-bold">${t.sn}</td>
+                            <td class="p-3 flex items-center justify-center gap-1.5 h-full pt-4">
+                                <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                                <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 }).join('');
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Terjadi kesalahan saat memuat data.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Terjadi kesalahan saat memuat data.</td></tr>';
             }
         }
 
