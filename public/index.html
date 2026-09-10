@@ -36,224 +36,187 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Sticky Navbar (Title Terkunci / Tidak Hilang Saat Scroll) -->
-    <nav class="sticky top-0 z-50 flex justify-between items-center px-4 md:px-10 py-4 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
+    <!-- Sticky Navbar + Hamburger Menu untuk Mobile -->
+    <nav class="sticky top-0 z-50 flex justify-between items-center px-4 md:px-10 py-3.5 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-            <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-lg text-white">T</div>
-            <span class="font-bold text-xl tracking-wide">TWIDY SHOP</span>
+            <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-lg text-white shadow">T</div>
+            <span class="font-bold text-lg md:text-xl tracking-wide">TWIDY SHOP</span>
         </div>
         
+        <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
-            <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
-            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
-            <a href="#riwayat" onclick="navigate('riwayat')" id="nav-riwayat" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
-            <a href="#promo" onclick="navigate('promo')" id="nav-promo" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
-            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
+            <a href="#home" onclick="navigate('home')" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
+            <a href="#topup" onclick="navigate('topup')" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Layanan</a>
+            <a href="#riwayat" onclick="navigate('riwayat')" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
+            <a href="#promo" onclick="navigate('promo')" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
+            <a href="#panduan" onclick="navigate('panduan')" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="flex items-center gap-3 lg:hidden">
+            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1 focus:outline-none">
+                <i class="fas fa-bars" id="hamburgerIcon"></i>
+            </button>
         </div>
         
-        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
-            <i class="fas fa-shield-check"></i> Fast • Safe • Trusted
+        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+            <i class="fas fa-shield-check"></i> Fast • Safe
         </div>
     </nav>
 
+    <!-- Mobile Dropdown Menu (Hamburger Menu) -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[61px]">
+        <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
+        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Layanan & Top Up</a>
+        <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat Pesanan</a>
+        <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo Spesial</a>
+        <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-question-circle mr-2"></i> Panduan Transaksi</a>
+    </div>
+
     <!-- CONTENT VIEWS -->
-    <main class="flex-grow max-w-[1400px] w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+    <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6">
         
         <!-- VIEW 1: TOPUP & PPOB -->
-        <div id="view-topup" class="space-y-6">
-            <!-- Hero Section Lengkap dengan Banner Anime -->
-            <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden min-h-[280px] flex items-center">
-                <div class="absolute right-0 top-0 bottom-0 w-1/2 lg:w-2/3 opacity-80 md:opacity-100 pointer-events-none flex justify-end">
-                    <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='https://via.placeholder.com/600x300?text=hero-anime.png'">
+        <div id="view-topup" class="space-y-4 md:space-y-6">
+            <!-- Hero Section Compact di HP -->
+            <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg">
+                <div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-40 md:opacity-100 pointer-events-none flex justify-end">
+                    <img src="assets/hero-anime.png" alt="Anime" class="h-full object-cover" onerror="this.style.display='none'">
                 </div>
-                
-                <div class="relative z-10 p-6 md:p-10 max-w-2xl w-full">
-                    <div class="inline-flex items-center gap-2 text-xs font-bold text-blue-300 bg-blue-900/40 px-3 py-1.5 rounded-md border border-blue-800/50 mb-4 tracking-wider uppercase">
-                        <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP
+                <div class="relative z-10 max-w-xl">
+                    <div class="inline-flex items-center gap-1.5 text-[10px] md:text-xs font-bold text-blue-300 bg-blue-900/40 px-2.5 py-1 rounded border border-blue-800/50 mb-2 uppercase">
+                        <i class="fas fa-bolt text-blue-400"></i> Twidy Shop Otomatis 24 Jam
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-[1.1] text-white">
-                        Top Up & PPOB<br/>
-                        <span class="text-blue-500">Lebih Mudah!</span>
+                    <h1 class="text-2xl md:text-5xl font-extrabold mb-2 text-white leading-tight">
+                        Top Up & PPOB <span class="text-blue-500">Lebih Mudah!</span>
                     </h1>
-                    <p class="text-gray-300 mb-8 text-sm md:text-base max-w-md">
-                        Game, Pulsa, E-Money, PLN, & Streaming.<br/>
-                        Semua kebutuhan digitalmu ada di sini!
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-200">
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-bolt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Proses Cepat</div><div class="text-[10px] text-gray-400 font-normal">Hitungan detik</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-shield-alt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">100% Aman</div><div class="text-[10px] text-gray-400 font-normal">Data terlindungi</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-tag text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Harga Terbaik</div><div class="text-[10px] text-gray-400 font-normal">Selalu hemat</div></div>
-                        </div>
-                    </div>
+                    <p class="text-gray-300 text-xs md:text-sm">Game, Pulsa, E-Money, Token PLN, & Streaming instan detik ini juga.</p>
                 </div>
             </div>
 
-            <!-- Main Layout: 3 Columns (Desktop Layout Terjaga Utuh) -->
-            <div id="topup" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pt-2">
+            <!-- Tab Kategori Pilihan -->
+            <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                <button onclick="switchCategory('game')" id="catBtnGame" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-blue-600 text-white shadow transition flex items-center gap-2 flex-shrink-0"><i class="fas fa-gamepad"></i> Game</button>
+                <button onclick="switchCategory('pulsa')" id="catBtnPulsa" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-bgCard text-textMuted hover:text-white border border-borderDim transition flex items-center gap-2 flex-shrink-0"><i class="fas fa-mobile-alt"></i> Pulsa</button>
+                <button onclick="switchCategory('emoney')" id="catBtnEmoney" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-bgCard text-textMuted hover:text-white border border-borderDim transition flex items-center gap-2 flex-shrink-0"><i class="fas fa-wallet"></i> E-Money</button>
+                <button onclick="switchCategory('pln')" id="catBtnPln" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-bgCard text-textMuted hover:text-white border border-borderDim transition flex items-center gap-2 flex-shrink-0"><i class="fas fa-bolt"></i> PLN/Stream</button>
+            </div>
+
+            <!-- Main Layout: Desktop 3 Kolom | Mobile: Compact Grid Ala eBelanja -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
                 
-                <!-- Left Column: Sidebar Kategori & Game Lengkap (10 Game + PPOB Lainnya) -->
-                <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-4">
+                <!-- Kolom Kiri (Sidebar Desktop / Grid Mobile Ala eBelanja) -->
+                <div class="lg:col-span-3 bg-bgCard rounded-2xl p-4 border border-borderDim space-y-3 h-max">
                     <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-3.5 text-textMuted"></i>
-                        <input type="text" id="gameSearch" placeholder="Cari layanan/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-sm pl-9 pr-3 py-3 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
-                    </div>
-                    
-                    <!-- Tab Kategori Pilihan di Sidebar -->
-                    <div class="grid grid-cols-2 gap-1.5 text-xs font-bold">
-                        <button onclick="switchCategory('game')" id="btnCatGame" class="p-2 rounded-lg bg-blue-600 text-white transition">Game</button>
-                        <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition">Pulsa</button>
-                        <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition">E-Money</button>
-                        <button onclick="switchCategory('pln')" id="btnCatPln" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition">PLN/Stream</button>
+                        <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
+                        <input type="text" id="gameSearch" placeholder="Cari layanan..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted" />
                     </div>
 
-                    <ul class="space-y-1 text-sm font-semibold max-h-[420px] overflow-y-auto pr-1" id="sidebarList">
-                        <!-- Dynamic rendered by JS -->
-                    </ul>
+                    <!-- Tampilan Grid Kotak ala eBelanja untuk HP & Sidebar untuk Desktop -->
+                    <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-1 gap-2.5 max-h-[400px] overflow-y-auto pr-1" id="sidebarGridList">
+                        <!-- Rendered by JS -->
+                    </div>
                 </div>
 
-                <!-- Middle Column: Form Input & Nominal -->
-                <div class="lg:col-span-6 space-y-6">
-                    <div class="bg-bgCard rounded-xl p-6 border border-borderDim flex flex-col sm:flex-row gap-5 items-start sm:items-center">
-                        <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-20 h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
-                        <div class="flex-1">
-                            <h2 id="activeItemTitle" class="text-2xl font-bold mb-1 text-white">Mobile Legends</h2>
-                            <p id="activeItemDesc" class="text-textMuted text-sm mb-4">Top Up Diamond Mobile Legends dengan mudah dan cepat!</p>
-                            <div class="flex flex-wrap gap-4 text-xs font-semibold">
-                                <span class="flex items-center gap-1.5 text-green-400 bg-green-400/10 px-2 py-1 rounded"><i class="fas fa-bolt"></i> Proses Instan</span>
-                                <span class="flex items-center gap-1.5 text-blue-400 bg-blue-400/10 px-2 py-1 rounded"><i class="fas fa-tag"></i> Harga Terbaik</span>
-                            </div>
+                <!-- Kolom Tengah: Form Input & Nominal -->
+                <div class="lg:col-span-6 space-y-4 md:space-y-6">
+                    <div class="bg-bgCard rounded-2xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
+                        <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-14 h-14 md:w-20 md:h-20 rounded-xl object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+                        <div class="flex-1 min-w-0">
+                            <h2 id="activeItemTitle" class="text-lg md:text-2xl font-bold text-white truncate">Mobile Legends</h2>
+                            <p id="activeItemDesc" class="text-textMuted text-xs md:text-sm truncate">Top Up Diamond Mobile Legends cepat & aman.</p>
                         </div>
                     </div>
 
-                    <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
-                        <div class="flex border-b border-borderDim bg-[#101726]">
-                            <div class="flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-3 border-b-2 border-blue-500 text-white bg-bgCard">
-                                <span class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">1</span> Masukkan Nomor / ID
-                            </div>
-                            <div class="flex-1 py-4 text-sm font-semibold flex items-center justify-center gap-3 text-textMuted">
-                                <span class="w-6 h-6 rounded-full bg-borderDim text-textMuted text-xs flex items-center justify-center">2</span> Pilih Nominal
+                    <div class="bg-bgCard rounded-2xl p-4 md:p-6 border border-borderDim space-y-5">
+                        <div>
+                            <h3 class="text-xs md:text-sm font-bold text-white mb-2" id="labelTargetHeader">
+                                <i class="fas fa-user text-textMuted"></i> User ID
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] md:text-xs text-textMuted mb-1" id="labelTargetInput">Masukkan User ID</label>
+                                    <input type="text" id="targetId" placeholder="ID Tujuan" class="w-full bg-bgInput p-3 rounded-xl border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
+                                <div id="serverContainer">
+                                    <label class="block text-[10px] md:text-xs text-textMuted mb-1">Server ID</label>
+                                    <input type="text" id="serverId" placeholder="Contoh: 1234" class="w-full bg-bgInput p-3 rounded-xl border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
+                                </div>
                             </div>
                         </div>
 
-                        <div class="p-6 space-y-8">
-                            <div>
-                                <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2" id="labelTargetHeader">
-                                    <i class="fas fa-user text-textMuted"></i> User ID
-                                </h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs text-textMuted mb-1.5" id="labelTargetInput"><i class="far fa-id-card mr-1"></i> Masukkan User ID Anda</label>
-                                        <input type="text" id="targetId" placeholder="Masukkan ID Tujuan" class="w-full bg-bgInput p-3.5 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none transition text-white" />
-                                    </div>
-                                    <div id="serverContainer">
-                                        <label class="block text-xs text-textMuted mb-1.5"><i class="fas fa-server mr-1"></i> Server ID</label>
-                                        <input type="text" id="serverId" placeholder="Contoh: 1234 (opsional)" class="w-full bg-bgInput p-3.5 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none transition text-white" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-sm font-bold text-white">Pilih Nominal</h3>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-1" id="nominalContainer">
-                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
-                                </div>
+                        <div>
+                            <h3 class="text-xs md:text-sm font-bold text-white mb-3">Pilih Nominal</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[350px] overflow-y-auto pr-1" id="nominalContainer">
+                                <div class="col-span-2 text-center text-textMuted text-xs py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Cart & Payment -->
-                <div class="lg:col-span-3 space-y-6">
-                    <!-- Ringkasan Keranjang -->
-                    <div class="bg-bgCard rounded-xl p-5 border border-borderDim h-max">
-                        <h3 class="font-bold text-sm mb-4 pb-4 border-b border-borderDim flex items-center justify-between text-white">
-                            <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Keranjang Saya</span>
+                <!-- Kolom Kanan: Keranjang & Pembayaran -->
+                <div class="lg:col-span-3 space-y-4 md:space-y-6">
+                    <div class="bg-bgCard rounded-2xl p-4 md:p-5 border border-borderDim h-max">
+                        <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim text-white flex items-center justify-between">
+                            <span><i class="fas fa-shopping-cart text-blue-500 mr-2"></i> Ringkasan Pesanan</span>
                         </h3>
                         
-                        <div class="flex gap-4 mb-6">
-                            <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-12 h-12 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/48?text=Logo'">
+                        <div class="flex gap-3 mb-4">
+                            <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
                             <div class="flex-1 min-w-0">
-                                <div id="cartItemName" class="text-xs text-textMuted mb-1 font-medium truncate">Mobile Legends</div>
-                                <div class="text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
-                                <div class="text-[11px] text-blue-400 mt-1">Instan & Otomatis</div>
+                                <div id="cartItemName" class="text-[10px] text-textMuted truncate">Mobile Legends</div>
+                                <div class="text-xs md:text-sm font-bold text-white truncate" id="cartProduct">Pilih Nominal</div>
                             </div>
                         </div>
 
-                        <div class="bg-bgInput rounded-lg p-3 mb-6">
-                            <div class="text-xs text-textMuted mb-1">Total Pembayaran</div>
-                            <div class="text-xl font-bold text-blue-400" id="cartPrice">Rp 0</div>
+                        <div class="bg-bgInput rounded-xl p-3 mb-4 border border-borderDim">
+                            <div class="text-[10px] text-textMuted mb-0.5">Total Pembayaran</div>
+                            <div class="text-lg md:text-xl font-bold text-blue-400" id="cartPrice">Rp 0</div>
                         </div>
 
-                        <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-4 rounded-lg transition text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                        <div class="bg-bgInput border border-borderDim rounded-xl p-2.5 mb-4 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold text-[10px]">QR</div>
+                                <div>
+                                    <div class="text-white font-bold text-[11px]">QRIS (All Payment)</div>
+                                    <div class="text-[9px] text-textMuted">OVO, DANA, BCA, GoPay</div>
+                                </div>
+                            </div>
+                            <span class="text-green-400 text-xs"><i class="fas fa-check-circle"></i></span>
+                        </div>
+
+                        <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition text-xs md:text-sm flex items-center justify-center gap-2 shadow-lg">
                             <i class="fas fa-wallet"></i> Bayar Sekarang &rarr;
                         </button>
                     </div>
 
-                    <!-- Payment Methods (QRIS Only) -->
-                    <div class="bg-bgCard rounded-xl p-5 border border-borderDim">
-                        <h3 class="font-bold text-sm mb-1 text-white">Metode Pembayaran</h3>
-                        <p class="text-xs text-textMuted mb-4">Scan QRIS pakai semua e-wallet & m-banking</p>
-                        
-                        <div class="grid grid-cols-1 gap-2.5 mb-3">
-                            <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="qris" class="peer sr-only pay-radio" checked>
-                                <div class="bg-bgInput border border-borderDim rounded p-3 flex justify-between items-center h-14 transition hover:border-gray-500">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold text-xs">QR</div>
-                                        <div>
-                                            <div class="text-white font-bold text-xs">QRIS (All Payment)</div>
-                                            <div class="text-[10px] text-textMuted">GoPay, OVO, DANA, BCA, ShopeePay, dll</div>
-                                        </div>
-                                    </div>
-                                    <span class="text-green-400 text-xs font-semibold"><i class="fas fa-check-circle"></i></span>
-                                </div>
-                            </label>
+                    <!-- Bantuan WhatsApp -->
+                    <div class="bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-2xl p-4 border border-purple-500/30 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-xs text-white mb-0.5">Butuh Bantuan?</h3>
+                            <p class="text-[10px] text-purple-200">Admin siap membantu.</p>
                         </div>
-                    </div>
-                    
-                    <!-- Support WhatsApp Banner -->
-                    <div class="relative bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-xl p-5 overflow-hidden border border-purple-500/30">
-                        <div class="relative z-10 w-2/3">
-                            <h3 class="font-bold text-sm text-white mb-1">Ada pertanyaan?</h3>
-                            <p class="text-xs text-purple-200 mb-4 leading-tight">Tim kami siap membantu menyelesaikan masalahmu!</p>
-                            <a href="https://wa.me/628970108026?text=Halo%20Twidy%20Shop,%20saya%20ingin%20bertanya." target="_blank" class="bg-white text-blue-900 text-xs font-bold py-2 px-4 rounded-full hover:bg-gray-100 transition shadow-lg inline-flex items-center gap-2">
-                                <i class="fab fa-whatsapp"></i> Hubungi Kami
-                            </a>
-                        </div>
-                        <div class="absolute right-0 bottom-0 w-48 md:w-56 pointer-events-none overflow-hidden">
-                            <img src="assets/support-anime.png" alt="Support Anime" class="w-full h-auto object-contain object-bottom opacity-95" onerror="this.style.display='none'">
-                        </div>
+                        <a href="https://wa.me/628970108026?text=Halo%20Twidy%20Shop" target="_blank" class="bg-white text-blue-900 text-xs font-bold py-2 px-3 rounded-xl hover:bg-gray-100 transition inline-flex items-center gap-1.5 shadow">
+                            <i class="fab fa-whatsapp"></i> Chat
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 2: CEK RIWAYAT TRANSAKSI (Dengan Pencarian Agar Privasi Aman) -->
+        <!-- VIEW 2: CEK RIWAYAT -->
         <div id="view-riwayat" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6">
+            <div class="bg-bgCard rounded-2xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-search text-blue-500"></i> Cek Riwayat Pesanan</h2>
-                        <p class="text-textMuted text-xs">Masukkan Order ID atau Nomor Tujuan untuk melihat status dan Token/SN secara aman.</p>
+                        <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-search text-blue-500"></i> Cek Riwayat Pesanan</h2>
+                        <p class="text-textMuted text-xs">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</p>
                     </div>
                 </div>
 
                 <div class="flex gap-3">
-                    <input type="text" id="searchOrderId" placeholder="Masukkan Order ID (cth: TWIDY-...) atau No Tujuan..." class="flex-1 bg-bgInput p-3.5 rounded-lg border border-borderDim text-sm text-white focus:border-blue-500 outline-none" />
-                    <button onclick="searchTransaction()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3.5 rounded-lg text-sm transition flex items-center gap-2">
-                        <i class="fas fa-search"></i> Cari
-                    </button>
+                    <input type="text" id="searchOrderId" placeholder="Order ID atau No Tujuan..." class="flex-1 bg-bgInput p-3 rounded-xl border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
+                    <button onclick="searchTransaction()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-3 rounded-xl text-xs md:text-sm transition">Cari</button>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -269,9 +232,7 @@
                             </tr>
                         </thead>
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
-                            <tr>
-                                <td colspan="6" class="text-center py-8 text-textMuted">Silakan masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</td>
-                            </tr>
+                            <tr><td colspan="6" class="text-center py-6 text-textMuted">Masukkan Order ID atau No Tujuan untuk melacak.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -281,38 +242,29 @@
         <!-- VIEW 3: PROMO -->
         <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
             <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
-                <div class="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fas fa-tags"></i></div>
-                <h2 class="text-3xl font-extrabold text-white">Promo & Diskon Spesial</h2>
-                <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik dan harga termurah setiap hari di Twidy Shop!</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home &rarr;</button>
+                <h2 class="text-2xl font-bold text-white">Promo Spesial</h2>
+                <p class="text-textMuted text-sm">Nikmati penawaran menarik setiap hari di Twidy Shop!</p>
+                <button onclick="navigate('home')" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold text-xs">Kembali</button>
             </div>
         </div>
 
         <!-- VIEW 4: PANDUAN -->
         <div id="view-panduan" class="space-y-6 hidden min-h-[60vh]">
             <div class="bg-bgCard rounded-xl p-8 border border-borderDim max-w-3xl mx-auto space-y-6">
-                <h2 class="text-2xl font-bold text-white">Panduan Cara Transaksi</h2>
-                <p class="text-textMuted text-sm">Pilih kategori dan produk, masukkan ID/Nomor tujuan, pilih nominal, lalu selesaikan pembayaran QRIS.</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home &rarr;</button>
+                <h2 class="text-2xl font-bold text-white">Panduan Transaksi</h2>
+                <p class="text-textMuted text-sm">Pilih layanan, masukkan ID, pilih nominal, lalu bayar via QRIS.</p>
+                <button onclick="navigate('home')" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-bold text-xs">Kembali</button>
             </div>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
-        <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2 text-textMuted">
-                <div class="w-6 h-6 bg-blue-600/50 rounded flex items-center justify-center font-bold text-sm text-white">T</div>
-                <span class="font-bold text-white text-sm">TWIDY SHOP</span>
-                <span class="text-xs ml-2">PPOB & Top Up Game Otomatis</span>
-            </div>
-            <div class="text-xs text-textMuted text-center md:text-right">&copy; 2026 Twidy Shop. All rights reserved.</div>
-        </div>
+    <footer class="mt-12 bg-[#080b14] py-6 border-t border-borderDim text-center text-xs text-textMuted">
+        &copy; 2026 Twidy Shop. All rights reserved.
     </footer>
 
     <script>
-        // Database Kategori Lengkap (10 Game + Pulsa lengkap + E-Money lengkap + PLN & Streaming)
         const categoriesData = {
             game: [
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
@@ -357,25 +309,26 @@
         let snapClientKeyLoaded = false;
 
         function initApp() {
-            renderSidebar();
+            renderSidebarGrid();
             selectItem('game', categoriesData.game[0].id);
             fetchProducts();
             loadMidtransConfig();
         }
 
-        // Fungsi navigasi Home/View tanpa blank item
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
         function navigate(viewName) {
             ['topup', 'riwayat', 'promo', 'panduan'].forEach(v => {
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
-            
-            if(viewName === 'home') {
-                document.getElementById('view-topup').classList.remove('hidden');
-            } else {
-                const targetView = document.getElementById('view-' + viewName);
-                if(targetView) targetView.classList.remove('hidden');
-                if(viewName === 'topup') document.getElementById('view-topup').classList.remove('hidden');
+            document.getElementById('view-topup').classList.remove('hidden');
+            if(viewName !== 'topup') {
+                document.getElementById('view-topup').classList.add('hidden');
+                document.getElementById('view-' + viewName).classList.remove('hidden');
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -404,52 +357,48 @@
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
                     renderNominals();
                 }
-            } catch (err) {
-                console.error('Gagal fetch produk:', err);
-            }
+            } catch (err) { console.error('Gagal fetch produk:', err); }
         }
 
         function switchCategory(cat) {
             currentCategory = cat;
-            ['game', 'pulsa', 'emoney', 'pln'].forEach(c => {
-                const btn = document.getElementById('btnCat' + c.charAt(0).toUpperCase() + c.slice(1));
+            ['Game', 'Pulsa', 'Emoney', 'Pln'].forEach(c => {
+                const btn = document.getElementById('catBtn' + c);
                 if(btn) {
-                    if(c === cat) {
-                        btn.className = "p-2 rounded-lg bg-blue-600 text-white transition";
+                    if(c.toLowerCase() === cat) {
+                        btn.className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-blue-600 text-white shadow transition flex items-center gap-2 flex-shrink-0";
                     } else {
-                        btn.className = "p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition";
+                        btn.className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-bgCard text-textMuted hover:text-white border border-borderDim transition flex items-center gap-2 flex-shrink-0";
                     }
                 }
             });
-            renderSidebar();
+            renderSidebarGrid();
             const firstItem = categoriesData[cat][0];
             if(firstItem) selectItem(cat, firstItem.id);
         }
 
-        function renderSidebar(filter = '') {
-            const list = document.getElementById('sidebarList');
+        function renderSidebarGrid(filter = '') {
+            const container = document.getElementById('sidebarGridList');
             const items = categoriesData[currentCategory];
             let html = '';
 
             items.forEach(item => {
                 if (filter && !item.name.toLowerCase().includes(filter.toLowerCase())) return;
                 const isActive = activeItem && activeItem.id === item.id;
-                const activeClass = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
+                const activeClass = isActive ? 'border-blue-500 bg-blue-600/10 text-white shadow' : 'border-borderDim bg-bgInput text-textMuted hover:text-white';
                 
-                html += `<li>
-                    <a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClass}">
-                        <img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/24?text=Logo'">
-                        <span class="truncate">${item.name}</span>
-                    </a>
-                </li>`;
+                html += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClass} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition group">
+                    <img src="${item.img}" class="w-10 h-10 md:w-8 md:h-8 rounded-lg object-cover mb-1.5 border border-borderDim group-hover:scale-105 transition" onerror="this.src='https://via.placeholder.com/32?text=Logo'">
+                    <span class="text-[10px] md:text-xs font-semibold truncate w-full">${item.name}</span>
+                </div>`;
             });
 
-            list.innerHTML = html || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
+            container.innerHTML = html || '<div class="col-span-full p-3 text-xs text-textMuted text-center">Tidak ditemukan</div>';
         }
 
         function filterSidebarItems() {
             const keyword = document.getElementById('gameSearch').value;
-            renderSidebar(keyword);
+            renderSidebarGrid(keyword);
         }
 
         function selectItem(cat, id) {
@@ -465,18 +414,18 @@
             
             document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
             document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
-            document.getElementById('labelTargetInput').innerHTML = isPln ? '<i class="fas fa-bolt mr-1"></i> No Meter / ID Pelanggan' : (isGame ? '<i class="far fa-id-card mr-1"></i> Masukkan User ID' : '<i class="fas fa-mobile-alt mr-1"></i> Masukkan Nomor HP');
+            document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
 
-            renderSidebar(document.getElementById('gameSearch').value);
+            renderSidebarGrid(document.getElementById('gameSearch').value);
             renderNominals();
         }
 
         function renderNominals() {
             const container = document.getElementById('nominalContainer');
             if(allDigiflazzProducts.length === 0) {
-                container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-8"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>';
+                container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-xs py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>';
                 return;
             }
 
@@ -493,15 +442,15 @@
             container.innerHTML = activeNominals.map(item => `
                 <label class="cursor-pointer block relative">
                     <input type="radio" name="nominal" class="peer sr-only nominal-radio" value="${item.buyer_sku_code}" onchange="selectNominalSku('${item.buyer_sku_code}')">
-                    <div class="p-4 rounded-xl border border-borderDim bg-bgInput flex justify-between items-center transition hover:border-gray-500">
-                        <div class="flex items-center gap-4 min-w-0">
-                            <div class="radio-dot w-5 h-5 rounded-full border-2 border-textMuted flex items-center justify-center flex-shrink-0"></div>
+                    <div class="p-3.5 rounded-xl border border-borderDim bg-bgInput flex justify-between items-center transition hover:border-gray-500">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="radio-dot w-4 h-4 rounded-full border-2 border-textMuted flex items-center justify-center flex-shrink-0"></div>
                             <div class="min-w-0">
-                                <div class="text-sm font-bold text-white leading-tight break-words">${item.product_name}</div>
-                                <div class="text-[10px] text-green-400 font-semibold mt-0.5">${item.note || 'Tersedia'}</div>
+                                <div class="text-xs font-bold text-white leading-tight break-words">${item.product_name}</div>
+                                <div class="text-[9px] text-green-400 font-semibold mt-0.5">${item.note || 'Tersedia'}</div>
                             </div>
                         </div>
-                        <div class="text-sm font-bold text-white bg-borderDim/30 px-3 py-1.5 rounded-lg border border-borderDim/50 flex-shrink-0 ml-2">
+                        <div class="text-xs font-bold text-white bg-borderDim/30 px-2.5 py-1 rounded-lg flex-shrink-0 ml-2">
                             Rp ${item.price.toLocaleString('id-ID')}
                         </div>
                     </div>
@@ -530,59 +479,41 @@
             }
         }
 
-        // Pencarian Riwayat Transaksi (Privasi Terjaga / Berdasarkan Search)
         async function searchTransaction() {
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
+            if(!query) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-yellow-400">Masukkan Order ID / No Tujuan.</td></tr>'; return; }
 
-            if(!query) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor Tujuan terlebih dahulu.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
-
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari...</td></tr>';
             try {
                 const res = await fetch('/api/transactions');
                 const data = await res.json();
-                
                 const filtered = data.filter(t => t.order_id.toLowerCase().includes(query.toLowerCase()) || t.target_id.toLowerCase().includes(query.toLowerCase()));
 
                 if(filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID / No Tujuan Anda.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-400">Transaksi tidak ditemukan.</td></tr>';
                     return;
                 }
 
-                tbody.innerHTML = filtered.map(t => {
-                    let badgeColor = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
-                    if(t.status === 'SUKSES') badgeColor = 'bg-green-500/10 text-green-400 border-green-500/20';
-                    if(t.status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
-                    if(t.status === 'DIPROSES') badgeColor = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-
-                    return `
-                        <tr class="border-b border-borderDim">
-                            <td class="p-3 font-mono"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${new Date(t.created_at).toLocaleString()}</div></td>
-                            <td class="p-3 font-medium">${t.target_id}</td>
-                            <td class="p-3">${t.product_name}</td>
-                            <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
-                            <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
-                            <td class="p-3 font-mono text-xs text-green-300 font-bold">${t.sn}</td>
-                        </tr>
-                    `;
-                }).join('');
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Terjadi kesalahan saat memuat data.</td></tr>';
-            }
+                tbody.innerHTML = filtered.map(t => `
+                    <tr class="border-b border-borderDim">
+                        <td class="p-2 font-mono"><div>${t.order_id}</div><div class="text-[9px] text-textMuted">${new Date(t.created_at).toLocaleString()}</div></td>
+                        <td class="p-2">${t.target_id}</td>
+                        <td class="p-2">${t.product_name}</td>
+                        <td class="p-2 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
+                        <td class="p-2"><span class="px-2 py-0.5 rounded-full text-[9px] font-bold border ${t.status==='SUKSES'?'bg-green-500/10 text-green-400':'bg-yellow-500/10 text-yellow-400'}">${t.status}</span></td>
+                        <td class="p-2 font-mono text-xs text-green-300 font-bold">${t.sn}</td>
+                    </tr>
+                `).join('');
+            } catch (e) { tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-red-400">Error server.</td></tr>'; }
         }
 
-        // Checkout & Midtrans Snap
         document.getElementById('btnPay').addEventListener('click', async () => {
             const targetId = document.getElementById('targetId').value.trim();
             const serverId = document.getElementById('serverId').value.trim();
-
-            if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
+            if (!targetId) { alert('Masukkan Nomor / ID tujuan!'); document.getElementById('targetId').focus(); return; }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
-            if (!selectedProduct) { alert('Pilih nominal produk terlebih dahulu!'); return; }
+            if (!selectedProduct) { alert('Pilih nominal produk!'); return; }
 
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
@@ -593,8 +524,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        targetId,
-                        serverId,
+                        targetId, serverId,
                         price: selectedProduct.price,
                         productName: `${activeItem.name} - ${selectedProduct.product_name}`,
                         productCode: selectedProduct.buyer_sku_code
@@ -606,33 +536,13 @@
 
                 if (data.token) {
                     window.snap.pay(data.token, {
-                        onSuccess: function(result){ 
-                            alert('Pembayaran Berhasil! Sistem memproses top up otomatis.'); 
-                            document.getElementById('searchOrderId').value = data.orderId;
-                            navigate('riwayat');
-                            searchTransaction();
-                        },
-                        onPending: function(result){ 
-                            alert('Silakan selesaikan pembayaran QRIS Anda.'); 
-                            document.getElementById('searchOrderId').value = data.orderId;
-                            navigate('riwayat');
-                            searchTransaction();
-                        },
-                        onError: function(result){ alert('Pembayaran Gagal.'); },
-                        onClose: function(){ 
-                            document.getElementById('searchOrderId').value = data.orderId;
-                            navigate('riwayat');
-                            searchTransaction();
-                        }
+                        onSuccess: function(result){ alert('Pembayaran Berhasil!'); document.getElementById('searchOrderId').value = data.orderId; navigate('riwayat'); searchTransaction(); },
+                        onPending: function(result){ alert('Selesaikan pembayaran QRIS.'); document.getElementById('searchOrderId').value = data.orderId; navigate('riwayat'); searchTransaction(); },
+                        onError: function(result){ alert('Gagal.'); },
+                        onClose: function(){ document.getElementById('searchOrderId').value = data.orderId; navigate('riwayat'); searchTransaction(); }
                     });
-                } else {
-                    alert('Gagal membuat transaksi: ' + (data.error || 'Kesalahan server.'));
-                }
-            } catch (e) {
-                alert('Kesalahan jaringan.');
-                btn.innerHTML = '<i class="fas fa-wallet"></i> Bayar Sekarang &rarr;';
-                btn.disabled = false;
-            }
+                } else { alert('Gagal membuat transaksi.'); }
+            } catch (e) { alert('Kesalahan jaringan.'); btn.innerHTML = '<i class="fas fa-wallet"></i> Bayar Sekarang &rarr;'; btn.disabled = false; }
         });
 
         initApp();
