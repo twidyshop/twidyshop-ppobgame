@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twidy Shop - Auto Sync Digiflazz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="ISI_MIDTRANS_CLIENT_KEY_ANDA"></script>
+</head>
+<body class="bg-[#0b101e] text-white min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center px-6 py-4 bg-[#131b2f] border-b border-[#1f293f]">
+        <div class="font-bold text-xl tracking-wide flex items-center gap-2">
+            <span class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">T</span> TWIDY SHOP
+        </div>
+        <div class="text-xs text-green-400 bg-green-400/10 px-3 py-1.5 rounded-full border border-green-400/20">
+            <i class="fas fa-shield-check"></i> Connected to Digiflazz
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl w-full mx-auto p-6 space-y-6">
+        <div class="bg-[#131b2f] p-6 rounded-xl border border-[#1f293f] space-y-4">
+            <h2 class="text-xl font-bold">Form Top Up Game (Auto-Sync Digiflazz)</h2>
+            
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Pilih Produk / Game dari Digiflazz</label>
+                <select id="productSelect" class="w-full bg-[#0b101e] border border-[#1f293f] p-3 rounded-lg text-sm text-white">
+                    <option value="">Sedang memuat produk dari Digiflazz...</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">User ID</label>
+                    <input type="text" id="userId" placeholder="Masukkan User ID" class="w-full bg-[#0b101e] border border-[#1f293f] p-3 rounded-lg text-sm text-white" />
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Server ID (Opsional / Mobile Legends)</label>
+                    <input type="text" id="serverId" placeholder="Contoh: 2040" class="w-full bg-[#0b101e] border border-[#1f293f] p-3 rounded-lg text-sm text-white" />
+                </div>
+            </div>
+
+            <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-3 rounded-lg transition text-sm">
+                Bayar Sekarang
+            </button>
+        </div>
+    </main>
+
+    <script>
+        let productList = [];
+
+        async function fetchProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                
+                // Menyaring produk kategori games dari Digiflazz
+                if (data.data) {
+                    productList = data.data.filter(item => item.category === 'Games' && item.buyer_product_status);
+                    const select = document.getElementById('productSelect');
+                    select.innerHTML = '<option value="">-- Pilih Nominal Game --</option>';
+                    
+                    productList.forEach(prod => {
+                        const opt = document.createElement('option');
+                        opt.value = prod.buyer_sku_code;
+                        opt.textContent = `${prod.product_name} - Rp ${prod.price.toLocaleString('id-ID')}`;
+                        select.appendChild(opt);
+                    });
+                }
+            } catch (err) {
+                console.error('Gagal memuat produk:', err);
+                document.getElementById('productSelect').innerHTML = '<option value="">Gagal memuat dari Digiflazz</option>';
+            }
+        }
+
+        document.getElementById('btnPay').addEventListener('click', async () => {
+            const skuCode = document.getElementById('productSelect').value;
+            const userId = document.getElementById('userId').value;
+            const serverId = document.getElementById('serverId').value;
+
+            if (!skuCode || !userId) {
+                alert('Pilih produk dan masukkan User ID terlebih dahulu!');
+                return;
+            }
+
+            const selectedProd = productList.find(p => p.buyer_sku_code === skuCode);
+            if (!selectedProd) return;
+
+            const btn = document.getElementById('btnPay');
+            btn.innerText = 'Memproses...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId,
+                        serverId,
+                        price: selectedProd.price,
+                        game: selectedProd.brand,
+                        productCode: selectedProd.buyer_sku_code
+                    })
+                });
+
+                const data = await res.json();
+                btn.innerText = 'Bayar Sekarang';
+                btn.disabled = false;
+
+                if (data.token) {
+                    window.snap.pay(data.token, {
+                        onSuccess: function(result){ alert('Pembayaran Berhasil! Sistem sedang memproses top up otomatis.'); },
+                        onPending: function(result){ alert('Menunggu pembayaran Anda.'); },
+                        onError: function(result){ alert('Pembayaran Gagal.'); },
+                        onClose: function(){ alert('Popup pembayaran ditutup.'); }
+                    });
+                } else {
+                    alert('Gagal membuat transaksi: ' + data.error);
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan jaringan.');
+                btn.innerText = 'Bayar Sekarang';
+                btn.disabled = false;
+            }
+        });
+
+        fetchProducts();
+    </script>
+</body>
+</html>
