@@ -14,30 +14,47 @@ let snap = new midtransClient.Snap({
   clientKey: process.env.MIDTRANS_CLIENT_KEY
 });
 
-// Endpoint konfigurasi untuk Frontend (Mengirim Midtrans Client Key)
+// Cache produk Digiflazz (Mengikuti referensi teman)
+let cachedProducts = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 5 * 60 * 1000;
+
+// Endpoint konfigurasi untuk Frontend
 app.get('/api/config', (req, res) => {
   res.json({ clientKey: process.env.MIDTRANS_CLIENT_KEY });
 });
 
-// Endpoint untuk Auto-Sync produk dari Digiflazz (Menggunakan POST dan signature 'depo')
+// Endpoint untuk Tarik Produk / Price-List (Logika disesuaikan persis referensi)
 app.get('/api/products', async (req, res) => {
+  const user = process.env.DIGIFLAZZ_USERNAME;
+  const key = process.env.DIGIFLAZZ_API_KEY;
+  if (!user || !key) return res.status(500).json({ message: 'API Key belum diset' });
+
   try {
-    const username = process.env.DIGIFLAZZ_USERNAME;
-    const apiKey = process.env.DIGIFLAZZ_API_KEY;
-    
-    // Signature price-list Digiflazz wajib menggunakan 'depo'
-    const sign = crypto.createHash('md5').update(username + apiKey + 'depo').digest('hex');
+    const now = Date.now();
+    if (!cachedProducts || (now - cacheTimestamp > CACHE_DURATION)) {
+      const sign = crypto.createHash('md5').update(user + key + 'pricelist').digest('hex');
+      
+      const response = await axios.post('https://api.digiflazz.com/v1/price-list', {
+        cmd: 'prepaid',
+        username: user,
+        sign: sign
+      }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-    const response = await axios.post('https://api.digiflazz.com/v1/price-list', {
-      cmd: "prepaid",
-      username: username,
-      sign: sign
-    });
-
-    res.json(response.data);
-  } catch (error) {
-    console.error('Gagal memuat produk dari server Digiflazz:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Gagal memuat produk dari server Digiflazz' });
+      const raw = response.data;
+      if (raw.data && Array.isArray(raw.data)) {
+        cachedProducts = raw.data;
+        cacheTimestamp = now;
+      } else {
+        return res.status(400).json({ message: 'Gagal ambil data dari Digiflazz', error: raw });
+      }
+    }
+    res.json(cachedProducts);
+  } catch (err) {
+    console.error("Digiflazz Error:", err.response?.data || err.message);
+    res.status(500).json({ message: err.message, detail: err.response?.data });
   }
 });
 
@@ -70,7 +87,6 @@ app.post('/api/checkout', async (req, res) => {
     let transaction = await snap.createTransaction(parameter);
     res.json({ token: transaction.token, orderId });
   } catch (error) {
-    console.error('Gagal membuat transaksi Midtrans:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
@@ -92,7 +108,7 @@ app.post('/api/webhook', async (req, res) => {
         const refId = orderId;
         const sign = crypto.createHash('md5').update(username + apiKey + refId).digest('hex');
 
-        const digiflazzRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
+        await axios.post('https://api.digiflazz.com/v1/transaction', {
           username: username,
           buyer_sku_code: buyerSkuCode,
           customer_no: customerNo,
@@ -100,10 +116,8 @@ app.post('/api/webhook', async (req, res) => {
           sign: sign,
           testing: false
         });
-
-        console.log('Transaksi Digiflazz Berhasil Dikirim:', digiflazzRes.data);
       } catch (err) {
-        console.error('Gagal Tembak Digiflazz:', err.response?.data || err.message);
+        console.error('Gagal Tembak Digiflazz:', err.message);
       }
     }
   }
