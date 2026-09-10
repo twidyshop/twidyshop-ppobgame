@@ -117,7 +117,7 @@
             <!-- Main Layout: Desktop 3 Kolom Utuh | Mobile Grid Kotak ala eBelanja -->
             <div id="topup" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 
-                <!-- Left Column: Kategori & List Item (Grid Kotak di HP, List Biasa di Desktop) -->
+                <!-- Left Column: Kategori & List Item (Grid Kotak 3 Kolom di HP, List Biasa di Desktop) -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
@@ -188,7 +188,7 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <h3 class="text-xs md:text-sm font-bold text-white">Pilih Nominal (Harga Berjejer Kotak)</h3>
                                 </div>
-                                <!-- PRICELIST DIUBAH JADI GRID 2 KOLOM KOTAK BERJEJER AGAR TIDAK MEMANJANG KE BAWAH -->
+                                <!-- PRICELIST GRID 2 KOLOM KOTAK BERJEJER -->
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
                                 </div>
@@ -350,25 +350,25 @@
                 { id: 'higgs', name: 'Higgs Domino', brandKey: 'Higgs Domino', img: 'assets/higgs-logo.png', hasServer: false, desc: 'Top Up Koin Emas resmi.' }
             ],
             pulsa: [
-                { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
-                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' },
-                { id: 'axis', name: 'Axis', brandKey: 'Axis', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data Axis hemat.' },
-                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' },
-                { id: 'tri', name: 'Tri', brandKey: 'Tri', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data Tri (3).' },
-                { id: 'xl', name: 'XL', brandKey: 'XL', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data XL Axiata.' },
-                { id: 'byu', name: 'by.U', brandKey: 'by.U', img: 'assets/pulsa-logo.png', hasServer: false, desc: 'Pulsa & Paket Data by.U digital.' }
+                { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/telkomsel.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
+                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' },
+                { id: 'axis', name: 'Axis', brandKey: 'Axis', img: 'assets/axis.png', hasServer: false, desc: 'Pulsa & Paket Data Axis hemat.' },
+                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/smartfren.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' },
+                { id: 'tri', name: 'Tri', brandKey: 'Tri', img: 'assets/tri.png', hasServer: false, desc: 'Pulsa & Paket Data Tri (3).' },
+                { id: 'xl', name: 'XL', brandKey: 'XL', img: 'assets/xl.png', hasServer: false, desc: 'Pulsa & Paket Data XL Axiata.' },
+                { id: 'byu', name: 'by.U', brandKey: 'by.U', img: 'assets/byu.png', hasServer: false, desc: 'Pulsa & Paket Data by.U digital.' }
             ],
             emoney: [
-                { id: 'gopay', name: 'GO PAY', brandKey: 'GOPAY', img: 'assets/emoney-logo.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
-                { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/emoney-logo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
-                { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/emoney-logo.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
-                { id: 'shopee', name: 'SHOPEEPAY', brandKey: 'SHOPEEPAY', img: 'assets/emoney-logo.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
-                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/emoney-logo.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
+                { id: 'gopay', name: 'GO PAY', brandKey: 'GOPAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
+                { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
+                { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
+                { id: 'shopee', name: 'SHOPEEPAY', brandKey: 'SHOPEEPAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
+                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
             ],
             pln: [
-                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln-logo.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
-                { id: 'vidio', name: 'Vidio', brandKey: 'Vidio', img: 'assets/pln-logo.png', hasServer: false, desc: 'Voucher Streaming Vidio Premier.' },
-                { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/pln-logo.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
+                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
+                { id: 'vidio', name: 'Vidio', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Voucher Streaming Vidio Premier.' },
+                { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
             ]
         };
 
@@ -503,7 +503,7 @@
             
             document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
             document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
-            document.getElementById('labelTargetInput').innerHTML = isPln ? '<i class="fas fa-bolt mr-1"></i> No Meter / ID Pelanggan' : (isGame ? '<i class="far fa-id-card mr-1"></i> Masukkan User ID' : '<i class="fas fa-mobile-alt mr-1"></i> Masukkan Nomor HP');
+            document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
 
@@ -528,7 +528,6 @@
                 return;
             }
 
-            // PRICELIST DIUBAH JADI GRID 2 KOLOM KOTAK BERJEJER AGAR TIDAK MEMANJANG KE BAWAH
             container.innerHTML = activeNominals.map(item => `
                 <label class="cursor-pointer block relative">
                     <input type="radio" name="nominal" class="peer sr-only nominal-radio" value="${item.buyer_sku_code}" onchange="selectNominalSku('${item.buyer_sku_code}')">
