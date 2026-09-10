@@ -36,14 +36,14 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Sticky Navbar (Desktop Utuh & Mobile dengan Hamburger Menu) -->
+    <!-- Sticky Navbar -->
     <nav class="sticky top-0 z-50 flex justify-between items-center px-4 md:px-10 py-3.5 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
             <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-lg text-white">T</div>
             <span class="font-bold text-lg md:text-xl tracking-wide">TWIDY SHOP</span>
         </div>
         
-        <!-- Menu Desktop -->
+        <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
             <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
             <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
@@ -52,7 +52,7 @@
             <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
         </div>
 
-        <!-- Tombol Hamburger khusus HP -->
+        <!-- Mobile Hamburger Button -->
         <div class="flex items-center gap-3 lg:hidden">
             <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none">
                 <i class="fas fa-bars"></i>
@@ -64,7 +64,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Dropdown Menu (Hamburger) -->
+    <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[57px]">
         <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
         <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
@@ -78,7 +78,7 @@
         
         <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6">
-            <!-- Hero Section (Ringkas di HP, Utuh Besar di Desktop) -->
+            <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
                 <div class="absolute right-0 top-0 bottom-0 w-1/3 md:w-1/2 lg:w-2/3 opacity-50 md:opacity-100 pointer-events-none flex justify-end">
                     <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='https://via.placeholder.com/600x300?text=hero-anime.png'">
@@ -114,10 +114,10 @@
                 </div>
             </div>
 
-            <!-- Main Layout: 3 Columns Desktop | Mobile Optimized Grid -->
+            <!-- Main Layout: Desktop 3 Kolom Utuh | Mobile Grid Kotak ala eBelanja -->
             <div id="topup" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 
-                <!-- Left Column: Sidebar / Mobile Grid Kategori -->
+                <!-- Left Column: Kategori & List Item (Grid Kotak di HP, List Biasa di Desktop) -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
@@ -132,13 +132,18 @@
                         <button onclick="switchCategory('pln')" id="btnCatPln" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">PLN/Stream</button>
                     </div>
 
-                    <!-- Sidebar list untuk desktop, otomatis menyesuaikan grid di HP jika diperlukan -->
-                    <ul class="space-y-1 text-sm font-semibold max-h-[420px] overflow-y-auto pr-1" id="sidebarList">
-                        <!-- Dynamic rendered by JS -->
-                    </ul>
+                    <!-- DESKTOP: List Vertikal | MOBILE: Grid Kotak 3 Kolom ala eBelanja -->
+                    <div id="sidebarListContainer" class="max-h-[420px] overflow-y-auto pr-1">
+                        <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop">
+                            <!-- Rendered by JS -->
+                        </ul>
+                        <div class="grid grid-cols-3 gap-2 lg:hidden" id="sidebarGridMobile">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Middle Column: Form Input & Pricelist 2 Kolom Berjejer -->
+                <!-- Middle Column: Form Input & Pricelist 2 Kolom Berjejer Kotak -->
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
                         <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
@@ -183,8 +188,8 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <h3 class="text-xs md:text-sm font-bold text-white">Pilih Nominal (Harga Berjejer Kotak)</h3>
                                 </div>
-                                <!-- DIUBAH JADI GRID 2 KOLOM DI HP & DESKTOP AGAR TIDAK MEMANJANG KE BAWAH -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
+                                <!-- PRICELIST DIUBAH JADI GRID 2 KOLOM KOTAK BERJEJER AGAR TIDAK MEMANJANG KE BAWAH -->
+                                <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
                                 </div>
                             </div>
@@ -258,7 +263,7 @@
             </div>
         </div>
 
-        <!-- VIEW 2: CEK RIWAYAT TRANSAKSI (Privacy Protected via Search) -->
+        <!-- VIEW 2: CEK RIWAYAT TRANSAKSI -->
         <div id="view-riwayat" class="space-y-6 hidden min-h-[60vh]">
             <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim max-w-4xl mx-auto space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
@@ -449,24 +454,35 @@
         }
 
         function renderSidebar(filter = '') {
-            const list = document.getElementById('sidebarList');
+            const listDesktop = document.getElementById('sidebarListDesktop');
+            const gridMobile = document.getElementById('sidebarGridMobile');
             const items = categoriesData[currentCategory];
-            let html = '';
+            let htmlDesktop = '';
+            let htmlMobile = '';
 
             items.forEach(item => {
                 if (filter && !item.name.toLowerCase().includes(filter.toLowerCase())) return;
                 const isActive = activeItem && activeItem.id === item.id;
-                const activeClass = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
                 
-                html += `<li>
-                    <a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-2.5 md:p-3 rounded-lg ${activeClass}">
+                // Desktop List
+                const activeClassDesktop = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
+                htmlDesktop += `<li>
+                    <a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}">
                         <img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/24?text=Logo'">
-                        <span class="truncate text-xs md:text-sm">${item.name}</span>
+                        <span class="truncate">${item.name}</span>
                     </a>
                 </li>`;
+
+                // Mobile Grid Kotak 3 Kolom ala eBelanja
+                const activeClassMobile = isActive ? 'border-blue-500 bg-blue-600/20 text-white shadow' : 'border-borderDim bg-bgInput text-textMuted hover:text-white';
+                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition">
+                    <img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
+                    <span class="text-[10px] font-semibold truncate w-full">${item.name}</span>
+                </div>`;
             });
 
-            list.innerHTML = html || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
+            listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
+            gridMobile.innerHTML = htmlMobile || '<div class="col-span-3 p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</div>';
         }
 
         function filterSidebarItems() {
@@ -487,7 +503,7 @@
             
             document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
             document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
-            document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
+            document.getElementById('labelTargetInput').innerHTML = isPln ? '<i class="fas fa-bolt mr-1"></i> No Meter / ID Pelanggan' : (isGame ? '<i class="far fa-id-card mr-1"></i> Masukkan User ID' : '<i class="fas fa-mobile-alt mr-1"></i> Masukkan Nomor HP');
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
 
@@ -512,7 +528,7 @@
                 return;
             }
 
-            // DIBUAT 2 BERJEJER KOTAK (GRID 2 KOLOM) AGAR TIDAK MEMANJANG KE BAWAH DAN TEKS AMAN TIDAK TERPOTONG
+            // PRICELIST DIUBAH JADI GRID 2 KOLOM KOTAK BERJEJER AGAR TIDAK MEMANJANG KE BAWAH
             container.innerHTML = activeNominals.map(item => `
                 <label class="cursor-pointer block relative">
                     <input type="radio" name="nominal" class="peer sr-only nominal-radio" value="${item.buyer_sku_code}" onchange="selectNominalSku('${item.buyer_sku_code}')">
