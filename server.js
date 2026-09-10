@@ -39,7 +39,7 @@ app.get('/api/config', (req, res) => {
   res.json({ clientKey: process.env.MIDTRANS_CLIENT_KEY });
 });
 
-// Endpoint Tarik Semua Produk Digiflazz (Multi-Kategori)
+// Endpoint Tarik Semua Produk Digiflazz (Multi-Kategori) + Margin Profit
 app.get('/api/products', async (req, res) => {
   const user = process.env.DIGIFLAZZ_USERNAME;
   const key = process.env.DIGIFLAZZ_API_KEY;
@@ -59,15 +59,23 @@ app.get('/api/products', async (req, res) => {
       });
 
       const raw = response.data;
+      let targetData = [];
+      
       if (raw.data && Array.isArray(raw.data)) {
-        cachedProducts = raw.data;
-        cacheTimestamp = now;
+        targetData = raw.data;
       } else if (Array.isArray(raw)) {
-        cachedProducts = raw;
-        cacheTimestamp = now;
+        targetData = raw;
       } else {
-        return res.status(400).json({ message: 'Gagal ambil data dari Digiflazz', error: raw });
+        return res.status(400).json({ message: 'Gagal ambil data', error: raw });
       }
+
+      // Looping untuk menambahkan margin Rp 200 ke harga asli
+      cachedProducts = targetData.map(produk => ({
+          ...produk,
+          price: produk.price + 200
+      }));
+      
+      cacheTimestamp = now;
     }
     res.json({ data: cachedProducts });
   } catch (err) {
@@ -185,7 +193,7 @@ app.post('/api/webhook', async (req, res) => {
   }
 });
 
-// TAMBAHAN: Webhook Digiflazz untuk menerima update SN dan status secara Real-Time
+// Webhook Digiflazz untuk menerima update SN dan status secara Real-Time
 app.post('/api/digiflazz-webhook', (req, res) => {
   try {
     const payload = req.body;
@@ -199,7 +207,7 @@ app.post('/api/digiflazz-webhook', (req, res) => {
     
     let db = readDB();
     let trx = db.find(t => t.order_id === ref_id);
-    if (!trx) return res.status(200).send("OK"); // Order tidak ditemukan di database kita
+    if (!trx) return res.status(200).send("OK");
 
     // Update Status
     if (status === 'Sukses') {
