@@ -159,7 +159,6 @@ app.get('/api/products', async (req, res) => {
         return res.status(400).json({ message: 'Gagal ambil data', error: raw });
       }
 
-      // Looping untuk menambahkan margin Rp 200 ke harga asli
       cachedProducts = targetData.map(produk => ({
           ...produk,
           price: produk.price + 200
@@ -183,7 +182,7 @@ app.get('/api/transactions', (req, res) => {
     }
 });
 
-// Endpoint Checkout & Buat Transaksi Midtrans (Support PPOB Tunggal & Keranjang Produk Digital)
+// Endpoint Checkout & Buat Transaksi Midtrans
 app.post('/api/checkout', async (req, res) => {
   try {
     const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl, cartItems } = req.body;
@@ -197,7 +196,6 @@ app.post('/api/checkout', async (req, res) => {
     let itemDetails = [];
     let finalProductCode = productCode || 'DIGI-MULTI';
 
-    // Deteksi jika ini adalah checkout keranjang (Multi-item Digital)
     if (isDigital && cartItems && Array.isArray(cartItems)) {
         amount = cartItems.reduce((sum, item) => sum + parseInt(item.price), 0);
         originalProductName = `Pembelian ${cartItems.length} Produk Digital`;
@@ -210,7 +208,6 @@ app.post('/api/checkout', async (req, res) => {
             merchant_data: fullTarget
         }));
     } else {
-        // Mode PPOB atau Produk Tunggal Lama
         if (!productCode) return res.status(400).json({ message: 'Data kurang lengkap' });
         amount = parseInt(price || 0);
         originalProductName = productName || 'Produk Digital Twidy';
@@ -235,7 +232,7 @@ app.post('/api/checkout', async (req, res) => {
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
         download_url: downloadUrl || '',
-        cart_items: cartItems || null, // Simpan array keranjang ke DB
+        cart_items: cartItems || null,
         created_at: new Date().toISOString()
     });
     saveDB(db);
@@ -253,7 +250,7 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
-// Webhook Midtrans & Otomatis Tembak Digiflazz
+// Webhook Midtrans
 app.post('/api/webhook', async (req, res) => {
   try {
     const notif = req.body;
@@ -267,7 +264,6 @@ app.post('/api/webhook', async (req, res) => {
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
-        // Jika Produk Digital, susun multi-link jika ada keranjang, atau link tunggal
         if (trx.is_digital) {
             trx.status = 'SUKSES';
             if (trx.cart_items && Array.isArray(trx.cart_items)) {
@@ -322,7 +318,7 @@ app.post('/api/webhook', async (req, res) => {
   }
 });
 
-// Webhook Digiflazz untuk menerima update SN dan status secara Real-Time
+// Webhook Digiflazz
 app.post('/api/digiflazz-webhook', (req, res) => {
   try {
     const payload = req.body;
@@ -353,9 +349,14 @@ app.post('/api/digiflazz-webhook', (req, res) => {
     saveDB(db);
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Digiflazz Webhook Error:", error.message);
+    console.error("Digiflazz Error:", error.message);
     return res.status(500).send("Error");
   }
+});
+
+// ROUTING SPA: Mengarahkan semua request file/path agar diarahkan ke index.html utama
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
