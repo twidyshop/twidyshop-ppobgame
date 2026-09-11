@@ -47,17 +47,13 @@
         <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
             <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
-            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
+            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Layanan & Produk</a>
             <a href="#riwayat" onclick="navigate('riwayat')" id="nav-riwayat" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
-            <a href="#promo" onclick="navigate('promo')" id="nav-promo" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
-            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
+            <a href="#admin" onclick="navigate('admin')" id="nav-admin" class="hover:text-white transition flex items-center gap-2 text-yellow-400"><i class="fas fa-lock"></i> Admin Panel</a>
         </div>
 
-        <!-- Mobile Hamburger Button -->
         <div class="flex items-center gap-3 lg:hidden">
-            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none"><i class="fas fa-bars"></i></button>
         </div>
         
         <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
@@ -68,16 +64,15 @@
     <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[57px]">
         <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
-        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
+        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Layanan & Produk</a>
         <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
-        <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo</a>
-        <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-question-circle mr-2"></i> Panduan</a>
+        <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
     </div>
 
     <!-- CONTENT VIEWS -->
     <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6">
         
-        <!-- VIEW 1: TOPUP & PPOB -->
+        <!-- VIEW 1: TOPUP & PRODUK DIGITAL -->
         <div id="view-topup" class="space-y-4 md:space-y-6">
             <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
@@ -90,86 +85,65 @@
                         <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP
                     </div>
                     <h1 class="text-2xl md:text-5xl lg:text-6xl font-extrabold mb-2 md:mb-4 leading-tight text-white">
-                        Top Up & PPOB<br/>
-                        <span class="text-blue-500">Lebih Mudah!</span>
+                        PPOB & Produk Digital<br/>
+                        <span class="text-blue-500">Lengkap & Otomatis!</span>
                     </h1>
                     <p class="text-gray-300 mb-4 md:mb-8 text-xs md:text-base max-w-md">
-                        Game, Pulsa, E-Money, PLN, & Streaming.<br class="hidden md:inline">
+                        Game, Pulsa, E-Money, Ebook, Ecourse, & Template.<br class="hidden md:inline">
                         Semua kebutuhan digitalmu ada di sini!
                     </p>
-                    
-                    <div class="hidden md:flex flex-wrap gap-4 text-xs font-semibold text-gray-200">
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-bolt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Proses Cepat</div><div class="text-[10px] text-gray-400 font-normal">Hitungan detik</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-shield-alt text-blue-400 text-lg"></i>
-                            <div><div class="text-white">100% Aman</div><div class="text-[10px] text-gray-400 font-normal">Data terlindungi</div></div>
-                        </div>
-                        <div class="glass-panel px-4 py-2.5 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-tag text-blue-400 text-lg"></i>
-                            <div><div class="text-white">Harga Terbaik</div><div class="text-[10px] text-gray-400 font-normal">Selalu hemat</div></div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- Main Layout: Desktop 3 Kolom Utuh | Mobile Grid Kotak ala eBelanja -->
+            <!-- Main Layout -->
             <div id="topup" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 
-                <!-- Left Column: Kategori & List Item (Grid Kotak 3 Kolom di HP, List Biasa di Desktop) -->
+                <!-- Left Column: Kategori & List Item -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
-                        <input type="text" id="gameSearch" placeholder="Cari layanan/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
+                        <input type="text" id="gameSearch" placeholder="Cari produk/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
                     
-                    <!-- Tab Kategori Pilihan -->
-                    <div class="grid grid-cols-4 lg:grid-cols-2 gap-1.5 text-[11px] md:text-xs font-bold">
+                    <!-- Tab Kategori Diperluas (Game, Pulsa, E-Money, PLN, Ebook, Ecourse, Template) -->
+                    <div class="grid grid-cols-3 lg:grid-cols-2 gap-1.5 text-[11px] md:text-xs font-bold">
                         <button onclick="switchCategory('game')" id="btnCatGame" class="p-2 rounded-lg bg-blue-600 text-white transition text-center">Game</button>
                         <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">Pulsa</button>
                         <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">E-Money</button>
                         <button onclick="switchCategory('pln')" id="btnCatPln" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">PLN/Stream</button>
+                        <button onclick="switchCategory('ebook')" id="btnCatEbook" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">Ebook</button>
+                        <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">Ecourse</button>
+                        <button onclick="switchCategory('template')" id="btnCatTemplate" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center col-span-2">Template</button>
                     </div>
 
-                    <!-- DESKTOP: List Vertikal | MOBILE: Grid Kotak 3 Kolom ala eBelanja -->
                     <div id="sidebarListContainer" class="max-h-[420px] overflow-y-auto pr-1">
-                        <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop">
-                            <!-- Rendered by JS -->
-                        </ul>
-                        <div class="grid grid-cols-3 gap-2 lg:hidden" id="sidebarGridMobile">
-                            <!-- Rendered by JS -->
-                        </div>
+                        <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop"></ul>
+                        <div class="grid grid-cols-3 gap-2 lg:hidden" id="sidebarGridMobile"></div>
                     </div>
                 </div>
 
-                <!-- Middle Column: Form Input & Pricelist 2 Kolom Berjejer Kotak -->
+                <!-- Middle Column: Form Input & Pricelist -->
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
                         <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
                         <div class="flex-1 min-w-0">
                             <h2 id="activeItemTitle" class="text-lg md:text-2xl font-bold mb-1 text-white truncate">Mobile Legends</h2>
                             <p id="activeItemDesc" class="text-textMuted text-xs md:text-sm truncate">Top Up Diamond Mobile Legends dengan mudah dan cepat!</p>
-                            <div class="hidden sm:flex flex-wrap gap-4 text-xs font-semibold mt-2">
-                                <span class="flex items-center gap-1.5 text-green-400 bg-green-400/10 px-2 py-1 rounded"><i class="fas fa-bolt"></i> Proses Instan</span>
-                                <span class="flex items-center gap-1.5 text-blue-400 bg-blue-400/10 px-2 py-1 rounded"><i class="fas fa-tag"></i> Harga Terbaik</span>
-                            </div>
                         </div>
                     </div>
 
                     <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
                         <div class="flex border-b border-borderDim bg-[#101726]">
-                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 md:gap-3 border-b-2 border-blue-500 text-white bg-bgCard">
-                                <span class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-500 text-white text-[10px] md:text-xs flex items-center justify-center">1</span> Masukkan Data
+                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
+                                <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
                             </div>
-                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 md:gap-3 text-textMuted">
-                                <span class="w-5 h-5 md:w-6 md:h-6 rounded-full bg-borderDim text-textMuted text-[10px] md:text-xs flex items-center justify-center">2</span> Pilih Nominal
+                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
+                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Produk/Nominal
                             </div>
                         </div>
 
                         <div class="p-4 md:p-6 space-y-6">
-                            <div>
+                            <div id="targetFormSection">
                                 <h3 class="text-xs md:text-sm font-bold text-white mb-3 flex items-center gap-2" id="labelTargetHeader">
                                     <i class="fas fa-user text-textMuted"></i> User ID
                                 </h3>
@@ -187,11 +161,10 @@
 
                             <div>
                                 <div class="flex items-center justify-between mb-3">
-                                    <h3 class="text-xs md:text-sm font-bold text-white">Pilih Nominal (Harga Berjejer Kotak)</h3>
+                                    <h3 class="text-xs md:text-sm font-bold text-white">Pilih Pilihan Tersedia</h3>
                                 </div>
-                                <!-- PRICELIST GRID 2 KOLOM KOTAK BERJEJER -->
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
-                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
+                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat produk...</div>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +173,6 @@
 
                 <!-- Right Column: Cart & Payment -->
                 <div class="lg:col-span-3 space-y-4 md:space-y-6">
-                    <!-- Ringkasan Keranjang -->
                     <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max">
                         <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
                             <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Keranjang Saya</span>
@@ -210,7 +182,7 @@
                             <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/48?text=Logo'">
                             <div class="flex-1 min-w-0">
                                 <div id="cartItemName" class="text-[10px] md:text-xs text-textMuted mb-0.5 font-medium truncate">Mobile Legends</div>
-                                <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
+                                <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Produk</div>
                                 <div class="text-[10px] text-blue-400 mt-0.5">Instan & Otomatis</div>
                             </div>
                         </div>
@@ -225,39 +197,12 @@
                         </button>
                     </div>
 
-                    <!-- Payment Methods (QRIS Only) -->
                     <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim">
                         <h3 class="font-bold text-xs md:text-sm mb-1 text-white">Metode Pembayaran</h3>
                         <p class="text-[10px] md:text-xs text-textMuted mb-3">Scan QRIS pakai semua e-wallet & m-banking</p>
-                        
-                        <div class="grid grid-cols-1 gap-2">
-                            <label class="cursor-pointer">
-                                <input type="radio" name="paymentMethod" value="qris" class="peer sr-only pay-radio" checked>
-                                <div class="bg-bgInput border border-borderDim rounded p-2.5 md:p-3 flex justify-between items-center transition hover:border-gray-500">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-7 h-7 rounded bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold text-xs">QR</div>
-                                        <div>
-                                            <div class="text-white font-bold text-xs">QRIS (All Payment)</div>
-                                            <div class="text-[9px] text-textMuted">GoPay, OVO, DANA, BCA, ShopeePay</div>
-                                        </div>
-                                    </div>
-                                    <span class="text-green-400 text-xs"><i class="fas fa-check-circle"></i></span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <!-- Support WhatsApp Banner -->
-                    <div class="relative bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-xl p-4 md:p-5 overflow-hidden border border-purple-500/30">
-                        <div class="relative z-10 w-2/3">
-                            <h3 class="font-bold text-xs md:text-sm text-white mb-1">Ada pertanyaan?</h3>
-                            <p class="text-[10px] md:text-xs text-purple-200 mb-3 leading-tight">Tim kami siap membantu kendalamu!</p>
-                            <a href="https://wa.me/628970108026?text=Halo%20Twidy%20Shop,%20saya%20ingin%20bertanya." target="_blank" class="bg-white text-blue-900 text-xs font-bold py-1.5 px-3 rounded-full hover:bg-gray-100 transition inline-flex items-center gap-1.5 shadow">
-                                <i class="fab fa-whatsapp"></i> Hubungi Kami
-                            </a>
-                        </div>
-                        <div class="absolute right-0 bottom-0 w-36 md:w-56 pointer-events-none overflow-hidden">
-                            <img src="assets/support-anime.png" alt="Support Anime" class="w-full h-auto object-contain object-bottom opacity-95" onerror="this.style.display='none'">
+                        <div class="bg-bgInput border border-borderDim rounded p-3 flex justify-between items-center">
+                            <div class="text-white font-bold text-xs">QRIS (All Payment)</div>
+                            <span class="text-green-400 text-xs"><i class="fas fa-check-circle"></i></span>
                         </div>
                     </div>
                 </div>
@@ -270,7 +215,7 @@
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <div>
                         <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-search text-blue-500"></i> Cek Riwayat Pesanan</h2>
-                        <p class="text-textMuted text-xs">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi secara aman.</p>
+                        <p class="text-textMuted text-xs">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</p>
                     </div>
                 </div>
 
@@ -286,40 +231,81 @@
                         <thead class="bg-bgInput text-textMuted uppercase text-[10px]">
                             <tr>
                                 <th class="p-3">Order ID / Waktu</th>
-                                <th class="p-3">Tujuan</th>
+                                <th class="p-3">Tujuan / Email</th>
                                 <th class="p-3">Produk</th>
                                 <th class="p-3">Total</th>
                                 <th class="p-3">Status</th>
-                                <th class="p-3">SN / Token PLN</th>
+                                <th class="p-3">SN / Link Download</th>
                                 <th class="p-3 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
-                            <tr>
-                                <td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor Tujuan untuk melacak transaksi.</td>
-                            </tr>
+                            <tr><td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor untuk melacak transaksi.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 3: PROMO -->
-        <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
-                <div class="w-16 h-16 bg-blue-600/20 text-blue-400 rounded-full flex items-center justify-center mx-auto text-2xl"><i class="fas fa-tags"></i></div>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white">Promo & Diskon Spesial</h2>
-                <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik dan harga termurah setiap hari di Twidy Shop!</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home &rarr;</button>
+        <!-- VIEW 3: ADMIN PANEL (LOGIN & MANAJEMEN PRODUK DIGITAL) -->
+        <div id="view-admin" class="space-y-6 hidden min-h-[60vh]">
+            <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Admin Panel</h2>
+                <p class="text-textMuted text-xs">Masukkan kredensial admin untuk menambah produk ebook, ecourse, atau template.</p>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Username</label>
+                    <input type="text" id="adminUser" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm text-white outline-none focus:border-blue-500" placeholder="admin" />
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Password</label>
+                    <input type="password" id="adminPass" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm text-white outline-none focus:border-blue-500" placeholder="••••••••" />
+                </div>
+                <button onclick="adminLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition text-sm">Masuk Dashboard</button>
             </div>
-        </div>
 
-        <!-- VIEW 4: PANDUAN -->
-        <div id="view-panduan" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-8 border border-borderDim max-w-3xl mx-auto space-y-6">
-                <h2 class="text-xl md:text-2xl font-bold text-white">Panduan Cara Transaksi</h2>
-                <p class="text-textMuted text-sm">Pilih kategori dan produk, masukkan ID/Nomor tujuan, pilih nominal, lalu selesaikan pembayaran QRIS.</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home &rarr;</button>
+            <div id="adminDashboardBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6 hidden">
+                <div class="flex justify-between items-center pb-4 border-b border-borderDim">
+                    <h2 class="text-xl font-bold text-white"><i class="fas fa-cogs text-blue-500"></i> Kelola Produk Digital (Ebook/Ecourse/Template)</h2>
+                    <button onclick="adminLogout()" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded text-xs transition">Logout</button>
+                </div>
+
+                <div class="bg-bgInput p-4 rounded-xl border border-borderDim space-y-4">
+                    <h3 class="font-bold text-sm text-white">Tambah Produk Digital Baru</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs text-textMuted mb-1">Kategori</label>
+                            <select id="newCat" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white">
+                                <option value="ebook">Ebook</option>
+                                <option value="ecourse">Ecourse</option>
+                                <option value="template">Template</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-textMuted mb-1">Nama Produk</label>
+                            <input type="text" id="newName" placeholder="Misal: Ebook Rahasia JS" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-textMuted mb-1">Harga (Rp)</label>
+                            <input type="number" id="newPrice" placeholder="50000" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                        </div>
+                        <div>
+                            <label class="block text-xs text-textMuted mb-1">Link Download (Google Drive / URL)</label>
+                            <input type="text" id="newUrl" placeholder="https://drive.google.com/..." class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs text-textMuted mb-1">Deskripsi Singkat</label>
+                            <textarea id="newDesc" placeholder="Keterangan singkat produk..." class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <button onclick="addNewDigitalProduct()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-lg text-xs transition"><i class="fas fa-plus"></i> Simpan Produk Digital</button>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-sm text-white mb-3">Daftar Produk Digital Aktif</h3>
+                    <div id="adminProductList" class="space-y-2">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -331,13 +317,13 @@
             <div class="flex items-center gap-2 text-textMuted">
                 <div class="w-6 h-6 bg-blue-600/50 rounded flex items-center justify-center font-bold text-sm text-white">T</div>
                 <span class="font-bold text-white text-sm">TWIDY SHOP</span>
-                <span class="text-xs ml-2">PPOB & Top Up Game Otomatis</span>
+                <span class="text-xs ml-2">PPOB & Produk Digital Otomatis</span>
             </div>
             <div class="text-xs text-textMuted text-center md:text-right">&copy; 2026 Twidy Shop. All rights reserved.</div>
         </div>
     </footer>
 
-    <!-- Template Struk Digital (Rapi & Sejajar) -->
+    <!-- Template Struk Digital -->
     <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 25px; width: 340px; font-family: monospace; text-align: center; border-radius: 8px;">
         <h2 style="margin: 0; font-size: 22px; font-weight: bold;">TWIDY SHOP</h2>
         <p style="margin: 2px 0 0 0; font-size: 13px;">twidyshop.my.id</p>
@@ -348,35 +334,19 @@
         </div>
 
         <table style="width: 100%; font-size: 13px; text-align: left; border-collapse: collapse; line-height: 1.6;">
-            <tr>
-                <td style="width: 75px; vertical-align: top; font-weight: bold;">TRXID</td>
-                <td style="width: 10px; vertical-align: top;">:</td>
-                <td id="struk-trxid" style="vertical-align: top; word-break: break-all;"></td>
-            </tr>
-            <tr>
-                <td style="vertical-align: top; font-weight: bold;">PRODUK</td>
-                <td style="vertical-align: top;">:</td>
-                <td id="struk-produk" style="vertical-align: top; word-break: break-word;"></td>
-            </tr>
-            <tr>
-                <td style="vertical-align: top; font-weight: bold;">TUJUAN</td>
-                <td style="vertical-align: top;">:</td>
-                <td id="struk-tujuan" style="vertical-align: top; word-break: break-all;"></td>
-            </tr>
-            <tr>
-                <td style="vertical-align: top; font-weight: bold;">HARGA</td>
-                <td style="vertical-align: top;">:</td>
-                <td style="vertical-align: top;">Rp <span id="struk-harga"></span></td>
-            </tr>
+            <tr><td style="width: 75px; font-weight: bold;">TRXID</td><td>:</td><td id="struk-trxid" style="word-break: break-all;"></td></tr>
+            <tr><td style="font-weight: bold;">PRODUK</td><td>:</td><td id="struk-produk" style="word-break: break-word;"></td></tr>
+            <tr><td style="font-weight: bold;">TUJUAN</td><td>:</td><td id="struk-tujuan" style="word-break: break-all;"></td></tr>
+            <tr><td style="font-weight: bold;">HARGA</td><td>:</td><td>Rp <span id="struk-harga"></span></td></tr>
         </table>
 
         <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
-            <p style="margin: 0; font-size: 12px; font-weight: bold;">*** SN / Reff ***</p>
-            <h3 id="struk-sn" style="margin: 6px 0 0 0; font-size: 14px; word-break: break-all;"></h3>
+            <p style="margin: 0; font-size: 12px; font-weight: bold;">*** INFO / LINK DOWNLOAD ***</p>
+            <h3 id="struk-sn" style="margin: 6px 0 0 0; font-size: 12px; word-break: break-all; color: #1e3a8a;"></h3>
         </div>
 
         <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
-            <p style="font-size: 11px; margin: 0; line-height: 1.5;">SIMPAN STRUK INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br><br>Terima Kasih ^_^</p>
+            <p style="font-size: 11px; margin: 0; line-height: 1.5;">SIMPAN BUKTI INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br><br>Terima Kasih ^_^</p>
         </div>
     </div>
 
@@ -387,67 +357,81 @@
                 { id: 'ff', name: 'Free Fire', brandKey: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, desc: 'Top Up Diamond Free Fire instan.' },
                 { id: 'pubg', name: 'PUBG Mobile', brandKey: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, desc: 'Top Up UC PUBG Mobile harga promo.' },
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
-                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' },
-                { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: false, desc: 'Top Up Oneiric Shard cepat.' },
-                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
-                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
-                { id: 'aov', name: 'Arena of Valor', brandKey: 'Arena of Valor', img: 'assets/aov-logo.png', hasServer: false, desc: 'Top Up Voucher AOV instan.' },
-                { id: 'higgs', name: 'Higgs Domino', brandKey: 'Higgs Domino', img: 'assets/higgs-logo.png', hasServer: false, desc: 'Top Up Koin Emas resmi.' }
+                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' }
             ],
             pulsa: [
                 { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/telkomsel.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
-                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' },
-                { id: 'axis', name: 'Axis', brandKey: 'Axis', img: 'assets/axis.png', hasServer: false, desc: 'Pulsa & Paket Data Axis hemat.' },
-                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/smartfren.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' },
-                { id: 'tri', name: 'Tri', brandKey: 'Tri', img: 'assets/tri.png', hasServer: false, desc: 'Pulsa & Paket Data Tri (3).' },
-                { id: 'xl', name: 'XL', brandKey: 'XL', img: 'assets/xl.png', hasServer: false, desc: 'Pulsa & Paket Data XL Axiata.' },
-                { id: 'byu', name: 'by.U', brandKey: 'by.U', img: 'assets/byu.png', hasServer: false, desc: 'Pulsa & Paket Data by.U digital.' }
+                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' }
             ],
             emoney: [
                 { id: 'gopay', name: 'GO PAY', brandKey: 'GO PAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
                 { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
                 { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
-                { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
-                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
+                { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' }
             ],
             pln: [
-                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
-                { id: 'vidio', name: 'Vidio', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Voucher Streaming Vidio Premier.' },
-                { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
-            ]
+                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' }
+            ],
+            ebook: [],
+            ecourse: [],
+            template: []
         };
 
         let currentCategory = 'game';
         let allDigiflazzProducts = [];
+        let allDigitalProducts = [];
         let activeItem = categoriesData.game[0];
         let activeNominals = [];
         let selectedProduct = null;
         let snapClientKeyLoaded = false;
 
         function initApp() {
-            renderSidebar();
-            selectItem('game', categoriesData.game[0].id);
+            fetchDigitalProducts().then(() => {
+                renderSidebar();
+                selectItem('game', categoriesData.game[0].id);
+            });
             fetchProducts();
             loadMidtransConfig();
         }
 
+        async function fetchDigitalProducts() {
+            try {
+                const res = await fetch('/api/digital-products');
+                const json = await res.json();
+                allDigitalProducts = json.data || [];
+
+                // Petakan produk digital ke kategori masing-masing
+                ['ebook', 'ecourse', 'template'].forEach(cat => {
+                    const filtered = allDigitalProducts.filter(p => p.category === cat);
+                    categoriesData[cat] = filtered.map(p => ({
+                        id: p.id,
+                        name: p.name,
+                        brandKey: p.id,
+                        img: p.image || 'assets/ml-logo.png',
+                        hasServer: false,
+                        desc: p.description,
+                        downloadUrl: p.downloadUrl,
+                        price: p.price
+                    }));
+                });
+            } catch(e) { console.error('Gagal ambil produk digital', e); }
+        }
+
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobileMenu').classList.toggle('hidden');
         }
 
         function navigate(viewName) {
-            ['topup', 'riwayat', 'promo', 'panduan'].forEach(v => {
+            ['topup', 'riwayat', 'admin'].forEach(v => {
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
             
-            if(viewName === 'home') {
+            if(viewName === 'home' || viewName === 'topup') {
                 document.getElementById('view-topup').classList.remove('hidden');
             } else {
-                const targetView = document.getElementById('view-' + viewName);
-                if(targetView) targetView.classList.remove('hidden');
-                if(viewName === 'topup') document.getElementById('view-topup').classList.remove('hidden');
+                document.getElementById('view-' + viewName).classList.remove('hidden');
+                if(viewName === 'admin') loadAdminProducts();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -474,81 +458,82 @@
                 const data = await res.json();
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
-                    renderNominals();
+                    if(['game', 'pulsa', 'emoney', 'pln'].includes(currentCategory)) renderNominals();
                 }
-            } catch (err) {
-                console.error('Gagal fetch produk:', err);
-            }
+            } catch (err) { console.error('Gagal fetch PPOB:', err); }
         }
 
         function switchCategory(cat) {
             currentCategory = cat;
-            ['game', 'pulsa', 'emoney', 'pln'].forEach(c => {
+            ['game', 'pulsa', 'emoney', 'pln', 'ebook', 'ecourse', 'template'].forEach(c => {
                 const btn = document.getElementById('btnCat' + c.charAt(0).toUpperCase() + c.slice(1));
                 if(btn) {
-                    if(c === cat) {
-                        btn.className = "p-2 rounded-lg bg-blue-600 text-white transition text-center";
-                    } else {
-                        btn.className = "p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center";
-                    }
+                    btn.className = (c === cat) ? "p-2 rounded-lg bg-blue-600 text-white transition text-center" : "p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center";
                 }
             });
             renderSidebar();
             const firstItem = categoriesData[cat][0];
             if(firstItem) selectItem(cat, firstItem.id);
+            else {
+                // Kosong jika belum ada produk digital ditambahkan
+                document.getElementById('activeItemTitle').innerText = 'Belum Ada Produk';
+                document.getElementById('activeItemDesc').innerText = 'Silakan tambahkan produk melalui Admin Panel.';
+                document.getElementById('nominalContainer').innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-4">Belum ada produk di kategori ini.</div>';
+                selectedProduct = null;
+                updateCartUI();
+            }
         }
 
         function renderSidebar(filter = '') {
             const listDesktop = document.getElementById('sidebarListDesktop');
             const gridMobile = document.getElementById('sidebarGridMobile');
             const items = categoriesData[currentCategory];
-            let htmlDesktop = '';
-            let htmlMobile = '';
+            let htmlDesktop = '', htmlMobile = '';
 
             items.forEach(item => {
                 if (filter && !item.name.toLowerCase().includes(filter.toLowerCase())) return;
                 const isActive = activeItem && activeItem.id === item.id;
                 
-                // Desktop List
                 const activeClassDesktop = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
-                htmlDesktop += `<li>
-                    <a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}">
-                        <img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/24?text=Logo'">
-                        <span class="truncate">${item.name}</span>
-                    </a>
-                </li>`;
+                htmlDesktop += `<li><a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}"><img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/24?text=Logo'"><span class="truncate">${item.name}</span></a></li>`;
 
-                // Mobile Grid Kotak 3 Kolom ala eBelanja
                 const activeClassMobile = isActive ? 'border-blue-500 bg-blue-600/20 text-white shadow' : 'border-borderDim bg-bgInput text-textMuted hover:text-white';
-                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition">
-                    <img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'">
-                    <span class="text-[10px] font-semibold truncate w-full">${item.name}</span>
-                </div>`;
+                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"><img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'"><span class="text-[10px] font-semibold truncate w-full">${item.name}</span></div>`;
             });
 
-            listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
-            gridMobile.innerHTML = htmlMobile || '<div class="col-span-3 p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</div>';
+            listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Tidak ada layanan</li>';
+            gridMobile.innerHTML = htmlMobile || '<div class="col-span-3 p-3 text-xs text-textMuted text-center">Tidak ada layanan</div>';
         }
 
         function filterSidebarItems() {
-            const keyword = document.getElementById('gameSearch').value;
-            renderSidebar(keyword);
+            renderSidebar(document.getElementById('gameSearch').value);
         }
 
         function selectItem(cat, id) {
             currentCategory = cat;
             activeItem = categoriesData[cat].find(i => i.id === id);
+            if(!activeItem) return;
             
             document.getElementById('activeItemTitle').innerText = activeItem.name;
             document.getElementById('activeItemDesc').innerText = activeItem.desc;
             document.getElementById('activeItemImg').src = activeItem.img;
             
+            const isDigital = ['ebook', 'ecourse', 'template'].includes(cat);
             const isGame = cat === 'game';
             const isPln = cat === 'pln' && activeItem.id === 'pln';
             
-            document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
-            document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
-            document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
+            // Jika Produk Digital, ubah form input target jadi Email Pengiriman Link
+            if(isDigital) {
+                document.getElementById('serverContainer').style.display = 'none';
+                document.getElementById('labelTargetHeader').innerHTML = '<i class="fas fa-envelope text-textMuted"></i> Email Penerima';
+                document.getElementById('labelTargetInput').innerHTML = 'Masukkan Email Aktif';
+                document.getElementById('targetId').placeholder = 'nama@email.com';
+            } else {
+                document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
+                document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
+                document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
+                document.getElementById('targetId').placeholder = 'Masukkan ID Tujuan';
+            }
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
 
@@ -558,16 +543,28 @@
 
         function renderNominals() {
             const container = document.getElementById('nominalContainer');
-            if(allDigiflazzProducts.length === 0) {
-                container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-8"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>';
-                return;
+            const isDigital = ['ebook', 'ecourse', 'template'].includes(currentCategory);
+
+            if(isDigital) {
+                // Render produk digital tunggal
+                activeNominals = [{
+                    buyer_sku_code: activeItem.id,
+                    product_name: activeItem.name,
+                    price: activeItem.price,
+                    note: 'Akses Instan Otomatis',
+                    downloadUrl: activeItem.downloadUrl
+                }];
+            } else {
+                if(allDigiflazzProducts.length === 0) {
+                    container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-8"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>';
+                    return;
+                }
+                activeNominals = allDigiflazzProducts.filter(p => p.brand.toLowerCase().trim() === activeItem.brandKey.toLowerCase().trim());
+                activeNominals.sort((a, b) => a.price - b.price);
             }
 
-            activeNominals = allDigiflazzProducts.filter(p => p.brand.toLowerCase().trim() === activeItem.brandKey.toLowerCase().trim());
-            activeNominals.sort((a, b) => a.price - b.price);
-
             if(activeNominals.length === 0) {
-                container.innerHTML = '<div class="text-xs text-textMuted col-span-2 p-4 text-center">Produk belum tersedia dari server.</div>';
+                container.innerHTML = '<div class="text-xs text-textMuted col-span-2 p-4 text-center">Produk belum tersedia.</div>';
                 selectedProduct = null;
                 updateCartUI();
                 return;
@@ -583,9 +580,7 @@
                         </div>
                         <div class="flex items-center justify-between pt-2 border-t border-borderDim/50 mt-auto">
                             <span class="text-[9px] md:text-[10px] text-green-400 font-semibold truncate">${item.note || 'Tersedia'}</span>
-                            <div class="text-xs md:text-sm font-bold text-blue-400 bg-borderDim/30 px-2.5 py-1 rounded-lg">
-                                Rp ${item.price.toLocaleString('id-ID')}
-                            </div>
+                            <div class="text-xs md:text-sm font-bold text-blue-400 bg-borderDim/30 px-2.5 py-1 rounded-lg">Rp ${item.price.toLocaleString('id-ID')}</div>
                         </div>
                     </div>
                 </label>
@@ -608,12 +603,11 @@
             } else {
                 document.getElementById('cartItemName').innerText = activeItem.name;
                 document.getElementById('cartImg').src = activeItem.img;
-                document.getElementById('cartProduct').innerText = 'Pilih Nominal';
+                document.getElementById('cartProduct').innerText = 'Pilih Produk';
                 document.getElementById('cartPrice').innerText = 'Rp 0';
             }
         }
 
-        // Fungsi Cetak Struk ke PNG
         function downloadStruk(orderId, waktu, produk, tujuan, harga, sn) {
             document.getElementById('struk-trxid').innerText = orderId;
             document.getElementById('struk-waktu').innerText = waktu;
@@ -630,9 +624,8 @@
             });
         }
 
-        // Fungsi Bantuan WhatsApp
         function hubungiCS(orderId) {
-            const pesan = `Halo Admin Twidy Shop, saya butuh bantuan untuk pesanan saya dengan TRXID: ${orderId}`;
+            const pesan = `Halo Admin Twidy Shop, saya butuh bantuan untuk pesanan TRXID: ${orderId}`;
             window.open(`https://wa.me/628970108026?text=${encodeURIComponent(pesan)}`, '_blank');
         }
 
@@ -641,7 +634,7 @@
             const tbody = document.getElementById('transactionResultBody');
 
             if(!query) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor Tujuan terlebih dahulu.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor/Email terlebih dahulu.</td></tr>';
                 return;
             }
 
@@ -650,11 +643,10 @@
             try {
                 const res = await fetch('/api/transactions');
                 const data = await res.json();
-                
                 const filtered = data.filter(t => t.order_id.toLowerCase().includes(query.toLowerCase()) || t.target_id.toLowerCase().includes(query.toLowerCase()));
 
                 if(filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID / No Tujuan Anda.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan.</td></tr>';
                     return;
                 }
 
@@ -662,7 +654,6 @@
                     let badgeColor = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
                     if(t.status === 'SUKSES') badgeColor = 'bg-green-500/10 text-green-400 border-green-500/20';
                     if(t.status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
-                    if(t.status === 'DIPROSES') badgeColor = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
 
                     const escapedProductName = t.product_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     const escapedSn = t.sn ? t.sn.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '-';
@@ -675,31 +666,125 @@
                             <td class="p-3">${t.product_name}</td>
                             <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
                             <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
-                            <td class="p-3 font-mono text-xs text-green-300 font-bold">${t.sn}</td>
-                            <td class="p-3 flex items-center justify-center gap-1.5 h-full pt-4">
-                                <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk">
-                                    <i class="fas fa-print"></i>
-                                </button>
-                                <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin">
-                                    <i class="fab fa-whatsapp"></i>
-                                </button>
+                            <td class="p-3 font-mono text-xs text-green-300 font-bold max-w-xs truncate">${t.sn}</td>
+                            <td class="p-3 flex items-center justify-center gap-1.5 pt-4">
+                                <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk"><i class="fas fa-print"></i></button>
+                                <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
                             </td>
                         </tr>
                     `;
                 }).join('');
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Terjadi kesalahan saat memuat data.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Kesalahan memuat data.</td></tr>';
             }
         }
 
+        // --- ADMIN SCRIPT ---
+        async function adminLogin() {
+            const username = document.getElementById('adminUser').value.trim();
+            const password = document.getElementById('adminPass').value.trim();
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    document.getElementById('adminLoginBox').classList.add('hidden');
+                    document.getElementById('adminDashboardBox').classList.remove('hidden');
+                    loadAdminProducts();
+                } else {
+                    alert(data.message);
+                }
+            } catch(e) { alert('Gagal login.'); }
+        }
+
+        function adminLogout() {
+            document.getElementById('adminLoginBox').classList.remove('hidden');
+            document.getElementById('adminDashboardBox').classList.add('hidden');
+        }
+
+        async function loadAdminProducts() {
+            try {
+                const res = await fetch('/api/digital-products');
+                const json = await res.json();
+                const list = json.data || [];
+                const container = document.getElementById('adminProductList');
+
+                if(list.length === 0) {
+                    container.innerHTML = '<div class="text-xs text-textMuted py-4 text-center">Belum ada produk digital tersimpan.</div>';
+                    return;
+                }
+
+                container.innerHTML = list.map(p => `
+                    <div class="bg-bgInput p-3 rounded-lg border border-borderDim flex justify-between items-center text-xs">
+                        <div>
+                            <div class="font-bold text-white uppercase text-[10px] text-blue-400">[${p.category}] ${p.name}</div>
+                            <div class="text-textMuted">Rp ${p.price.toLocaleString('id-ID')} • Link: <a href="${p.downloadUrl}" target="_blank" class="underline text-blue-300">${p.downloadUrl}</a></div>
+                        </div>
+                        <button onclick="deleteDigitalProduct('${p.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-2.5 py-1 rounded transition"><i class="fas fa-trash"></i></button>
+                    </div>
+                `).join('');
+            } catch(e) { console.error(e); }
+        }
+
+        async function addNewDigitalProduct() {
+            const category = document.getElementById('newCat').value;
+            const name = document.getElementById('newName').value.trim();
+            const price = document.getElementById('newPrice').value.trim();
+            const downloadUrl = document.getElementById('newUrl').value.trim();
+            const description = document.getElementById('newDesc').value.trim();
+
+            if(!name || !price || !downloadUrl) {
+                alert('Nama, Harga, dan Link Download wajib diisi!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/admin/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, name, price, downloadUrl, description })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(data.message);
+                    document.getElementById('newName').value = '';
+                    document.getElementById('newPrice').value = '';
+                    document.getElementById('newUrl').value = '';
+                    document.getElementById('newDesc').value = '';
+                    fetchDigitalProducts().then(loadAdminProducts);
+                } else { alert(data.message); }
+            } catch(e) { alert('Gagal menyimpan produk.'); }
+        }
+
+        async function deleteDigitalProduct(id) {
+            if(!confirm('Yakin ingin menghapus produk ini?')) return;
+            try {
+                const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if(data.success) {
+                    fetchDigitalProducts().then(loadAdminProducts);
+                }
+            } catch(e) { alert('Gagal menghapus produk.'); }
+        }
+
+        // Checkout Button Listener
         document.getElementById('btnPay').addEventListener('click', async () => {
             const targetId = document.getElementById('targetId').value.trim();
             const serverId = document.getElementById('serverId').value.trim();
 
-            if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
+            if (!targetId) { 
+                alert(['ebook', 'ecourse', 'template'].includes(currentCategory) ? 'Masukkan email aktif terlebih dahulu!' : 'Masukkan Nomor / ID tujuan terlebih dahulu!'); 
+                document.getElementById('targetId').focus(); 
+                return; 
+            }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
-            if (!selectedProduct) { alert('Pilih nominal produk terlebih dahulu!'); return; }
+            if (!selectedProduct) { alert('Pilih produk terlebih dahulu!'); return; }
 
+            const isDigital = ['ebook', 'ecourse', 'template'].includes(currentCategory);
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
@@ -712,8 +797,10 @@
                         targetId,
                         serverId,
                         price: selectedProduct.price,
-                        productName: `${activeItem.name} - ${selectedProduct.product_name}`,
-                        productCode: selectedProduct.buyer_sku_code
+                        productName: `${activeItem.name}`,
+                        productCode: isDigital ? selectedProduct.buyer_sku_code : selectedProduct.buyer_sku_code,
+                        isDigital: isDigital,
+                        downloadUrl: isDigital ? selectedProduct.downloadUrl : ''
                     })
                 });
                 const data = await res.json();
@@ -723,7 +810,7 @@
                 if (data.token) {
                     window.snap.pay(data.token, {
                         onSuccess: function(result){ 
-                            alert('Pembayaran Berhasil! Sistem memproses top up otomatis.'); 
+                            alert(isDigital ? 'Pembayaran Berhasil! Link download dikirim otomatis.' : 'Pembayaran Berhasil! Sistem memproses top up otomatis.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
