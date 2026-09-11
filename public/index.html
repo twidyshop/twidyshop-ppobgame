@@ -220,7 +220,7 @@
                 </div>
             </div>
 
-            <!-- Layout Produk Digital (Diatur grid-cols-2 untuk HP agar rapi berdampingan) -->
+            <!-- Layout Produk Digital -->
             <div id="digitalLayout" class="hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h2 id="digitalCategoryTitle" class="text-xl font-bold text-white uppercase">Daftar Produk Digital</h2>
@@ -484,9 +484,15 @@
         let snapClientKeyLoaded = false;
 
         function initApp() {
+            // Render UI Lokal Instan Dulu Tanpa Nunggu Fetch
+            renderSidebar();
+            selectItem('game', categoriesData.game[0].id);
+
+            // Fetch Data di Background secara Asinkron (Non-Blocking)
             fetchDigitalProducts().then(() => {
-                renderSidebar();
-                selectItem('game', categoriesData.game[0].id);
+                if(['ebook', 'ecourse', 'template'].includes(currentCategory)) {
+                    renderDigitalCards(currentCategory);
+                }
             });
             fetchProducts();
             loadMidtransConfig();
@@ -742,7 +748,7 @@
         function renderNominals() {
             const container = document.getElementById('nominalContainer');
             if(allDigiflazzProducts.length === 0) {
-                container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-8"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>';
+                container.innerHTML = '<div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat daftar harga...</div>';
                 return;
             }
 
