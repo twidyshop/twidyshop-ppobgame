@@ -81,7 +81,7 @@
             <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
                 <div class="absolute right-0 top-0 bottom-0 w-1/3 md:w-1/2 lg:w-2/3 opacity-50 md:opacity-100 pointer-events-none flex justify-end">
-                    <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='https://via.placeholder.com/600x300?text=hero-anime.png'">
+                    <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'16\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Twidy Shop</text></svg>'">
                 </div>
                 
                 <div class="relative z-10 max-w-2xl w-full">
@@ -125,7 +125,7 @@
 
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
-                        <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+                        <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
                         <div class="flex-1 min-w-0">
                             <h2 id="activeItemTitle" class="text-lg md:text-2xl font-bold mb-1 text-white truncate">Mobile Legends</h2>
                             <p id="activeItemDesc" class="text-textMuted text-xs md:text-sm truncate">Top Up Diamond Mobile Legends cepat & aman.</p>
@@ -178,7 +178,7 @@
                         </h3>
                         
                         <div class="flex gap-3 mb-4">
-                            <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/48?text=Logo'">
+                            <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'10\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
                             <div class="flex-1 min-w-0">
                                 <div id="cartItemName" class="text-[10px] md:text-xs text-textMuted mb-0.5 font-medium truncate">Mobile Legends</div>
                                 <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
@@ -372,7 +372,7 @@
                 <span class="px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 font-bold text-[10px] uppercase border border-blue-500/20" id="modalCatBadge">Course</span>
             </div>
 
-            <img id="modalImg" src="" alt="Cover" class="w-full h-48 sm:h-56 object-cover rounded-xl border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/400x200?text=Cover'">
+            <img id="modalImg" src="" alt="Cover" class="w-full h-48 sm:h-56 object-cover rounded-xl border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
 
             <div>
                 <h3 id="modalTitle" class="text-lg md:text-xl font-bold text-white mb-1">Judul Produk</h3>
@@ -484,13 +484,11 @@
         let snapClientKeyLoaded = false;
 
         function initApp() {
-            // Render UI Lokal Instan Tanpa Blokir Browser
             renderSidebar();
             selectItem('game', categoriesData.game[0].id);
 
-            // Fetch Data Asinkron di Background (Non-Blocking)
             fetchDigitalProducts();
-            fetchProductsWithTimeout(8000); // Batasi waktu maksimal 8 detik biar browser lgsg berhenti muter
+            fetchProductsWithTimeout(8000);
             loadMidtransConfig();
         }
 
@@ -510,7 +508,7 @@
                         id: p.id,
                         name: p.name,
                         brandKey: p.id,
-                        img: p.image || 'https://via.placeholder.com/150?text=TwidyShop',
+                        img: p.image || 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>',
                         hasServer: false,
                         desc: p.description,
                         downloadUrl: p.downloadUrl,
@@ -560,7 +558,6 @@
             } catch (e) { console.error(e); }
         }
 
-        // Fungsi Fetch Produk dengan Pembatas Waktu (Timeout 8 Detik)
         async function fetchProductsWithTimeout(timeoutMs = 8000) {
             try {
                 const controller = new AbortController();
@@ -574,11 +571,10 @@
                     if(['game', 'pulsa', 'emoney', 'pln'].includes(currentCategory)) renderNominals();
                 }
             } catch (err) {
-                console.warn('Fetch PPOB timeout atau tertunda, berjalan di latar belakang.', err);
-                // Fallback teks jika data belum masuk
+                console.warn('Fetch PPOB timeout', err);
                 const container = document.getElementById('nominalContainer');
                 if(container && allDigiflazzProducts.length === 0) {
-                    container.innerHTML = '<div class="col-span-2 text-center text-yellow-400 text-xs py-4">Memuat ulang data harga dari server...</div>';
+                    container.innerHTML = '<div class="col-span-2 text-center text-yellow-400 text-xs py-4">Gagal memuat harga dari server. Coba refresh.</div>';
                 }
             }
         }
@@ -620,7 +616,7 @@
                 <div onclick="openProductModal('${cat}', '${item.id}')" class="bg-bgCard rounded-xl border border-borderDim p-3 md:p-4 flex flex-col justify-between cursor-pointer transition hover:border-blue-500 hover:shadow-lg group">
                     <div>
                         <div class="relative mb-2.5 overflow-hidden rounded-lg bg-bgInput aspect-[4/3] border border-borderDim">
-                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x200?text=Cover'">
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
                             <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[9px] font-bold text-blue-400 uppercase border border-white/10">${cat}</span>
                         </div>
                         <h3 class="font-bold text-white text-xs md:text-sm mb-1 line-clamp-2 group-hover:text-blue-400 transition">${item.name}</h3>
@@ -725,10 +721,10 @@
                 const isActive = activeItem && activeItem.id === item.id;
                 
                 const activeClassDesktop = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
-                htmlDesktop += `<li><a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}"><img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/24?text=Logo'"><span class="truncate">${item.name}</span></a></li>`;
+                htmlDesktop += `<li><a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}"><img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'"><span class="truncate">${item.name}</span></a></li>`;
 
                 const activeClassMobile = isActive ? 'border-blue-500 bg-blue-600/20 text-white shadow' : 'border-borderDim bg-bgInput text-textMuted hover:text-white';
-                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"><img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'"><span class="text-[10px] font-semibold truncate w-full">${item.name}</span></div>`;
+                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"><img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'"><span class="text-[10px] font-semibold truncate w-full">${item.name}</span></div>`;
             });
 
             listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
@@ -930,7 +926,7 @@
 
                 container.innerHTML = list.map(p => `
                     <div class="bg-bgInput p-3 rounded-lg border border-borderDim flex justify-between items-center text-xs gap-3">
-                        <img src="${p.image}" class="w-10 h-10 rounded object-cover border border-borderDim" onerror="this.src='https://via.placeholder.com/40'">
+                        <img src="${p.image}" class="w-10 h-10 rounded object-cover border border-borderDim" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
                         <div class="flex-1 min-w-0">
                             <div class="font-bold text-white uppercase text-[10px] text-blue-400">[${p.category}] ${p.name}</div>
                             <div class="text-textMuted truncate">Rp ${p.price.toLocaleString('id-ID')} • Link: <a href="${p.downloadUrl}" target="_blank" class="underline text-blue-300">${p.downloadUrl}</a></div>
@@ -1027,7 +1023,7 @@
 
             if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
-            if (!selectedProduct) { alert('Pilih nominal produk terlebih dahulu!'); return; }
+            if (!selectedProduct) { alert('PPLIH nominal produk terlebih dahulu!'); return; }
 
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
