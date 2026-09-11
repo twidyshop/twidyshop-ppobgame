@@ -205,7 +205,8 @@ app.post('/api/checkout', async (req, res) => {
         product_name: originalProductName,
         amount: amount,
         status: 'UNPAID',
-        sn: isDigital ? `Link Download: ${downloadUrl}` : '-',
+        // PERBAIKAN: Sembunyikan link saat UNPAID agar tidak kecolongan
+        sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
         download_url: downloadUrl || '',
         created_at: new Date().toISOString()
