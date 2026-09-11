@@ -47,13 +47,18 @@
         <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
             <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
-            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Layanan & Produk</a>
+            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
             <a href="#riwayat" onclick="navigate('riwayat')" id="nav-riwayat" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
+            <a href="#promo" onclick="navigate('promo')" id="nav-promo" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
+            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-question-circle"></i> Panduan</a>
             <a href="#admin" onclick="navigate('admin')" id="nav-admin" class="hover:text-white transition flex items-center gap-2 text-yellow-400"><i class="fas fa-lock"></i> Admin Panel</a>
         </div>
 
+        <!-- Mobile Hamburger Button -->
         <div class="flex items-center gap-3 lg:hidden">
-            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none"><i class="fas fa-bars"></i></button>
+            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
         
         <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
@@ -64,15 +69,17 @@
     <!-- Mobile Dropdown Menu -->
     <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[57px]">
         <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
-        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Layanan & Produk</a>
+        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
         <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
+        <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo</a>
+        <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-question-circle mr-2"></i> Panduan</a>
         <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
     </div>
 
     <!-- CONTENT VIEWS -->
     <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6">
         
-        <!-- VIEW 1: TOPUP & PRODUK DIGITAL -->
+        <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6">
             <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
@@ -85,8 +92,8 @@
                         <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP
                     </div>
                     <h1 class="text-2xl md:text-5xl lg:text-6xl font-extrabold mb-2 md:mb-4 leading-tight text-white">
-                        PPOB & Produk Digital<br/>
-                        <span class="text-blue-500">Lengkap & Otomatis!</span>
+                        Top Up & Produk Digital<br/>
+                        <span class="text-blue-500">Lebih Mudah!</span>
                     </h1>
                     <p class="text-gray-300 mb-4 md:mb-8 text-xs md:text-base max-w-md">
                         Game, Pulsa, E-Money, Ebook, Ecourse, & Template.<br class="hidden md:inline">
@@ -102,10 +109,10 @@
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
-                        <input type="text" id="gameSearch" placeholder="Cari produk/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
+                        <input type="text" id="gameSearch" placeholder="Cari layanan/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
                     
-                    <!-- Tab Kategori Lengkap -->
+                    <!-- Tab Kategori Pilihan (Termasuk Ebook, Ecourse, Template) -->
                     <div class="grid grid-cols-3 lg:grid-cols-2 gap-1.5 text-[11px] md:text-xs font-bold">
                         <button onclick="switchCategory('game')" id="btnCatGame" class="p-2 rounded-lg bg-blue-600 text-white transition text-center">Game</button>
                         <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">Pulsa</button>
@@ -138,12 +145,12 @@
                                 <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
                             </div>
                             <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
-                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Produk/Nominal
+                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Nominal
                             </div>
                         </div>
 
                         <div class="p-4 md:p-6 space-y-6">
-                            <div id="targetFormSection">
+                            <div>
                                 <h3 class="text-xs md:text-sm font-bold text-white mb-3 flex items-center gap-2" id="labelTargetHeader">
                                     <i class="fas fa-user text-textMuted"></i> User ID
                                 </h3>
@@ -161,10 +168,10 @@
 
                             <div>
                                 <div class="flex items-center justify-between mb-3">
-                                    <h3 class="text-xs md:text-sm font-bold text-white">Pilih Pilihan Tersedia</h3>
+                                    <h3 class="text-xs md:text-sm font-bold text-white">Pilih Nominal</h3>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
-                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat produk...</div>
+                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +189,7 @@
                             <img id="cartImg" src="assets/ml-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/48?text=Logo'">
                             <div class="flex-1 min-w-0">
                                 <div id="cartItemName" class="text-[10px] md:text-xs text-textMuted mb-0.5 font-medium truncate">Mobile Legends</div>
-                                <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Produk</div>
+                                <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
                                 <div class="text-[10px] text-blue-400 mt-0.5">Instan & Otomatis</div>
                             </div>
                         </div>
@@ -247,7 +254,25 @@
             </div>
         </div>
 
-        <!-- VIEW 3: ADMIN PANEL (LENGKAP DENGAN URL COVER & UPLOAD MASAL) -->
+        <!-- VIEW 3: PROMO -->
+        <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
+            <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
+                <h2 class="text-2xl font-bold text-white">Promo & Diskon Spesial</h2>
+                <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik setiap hari di Twidy Shop!</p>
+                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home</button>
+            </div>
+        </div>
+
+        <!-- VIEW 4: PANDUAN -->
+        <div id="view-panduan" class="space-y-6 hidden min-h-[60vh]">
+            <div class="bg-bgCard rounded-xl p-8 border border-borderDim max-w-3xl mx-auto space-y-4">
+                <h2 class="text-xl font-bold text-white">Panduan Cara Transaksi</h2>
+                <p class="text-textMuted text-sm">Pilih produk, masukkan ID/Nomor tujuan, lalu selesaikan pembayaran QRIS.</p>
+                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home</button>
+            </div>
+        </div>
+
+        <!-- VIEW 5: ADMIN PANEL (LENGKAP DENGAN URL COVER & UPLOAD MASAL) -->
         <div id="view-admin" class="space-y-6 hidden min-h-[60vh]">
             <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4">
                 <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Admin Panel</h2>
@@ -293,7 +318,7 @@
                             <input type="number" id="newPrice" placeholder="50000" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" />
                         </div>
                         <div>
-                            <label class="block text-xs text-textMuted mb-1">URL Gambar Cover (Link Gambar Internet)</label>
+                            <label class="block text-xs text-textMuted mb-1">URL Gambar Cover (Link Internet)</label>
                             <input type="text" id="newImage" placeholder="https://image.url/cover.jpg" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-xs text-white" />
                         </div>
                         <div class="sm:col-span-2">
@@ -311,16 +336,14 @@
                 <!-- Form Upload Masal JSON -->
                 <div class="bg-bgInput p-4 rounded-xl border border-borderDim space-y-3">
                     <h3 class="font-bold text-sm text-white"><i class="fas fa-file-upload text-green-400"></i> Upload Masal (Restore / Impor File Backup JSON)</h3>
-                    <p class="text-[11px] text-textMuted">Pilih file `.json` hasil backup untuk mengembalikan data produk secara instan jika server ter-reset.</p>
+                    <p class="text-[11px] text-textMuted">Pilih file `.json` hasil backup untuk mengembalikan data produk secara instan.</p>
                     <input type="file" id="bulkFile" accept=".json" class="w-full text-xs text-textMuted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer" />
                     <button onclick="uploadBulkProducts()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-lg text-xs transition"><i class="fas fa-upload"></i> Proses Upload Masal</button>
                 </div>
 
                 <div>
                     <h3 class="font-bold text-sm text-white mb-3">Daftar Produk Digital Aktif</h3>
-                    <div id="adminProductList" class="space-y-2">
-                        <!-- Rendered by JS -->
-                    </div>
+                    <div id="adminProductList" class="space-y-2"></div>
                 </div>
             </div>
         </div>
@@ -333,7 +356,7 @@
             <div class="flex items-center gap-2 text-textMuted">
                 <div class="w-6 h-6 bg-blue-600/50 rounded flex items-center justify-center font-bold text-sm text-white">T</div>
                 <span class="font-bold text-white text-sm">TWIDY SHOP</span>
-                <span class="text-xs ml-2">PPOB & Produk Digital Otomatis</span>
+                <span class="text-xs ml-2">PPOB & Top Up Game Otomatis</span>
             </div>
             <div class="text-xs text-textMuted text-center md:text-right">&copy; 2026 Twidy Shop. All rights reserved.</div>
         </div>
@@ -373,26 +396,33 @@
                 { id: 'ff', name: 'Free Fire', brandKey: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, desc: 'Top Up Diamond Free Fire instan.' },
                 { id: 'pubg', name: 'PUBG Mobile', brandKey: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, desc: 'Top Up UC PUBG Mobile harga promo.' },
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
-                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' }
+                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' },
+                { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: false, desc: 'Top Up Oneiric Shard cepat.' },
+                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
+                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
+                { id: 'aov', name: 'Arena of Valor', brandKey: 'Arena of Valor', img: 'assets/aov-logo.png', hasServer: false, desc: 'Top Up Voucher AOV instan.' },
+                { id: 'higgs', name: 'Higgs Domino', brandKey: 'Higgs Domino', img: 'assets/higgs-logo.png', hasServer: false, desc: 'Top Up Koin Emas resmi.' }
             ],
             pulsa: [
                 { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/telkomsel.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
                 { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' },
+                { id: 'axis', name: 'Axis', brandKey: 'Axis', img: 'assets/axis.png', hasServer: false, desc: 'Pulsa & Paket Data Axis hemat.' },
+                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/smartfren.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' },
+                { id: 'tri', name: 'Tri', brandKey: 'Tri', img: 'assets/tri.png', hasServer: false, desc: 'Pulsa & Paket Data Tri (3).' },
                 { id: 'xl', name: 'XL', brandKey: 'XL', img: 'assets/xl.png', hasServer: false, desc: 'Pulsa & Paket Data XL Axiata.' },
-                { id: 'axis', name: 'AXIS', brandKey: 'AXIS', img: 'assets/axis.png', hasServer: false, desc: 'Pulsa & Paket Data AXIS.' },
-                { id: 'tri', name: 'Three', brandKey: 'Tri', img: 'assets/tri.png', hasServer: false, desc: 'Pulsa & Paket Data 3 (Three).' },
-                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/smartfren.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' }
+                { id: 'byu', name: 'by.U', brandKey: 'by.U', img: 'assets/byu.png', hasServer: false, desc: 'Pulsa & Paket Data by.U digital.' }
             ],
             emoney: [
                 { id: 'gopay', name: 'GO PAY', brandKey: 'GO PAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
                 { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
                 { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
                 { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
-                { id: 'linkaja', name: 'LinkAja', brandKey: 'LinkAja', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
+                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
             ],
             pln: [
                 { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
-                { id: 'vidio', name: 'Vidio Platinum', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Langganan Vidio Streaming.' }
+                { id: 'vidio', name: 'Vidio', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Voucher Streaming Vidio Premier.' },
+                { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
             ],
             ebook: [],
             ecourse: [],
@@ -443,15 +473,16 @@
         }
 
         function navigate(viewName) {
-            ['topup', 'riwayat', 'admin'].forEach(v => {
+            ['topup', 'riwayat', 'promo', 'panduan', 'admin'].forEach(v => {
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
             
-            if(viewName === 'home' || viewName === 'topup') {
+            if(viewName === 'home') {
                 document.getElementById('view-topup').classList.remove('hidden');
             } else {
-                document.getElementById('view-' + viewName).classList.remove('hidden');
+                const targetView = document.getElementById('view-' + viewName);
+                if(targetView) targetView.classList.remove('hidden');
                 if(viewName === 'admin') loadAdminProducts();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -481,7 +512,7 @@
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
                     if(['game', 'pulsa', 'emoney', 'pln'].includes(currentCategory)) renderNominals();
                 }
-            } catch (err) { console.error('Gagal fetch PPOB:', err); }
+            } catch (err) { console.error('Gagal fetch produk:', err); }
         }
 
         function switchCategory(cat) {
@@ -522,8 +553,8 @@
                 htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"><img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/40?text=Logo'"><span class="text-[10px] font-semibold truncate w-full">${item.name}</span></div>`;
             });
 
-            listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Tidak ada layanan</li>';
-            gridMobile.innerHTML = htmlMobile || '<div class="col-span-3 p-3 text-xs text-textMuted text-center">Tidak ada layanan</div>';
+            listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
+            gridMobile.innerHTML = htmlMobile || '<div class="col-span-3 p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</div>';
         }
 
         function filterSidebarItems() {
@@ -622,7 +653,7 @@
             } else {
                 document.getElementById('cartItemName').innerText = activeItem.name;
                 document.getElementById('cartImg').src = activeItem.img;
-                document.getElementById('cartProduct').innerText = 'Pilih Produk';
+                document.getElementById('cartProduct').innerText = 'Pilih Nominal';
                 document.getElementById('cartPrice').innerText = 'Rp 0';
             }
         }
@@ -857,8 +888,8 @@
                         targetId,
                         serverId,
                         price: selectedProduct.price,
-                        productName: `${activeItem.name}`,
-                        productCode: isDigital ? selectedProduct.buyer_sku_code : selectedProduct.buyer_sku_code,
+                        productName: `${activeItem.name} - ${selectedProduct.product_name}`,
+                        productCode: selectedProduct.buyer_sku_code,
                         isDigital: isDigital,
                         downloadUrl: isDigital ? selectedProduct.downloadUrl : ''
                     })
