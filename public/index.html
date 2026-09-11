@@ -862,8 +862,16 @@
                     if(t.status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
 
                     const escapedProductName = t.product_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    const escapedSn = t.sn ? t.sn.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '-';
+                    let rawSn = t.sn ? t.sn : '-';
+                    const escapedSn = rawSn.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     const dateStr = new Date(t.created_at).toLocaleString('id-ID');
+
+                    // Deteksi link URL dan ubah jadi teks yang bisa diklik
+                    let snDisplay = rawSn;
+                    if (snDisplay.includes('http')) {
+                        const urlRegex = /(https?:\/\/[^\s]+)/g;
+                        snDisplay = snDisplay.replace(urlRegex, '<a href="$1" target="_blank" class="text-blue-400 underline hover:text-blue-300 flex items-center gap-1 mt-1"><i class="fas fa-external-link-alt"></i> Buka Link / Download</a>');
+                    }
 
                     return `
                         <tr class="border-b border-borderDim">
@@ -872,7 +880,7 @@
                             <td class="p-3">${t.product_name}</td>
                             <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
                             <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
-                            <td class="p-3 font-mono text-xs text-green-300 font-bold max-w-xs truncate">${t.sn}</td>
+                            <td class="p-3 font-mono text-xs text-green-300 font-bold max-w-xs truncate">${snDisplay}</td>
                             <td class="p-3 flex items-center justify-center gap-1.5 pt-4">
                                 <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk"><i class="fas fa-print"></i></button>
                                 <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
@@ -1023,7 +1031,7 @@
 
             if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
-            if (!selectedProduct) { alert('PPLIH nominal produk terlebih dahulu!'); return; }
+            if (!selectedProduct) { alert('Pilih nominal produk terlebih dahulu!'); return; }
 
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
