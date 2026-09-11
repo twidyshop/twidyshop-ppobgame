@@ -484,23 +484,23 @@
         let snapClientKeyLoaded = false;
 
         function initApp() {
-            // Render UI Lokal Instan Dulu Tanpa Nunggu Fetch
+            // Render UI Lokal Instan Tanpa Blokir Browser
             renderSidebar();
             selectItem('game', categoriesData.game[0].id);
 
-            // Fetch Data di Background secara Asinkron (Non-Blocking)
-            fetchDigitalProducts().then(() => {
-                if(['ebook', 'ecourse', 'template'].includes(currentCategory)) {
-                    renderDigitalCards(currentCategory);
-                }
-            });
-            fetchProducts();
+            // Fetch Data Asinkron di Background (Non-Blocking)
+            fetchDigitalProducts();
+            fetchProductsWithTimeout(8000); // Batasi waktu maksimal 8 detik biar browser lgsg berhenti muter
             loadMidtransConfig();
         }
 
         async function fetchDigitalProducts() {
             try {
-                const res = await fetch('/api/digital-products');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+                const res = await fetch('/api/digital-products', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 const json = await res.json();
                 allDigitalProducts = json.data || [];
 
@@ -517,7 +517,11 @@
                         price: p.price
                     }));
                 });
-            } catch(e) { console.error('Gagal ambil produk digital', e); }
+
+                if(['ebook', 'ecourse', 'template'].includes(currentCategory)) {
+                    renderDigitalCards(currentCategory);
+                }
+            } catch(e) { console.error('Fetch digital timeout/error', e); }
         }
 
         function toggleMobileMenu() {
@@ -556,15 +560,27 @@
             } catch (e) { console.error(e); }
         }
 
-        async function fetchProducts() {
+        // Fungsi Fetch Produk dengan Pembatas Waktu (Timeout 8 Detik)
+        async function fetchProductsWithTimeout(timeoutMs = 8000) {
             try {
-                const res = await fetch('/api/products');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+                const res = await fetch('/api/products', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 const data = await res.json();
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
                     if(['game', 'pulsa', 'emoney', 'pln'].includes(currentCategory)) renderNominals();
                 }
-            } catch (err) { console.error('Gagal fetch produk:', err); }
+            } catch (err) {
+                console.warn('Fetch PPOB timeout atau tertunda, berjalan di latar belakang.', err);
+                // Fallback teks jika data belum masuk
+                const container = document.getElementById('nominalContainer');
+                if(container && allDigiflazzProducts.length === 0) {
+                    container.innerHTML = '<div class="col-span-2 text-center text-yellow-400 text-xs py-4">Memuat ulang data harga dari server...</div>';
+                }
+            }
         }
 
         function switchCategory(cat) {
@@ -896,8 +912,8 @@
         }
 
         function adminLogout() {
-            document.getElementById('adminLoginBox').classList.remove('hidden');
-            document.getElementById('adminDashboardBox').classList.add('hidden');
+            document.getElementById('adminLoginBox').classList.add('hidden');
+            document.getElementById('adminDashboardBox').classList.remove('hidden');
         }
 
         async function loadAdminProducts() {
