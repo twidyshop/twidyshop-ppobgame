@@ -52,6 +52,79 @@ app.get('/api/config', (req, res) => {
   res.json({ clientKey: process.env.MIDTRANS_CLIENT_KEY });
 });
 
+// --- FUNGSI HELPER: KIRIM EMAIL VIA RESEND ---
+async function sendEmailReceipt(trx, targetEmail) {
+    const resendKey = process.env.RESEND_API_KEY;
+    if (!resendKey) {
+        console.log('[Resend] API Key tidak ditemukan. Melewati pengiriman email.');
+        return;
+    }
+
+    let itemsHtml = '';
+    if (trx.cart_items && Array.isArray(trx.cart_items)) {
+        itemsHtml = trx.cart_items.map(item => `
+            <div style="margin-bottom: 15px; padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
+                <h4 style="margin: 0 0 10px 0; color: #1f2937; font-size: 16px;">${item.name}</h4>
+                <a href="${item.downloadUrl}" style="background-color: #3b82f6; color: #ffffff; padding: 10px 15px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 14px;">Unduh Produk</a>
+            </div>
+        `).join('');
+    } else {
+        itemsHtml = `
+            <div style="margin-bottom: 15px; padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #ffffff;">
+                <h4 style="margin: 0 0 10px 0; color: #1f2937; font-size: 16px;">${trx.product_name}</h4>
+                <a href="${trx.download_url}" style="background-color: #3b82f6; color: #ffffff; padding: 10px 15px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 14px;">Unduh Produk</a>
+            </div>
+        `;
+    }
+
+    const emailHtml = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; color: #374151; background-color: #f9fafb; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="color: #2563eb; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px;">TWIDY SHOP</h1>
+                <p style="margin: 5px 0 0 0; font-size: 12px; color: #6b7280;">twidyshop.my.id</p>
+            </div>
+            
+            <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                <h2 style="color: #111827; margin-top: 0; font-size: 20px;">Terima Kasih atas Pembelian Anda! 🎉</h2>
+                <p style="line-height: 1.6;">Pembayaran untuk pesanan digital Anda telah berhasil dikonfirmasi. Berikut adalah detail pesanan dan tautan akses produk Anda:</p>
+                
+                <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px;">
+                    <p style="margin: 5px 0;"><strong>Order ID:</strong> <span style="font-family: monospace;">${trx.order_id}</span></p>
+                    <p style="margin: 5px 0;"><strong>Total Bayar:</strong> Rp ${trx.amount.toLocaleString('id-ID')}</p>
+                    <p style="margin: 5px 0;"><strong>Tanggal:</strong> ${new Date().toLocaleString('id-ID')}</p>
+                </div>
+
+                <h3 style="color: #111827; margin-bottom: 15px; font-size: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Daftar Produk & Link Unduh:</h3>
+                ${itemsHtml}
+            </div>
+
+            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af; text-align: center; line-height: 1.5;">
+                Harap simpan email ini sebagai bukti pembelian yang sah.<br>
+                Jika Anda memiliki pertanyaan, silakan hubungi Customer Service kami via WhatsApp.<br><br>
+                &copy; ${new Date().getFullYear()} Twidy Shop. All rights reserved.
+            </p>
+        </div>
+    `;
+
+    try {
+        const response = await axios.post('https://api.resend.com/emails', {
+            from: 'Twidy Shop <noreply@twidyshop.my.id>', // Pastikan domain twidyshop.my.id sudah diverifikasi di Resend
+            to: targetEmail,
+            subject: `✅ Akses Produk: Pesanan Anda Berhasil! (${trx.order_id})`,
+            html: emailHtml
+        }, {
+            headers: {
+                'Authorization': `Bearer ${resendKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(`[Resend] Sukses kirim email nota ke ${targetEmail} (ID: ${response.data.id})`);
+    } catch (error) {
+        console.error(`[Resend Error] Gagal kirim email:`, error.response ? error.response.data : error.message);
+    }
+}
+// --- END FUNGSI HELPER ---
+
 // --- FITUR PRODUK DIGITAL & ADMIN ---
 
 app.get('/api/digital-products', (req, res) => {
@@ -224,7 +297,7 @@ app.post('/api/checkout', async (req, res) => {
     const db = readDB();
     db.push({
         order_id: orderId,
-        target_id: fullTarget,
+        target_id: fullTarget, // Untuk produk digital, targetId berisi email pembeli
         product_code: finalProductCode,
         product_name: originalProductName,
         amount: amount,
@@ -264,6 +337,7 @@ app.post('/api/webhook', async (req, res) => {
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
+        // JIKA PRODUK DIGITAL SUKSES DIBAYAR
         if (trx.is_digital) {
             trx.status = 'SUKSES';
             if (trx.cart_items && Array.isArray(trx.cart_items)) {
@@ -272,6 +346,13 @@ app.post('/api/webhook', async (req, res) => {
                 trx.sn = `DOWNLOAD LINK: ${trx.download_url}`;
             }
             saveDB(db);
+
+            // ==========================================
+            // MENGIRIM EMAIL NOTA & LINK VIA RESEND
+            // trx.target_id berisi alamat email pelanggan
+            // ==========================================
+            sendEmailReceipt(trx, trx.target_id);
+
             return res.status(200).send("OK");
         }
 
