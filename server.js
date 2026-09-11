@@ -192,13 +192,17 @@ app.post('/api/checkout', async (req, res) => {
     const orderId = `TWIDY-${Date.now()}`;
     const amount = parseInt(price || 0);
     const fullTarget = serverId ? `${targetId}${serverId}` : targetId;
+    const originalProductName = productName || 'Produk Digital Twidy';
+    
+    // PEMOTONGAN STRING: Batasi nama produk maksimal 50 karakter agar Midtrans tidak menolak request
+    const safeProductName = originalProductName.replace(/[\[\]]/g, '').substring(0, 50);
 
     const db = readDB();
     db.push({
         order_id: orderId,
         target_id: fullTarget,
         product_code: productCode,
-        product_name: productName || 'Produk Digital Twidy',
+        product_name: originalProductName,
         amount: amount,
         status: 'UNPAID',
         sn: isDigital ? `Link Download: ${downloadUrl}` : '-',
@@ -211,10 +215,10 @@ app.post('/api/checkout', async (req, res) => {
     let parameter = {
       transaction_details: { order_id: orderId, gross_amount: amount },
       item_details: [{
-        id: productCode,
+        id: productCode.substring(0, 50),
         price: amount,
         quantity: 1,
-        name: productName,
+        name: safeProductName, // Variabel aman yang dikirim ke Midtrans
         merchant_data: fullTarget
       }],
       customer_details: { first_name: "Pelanggan", last_name: "TwidyShop" }
