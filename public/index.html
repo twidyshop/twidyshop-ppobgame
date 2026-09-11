@@ -105,7 +105,7 @@
                         <input type="text" id="gameSearch" placeholder="Cari produk/game..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
                     
-                    <!-- Tab Kategori Diperluas -->
+                    <!-- Tab Kategori Lengkap -->
                     <div class="grid grid-cols-3 lg:grid-cols-2 gap-1.5 text-[11px] md:text-xs font-bold">
                         <button onclick="switchCategory('game')" id="btnCatGame" class="p-2 rounded-lg bg-blue-600 text-white transition text-center">Game</button>
                         <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="p-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim transition text-center">Pulsa</button>
@@ -377,16 +377,22 @@
             ],
             pulsa: [
                 { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/telkomsel.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
-                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' }
+                { id: 'isat', name: 'Indosat', brandKey: 'Indosat', img: 'assets/indosat.png', hasServer: false, desc: 'Pulsa & Paket Data Indosat Ooredoo.' },
+                { id: 'xl', name: 'XL', brandKey: 'XL', img: 'assets/xl.png', hasServer: false, desc: 'Pulsa & Paket Data XL Axiata.' },
+                { id: 'axis', name: 'AXIS', brandKey: 'AXIS', img: 'assets/axis.png', hasServer: false, desc: 'Pulsa & Paket Data AXIS.' },
+                { id: 'tri', name: 'Three', brandKey: 'Tri', img: 'assets/tri.png', hasServer: false, desc: 'Pulsa & Paket Data 3 (Three).' },
+                { id: 'smart', name: 'Smartfren', brandKey: 'Smartfren', img: 'assets/smartfren.png', hasServer: false, desc: 'Pulsa & Paket Data Smartfren.' }
             ],
             emoney: [
                 { id: 'gopay', name: 'GO PAY', brandKey: 'GO PAY', img: 'assets/gopay.png', hasServer: false, desc: 'Top Up saldo GO PAY instan.' },
                 { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
                 { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
-                { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' }
+                { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
+                { id: 'linkaja', name: 'LinkAja', brandKey: 'LinkAja', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
             ],
             pln: [
-                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' }
+                { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
+                { id: 'vidio', name: 'Vidio Platinum', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Langganan Vidio Streaming.' }
             ],
             ebook: [],
             ecourse: [],
