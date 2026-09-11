@@ -8,21 +8,32 @@ const path = require('path');
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 const dbFile = path.join(__dirname, 'transactions.json');
+const digitalDbFile = path.join(__dirname, 'digital_products.json');
 
 const readDB = () => {
     try {
         if (!fs.existsSync(dbFile)) return [];
         return JSON.parse(fs.readFileSync(dbFile, 'utf8'));
-    } catch (e) {
-        return [];
-    }
+    } catch (e) { return []; }
 };
 
 const saveDB = (data) => {
     fs.writeFileSync(dbFile, JSON.stringify(data.slice(-100), null, 2));
+};
+
+const readDigitalDB = () => {
+    try {
+        if (!fs.existsSync(digitalDbFile)) return [];
+        return JSON.parse(fs.readFileSync(digitalDbFile, 'utf8'));
+    } catch (e) { return []; }
+};
+
+const saveDigitalDB = (data) => {
+    fs.writeFileSync(digitalDbFile, JSON.stringify(data, null, 2));
 };
 
 let snap = new midtransClient.Snap({
@@ -38,6 +49,62 @@ const CACHE_DURATION = 5 * 60 * 1000;
 app.get('/api/config', (req, res) => {
   res.json({ clientKey: process.env.MIDTRANS_CLIENT_KEY });
 });
+
+// --- FITUR PRODUK DIGITAL & ADMIN ---
+
+// Ambil Semua Produk Digital untuk Ditampilkan di Frontend
+app.get('/api/digital-products', (req, res) => {
+    res.json({ data: readDigitalDB() });
+});
+
+// Endpoint Login Admin Sederhana
+app.post('/api/admin/login', (req, res) => {
+    const { username, password } = req.body;
+    // Password default admin bisa diatur di .env atau hardcoded aman sementara
+    const adminUser = process.env.ADMIN_USER || 'admin';
+    const adminPass = process.env.ADMIN_PASS || 'twidy2026';
+
+    if (username === adminUser && password === adminPass) {
+        res.json({ success: true, token: 'twidy-admin-secure-token' });
+    } else {
+        res.status(401).json({ success: false, message: 'Username atau Password salah!' });
+    }
+});
+
+// Endpoint Tambah Produk Digital oleh Admin
+app.post('/api/admin/products', (req, res) => {
+    const { category, name, price, description, downloadUrl, image } = req.body;
+    if (!category || !name || !price || !downloadUrl) {
+        return res.status(400).json({ success: false, message: 'Data produk kurang lengkap!' });
+    }
+
+    const digitalProducts = readDigitalDB();
+    const newProduct = {
+        id: `DIGI-${Date.now()}`,
+        category: category.toLowerCase(), // ebook, ecourse, template
+        name,
+        price: parseInt(price),
+        description: description || 'Produk digital siap download',
+        downloadUrl,
+        image: image || 'assets/ml-logo.png',
+        created_at: new Date().toISOString()
+    };
+
+    digitalProducts.push(newProduct);
+    saveDigitalDB(digitalProducts);
+    res.json({ success: true, message: 'Produk digital berhasil ditambahkan!' });
+});
+
+// Endpoint Hapus Produk Digital oleh Admin
+app.delete('/api/admin/products/:id', (req, res) => {
+    const { id } = req.params;
+    let digitalProducts = readDigitalDB();
+    digitalProducts = digitalProducts.filter(p => p.id !== id);
+    saveDigitalDB(digitalProducts);
+    res.json({ success: true, message: 'Produk berhasil dihapus!' });
+});
+
+// --- END FITUR DIGITAL ---
 
 // Endpoint Tarik Semua Produk Digiflazz (Multi-Kategori) + Margin Profit
 app.get('/api/products', async (req, res) => {
@@ -69,7 +136,6 @@ app.get('/api/products', async (req, res) => {
         return res.status(400).json({ message: 'Gagal ambil data', error: raw });
       }
 
-      // Looping untuk menambahkan margin Rp 200 ke harga asli
       cachedProducts = targetData.map(produk => ({
           ...produk,
           price: produk.price + 200
@@ -93,10 +159,10 @@ app.get('/api/transactions', (req, res) => {
     }
 });
 
-// Endpoint Checkout & Buat Transaksi Midtrans
+// Endpoint Checkout & Buat Transaksi Midtrans (Support PPOB & Produk Digital)
 app.post('/api/checkout', async (req, res) => {
   try {
-    const { targetId, serverId, price, productName, productCode } = req.body;
+    const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl } = req.body;
     if (!targetId || !productCode) return res.status(400).json({ message: 'Data kurang lengkap' });
 
     const orderId = `TWIDY-${Date.now()}`;
@@ -111,7 +177,9 @@ app.post('/api/checkout', async (req, res) => {
         product_name: productName || 'Produk Digital Twidy',
         amount: amount,
         status: 'UNPAID',
-        sn: '-',
+        sn: isDigital ? `Link Download: ${downloadUrl}` : '-',
+        is_digital: !!isDigital,
+        download_url: downloadUrl || '',
         created_at: new Date().toISOString()
     });
     saveDB(db);
@@ -135,7 +203,7 @@ app.post('/api/checkout', async (req, res) => {
   }
 });
 
-// Webhook Midtrans & Otomatis Tembak Digiflazz
+// Webhook Midtrans & Otomatis Tembak Digiflazz (Atau Auto-Sukses untuk Produk Digital)
 app.post('/api/webhook', async (req, res) => {
   try {
     const notif = req.body;
@@ -149,6 +217,15 @@ app.post('/api/webhook', async (req, res) => {
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
+        // Jika Produk Digital, langsung sukses dan tampilkan link download di SN
+        if (trx.is_digital) {
+            trx.status = 'SUKSES';
+            trx.sn = `DOWNLOAD LINK: ${trx.download_url}`;
+            saveDB(db);
+            return res.status(200).send("OK");
+        }
+
+        // Jika PPOB biasa, tembak Digiflazz
         trx.status = 'DIPROSES';
         saveDB(db);
 
@@ -175,7 +252,6 @@ app.post('/api/webhook', async (req, res) => {
                     trx.status = 'DIPROSES';
                 }
                 
-                // Menangkap SN lebih pintar
                 const resultSn = result.sn || result.message;
                 trx.sn = (resultSn && resultSn.trim() !== '') ? resultSn : 'Diproses (Menunggu Pembaruan)';
                 saveDB(db);
@@ -193,32 +269,21 @@ app.post('/api/webhook', async (req, res) => {
   }
 });
 
-// Webhook Digiflazz untuk menerima update SN dan status secara Real-Time
+// Webhook Digiflazz Real-Time
 app.post('/api/digiflazz-webhook', (req, res) => {
   try {
     const payload = req.body;
-    
-    // Pastikan ini adalah data transaksi dari Digiflazz
-    if (!payload || !payload.data || !payload.data.ref_id) {
-        return res.status(200).send("OK");
-    }
+    if (!payload || !payload.data || !payload.data.ref_id) return res.status(200).send("OK");
 
     const { ref_id, status, sn, message } = payload.data;
-    
     let db = readDB();
     let trx = db.find(t => t.order_id === ref_id);
     if (!trx) return res.status(200).send("OK");
 
-    // Update Status
-    if (status === 'Sukses') {
-        trx.status = 'SUKSES';
-    } else if (status === 'Gagal') {
-        trx.status = 'GAGAL';
-    } else {
-        trx.status = 'DIPROSES';
-    }
+    if (status === 'Sukses') trx.status = 'SUKSES';
+    else if (status === 'Gagal') trx.status = 'GAGAL';
+    else trx.status = 'DIPROSES';
     
-    // Update SN / Ket terbaru dari Digiflazz
     const currentSn = sn || message;
     if (currentSn && currentSn.trim() !== '') {
         trx.sn = currentSn;
@@ -229,7 +294,6 @@ app.post('/api/digiflazz-webhook', (req, res) => {
     saveDB(db);
     return res.status(200).send("OK");
   } catch (error) {
-    console.error("Digiflazz Webhook Error:", error.message);
     return res.status(500).send("Error");
   }
 });
