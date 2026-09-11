@@ -227,17 +227,6 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-gray-300">
-                        <thead class="bg-bgInput text-textMuted uppercase text-[10px]">
-                            <tr>
-                                <th class="p-3">Order ID / Waktu</th>
-                                <th class="p-3">Tujuan / Email</th>
-                                <th class="p-3">Produk</th>
-                                <th class="p-3">Total</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">SN / Link Download</th>
-                                <th class="p-3 text-center">Aksi</th>
-                            </tr>
-                        </thead>
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
                             <tr><td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor untuk melacak transaksi.</td></tr>
                         </tbody>
@@ -266,7 +255,6 @@
 
         <!-- VIEW 5: ADMIN PANEL -->
         <div id="view-admin" class="space-y-6 hidden min-h-[60vh]">
-            <!-- (Admin code remains the same) -->
             <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4">
                 <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Admin Panel</h2>
                 <p class="text-textMuted text-xs">Masukkan kredensial admin untuk mengelola produk digital.</p>
@@ -354,9 +342,7 @@
                 <button onclick="closeDigitalCart()" class="w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim"><i class="fas fa-times"></i></button>
             </div>
             
-            <div class="p-5 overflow-y-auto flex-1 space-y-3" id="cartItemsContainer">
-                <!-- Items Keranjang Akan Masuk Sini -->
-            </div>
+            <div class="p-5 overflow-y-auto flex-1 space-y-3" id="cartItemsContainer"></div>
 
             <div class="p-5 border-t border-borderDim bg-bgInput rounded-b-2xl space-y-4">
                 <div class="space-y-2">
@@ -494,16 +480,27 @@
         let activeNominals = [];
         let selectedProduct = null;
         let selectedDigitalProduct = null;
-        let digitalCart = []; // Array keranjang digital
+        let digitalCart = [];
         let snapClientKeyLoaded = false;
 
         function initApp() {
             renderSidebar();
             selectItem('game', categoriesData.game[0].id);
 
-            fetchDigitalProducts();
+            fetchDigitalProducts().then(() => {
+                // Cek apakah URL mengandung slug produk saat pertama kali dibuka (SEO Friendly URL Support)
+                checkUrlSlugOnLoad();
+            });
+
             fetchProductsWithTimeout(8000);
             loadMidtransConfig();
+        }
+
+        // Helper untuk mengubah nama produk menjadi SEO Slug (Huruf kecil & strip)
+        function generateSlug(text) {
+            return text.toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
         }
 
         async function fetchDigitalProducts() {
@@ -521,6 +518,7 @@
                     categoriesData[cat] = filtered.map(p => ({
                         id: p.id,
                         name: p.name,
+                        slug: generateSlug(p.name), // Slug SEO URL
                         brandKey: p.id,
                         img: p.image || 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>',
                         hasServer: false,
@@ -536,6 +534,24 @@
             } catch(e) { console.error('Fetch digital timeout/error', e); }
         }
 
+        // Fungsi mengecek URL saat halaman dimuat (jika user buka link produk langsung)
+        function checkUrlSlugOnLoad() {
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            if (pathSegments.length > 0) {
+                const targetSlug = pathSegments[pathSegments.length - 1];
+                
+                // Cari produk digital yang slug-nya cocok
+                for (let cat of ['ebook', 'ecourse', 'template']) {
+                    const found = categoriesData[cat].find(p => p.slug === targetSlug);
+                    if (found) {
+                        switchCategory(cat);
+                        openProductModal(cat, found.id, false); // Buka modal tanpa pushState ulang
+                        break;
+                    }
+                }
+            }
+        }
+
         function toggleMobileMenu() {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         }
@@ -548,10 +564,12 @@
             
             if(viewName === 'home' || viewName === 'topup') {
                 document.getElementById('view-topup').classList.remove('hidden');
+                history.pushState({}, '', '/'); // Reset URL ke root
             } else {
                 const targetView = document.getElementById('view-' + viewName);
                 if(targetView) targetView.classList.remove('hidden');
                 if(viewName === 'admin') loadAdminProducts();
+                history.pushState({}, '', '/' + viewName);
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -615,7 +633,7 @@
                 renderSidebar();
                 const firstItem = categoriesData[cat][0];
                 if(firstItem) selectItem(cat, firstItem.id);
-                document.getElementById('floatingCartBtn').classList.replace('scale-100', 'scale-0'); // Sembunyikan cart saat di PPOB
+                document.getElementById('floatingCartBtn').classList.replace('scale-100', 'scale-0');
             }
         }
 
@@ -651,7 +669,8 @@
             `}).join('');
         }
 
-        function openProductModal(cat, id) {
+        // SEO Friendly: Update URL Slug saat modal produk dibuka
+        function openProductModal(cat, id, updateHistory = true) {
             selectedDigitalProduct = categoriesData[cat].find(i => i.id === id);
             if(!selectedDigitalProduct) return;
 
@@ -674,10 +693,17 @@
             }
             
             document.getElementById('productModal').classList.remove('hidden');
+
+            if (updateHistory) {
+                // Ubah URL browser menjadi rapi (SEO Friendly URL) tanpa reload halaman
+                history.pushState({ productId: id }, '', '/' + selectedDigitalProduct.slug);
+            }
         }
 
         function closeProductModal() {
             document.getElementById('productModal').classList.add('hidden');
+            // Kembalikan URL ke kategori aktif saat modal ditutup
+            history.pushState({}, '', '/');
         }
 
         function addToCartModal() {
@@ -761,7 +787,6 @@
             if(digitalCart.length === 0) closeDigitalCart();
         }
 
-        // Fungsi Checkout untuk Multi-Produk Digital
         async function checkoutMultiDigital() {
             if(digitalCart.length === 0) return alert('Keranjang kosong!');
             
@@ -783,7 +808,7 @@
                     body: JSON.stringify({
                         targetId: email,
                         isDigital: true,
-                        cartItems: digitalCart // Kirim array keranjang ke backend
+                        cartItems: digitalCart
                     })
                 });
                 const data = await res.json();
@@ -792,7 +817,7 @@
 
                 if (data.token) {
                     closeDigitalCart();
-                    digitalCart = []; // Kosongkan keranjang setelah token sukses dibuat
+                    digitalCart = [];
                     updateFloatingCartBtn();
                     renderDigitalCards(currentCategory);
 
@@ -825,8 +850,6 @@
                 btn.disabled = false;
             }
         }
-
-        // --- END FUNGSI KERANJANG ---
 
         function renderSidebar(filter = '') {
             const listDesktop = document.getElementById('sidebarListDesktop');
@@ -938,7 +961,6 @@
             document.getElementById('struk-tujuan').innerText = tujuan;
             document.getElementById('struk-harga').innerText = harga;
             
-            // Konversi br ke plain text newline untuk struk
             const rawSnText = sn.replace(/<br\s*\/?>/mg, "\n");
             document.getElementById('struk-sn').innerHTML = sn.includes('<br>') ? rawSnText : sn;
 
@@ -986,30 +1008,56 @@
                     const escapedProductName = t.product_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     let rawSn = t.sn ? t.sn : '-';
                     
-                    // Modifikasi format teks SN jika ada multiple URL agar jadi list rapi
                     let snDisplay = rawSn;
                     if (snDisplay.includes('http')) {
-                        // Ganti baris baru (\n) yang dikirim server menjadi tag <br> html
                         snDisplay = snDisplay.replace(/\n/g, '<br>');
                         const urlRegex = /(https?:\/\/[^\s]+)/g;
                         snDisplay = snDisplay.replace(urlRegex, '<a href="$1" target="_blank" class="text-blue-400 underline hover:text-blue-300 inline-flex items-center gap-1 mt-1"><i class="fas fa-external-link-alt"></i> Buka Link</a>');
                     }
                     
-                    // Escape khusus struk print
                     const escapedSn = rawSn.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '<br>');
                     const dateStr = new Date(t.created_at).toLocaleString('id-ID');
 
                     return `
-                        <tr class="border-b border-borderDim">
+                        <tr class="hidden md:table-row border-b border-borderDim">
                             <td class="p-3 font-mono"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
                             <td class="p-3 font-medium">${t.target_id}</td>
                             <td class="p-3">${t.product_name}</td>
                             <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
                             <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
                             <td class="p-3 font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap">${snDisplay}</td>
-                            <td class="p-3 flex flex-col items-center justify-center gap-2 pt-4 min-w-[60px]">
-                                <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="w-full bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2 py-1.5 rounded transition text-[10px]" title="Simpan Struk"><i class="fas fa-print"></i> Struk</button>
-                                <button onclick="hubungiCS('${t.order_id}')" class="w-full bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2 py-1.5 rounded transition text-[10px]" title="Bantuan Admin"><i class="fab fa-whatsapp"></i> CS</button>
+                            <td class="p-3 text-center">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk"><i class="fas fa-print"></i></button>
+                                    <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="md:hidden block border-b border-borderDim p-4 space-y-3">
+                            <td colspan="7" class="block w-full p-0">
+                                <div class="bg-bgInput rounded-xl p-4 border border-borderDim space-y-3">
+                                    <div class="flex justify-between items-start border-b border-borderDim pb-2">
+                                        <div>
+                                            <div class="font-mono font-bold text-white text-xs">${t.order_id}</div>
+                                            <div class="text-[10px] text-textMuted">${dateStr}</div>
+                                        </div>
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span>
+                                    </div>
+                                    <div class="space-y-1 text-xs">
+                                        <div class="flex justify-between"><span class="text-textMuted">Tujuan:</span> <span class="font-medium text-white">${t.target_id}</span></div>
+                                        <div class="flex justify-between"><span class="text-textMuted">Produk:</span> <span class="font-medium text-white text-right max-w-[200px] truncate">${t.product_name}</span></div>
+                                        <div class="flex justify-between"><span class="text-textMuted">Total:</span> <span class="font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</span></div>
+                                    </div>
+                                    <div class="bg-bgCard p-2.5 rounded-lg border border-borderDim font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap">
+                                        <div class="text-[10px] text-textMuted uppercase mb-1">SN / Link Download:</div>
+                                        ${snDisplay}
+                                    </div>
+                                    <div class="flex gap-2 pt-1">
+                                        <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fas fa-print"></i> Simpan Struk</button>
+                                        <button onclick="hubungiCS('${t.order_id}')" class="flex-1 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fab fa-whatsapp"></i> Bantuan CS</button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -1145,7 +1193,6 @@
                 const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
                 const data = await res.json();
                 if(data.success) {
-                    // Update frontend & cart
                     const cartIndex = digitalCart.findIndex(c => c.id === id);
                     if(cartIndex > -1) digitalCart.splice(cartIndex, 1);
                     updateFloatingCartBtn();
@@ -1155,7 +1202,6 @@
             } catch(e) { alert('Gagal menghapus produk.'); }
         }
 
-        // PPOB Checkout Button Listener (Tunggal)
         document.getElementById('btnPay').addEventListener('click', async () => {
             const targetId = document.getElementById('targetId').value.trim();
             const serverId = document.getElementById('serverId').value.trim();
