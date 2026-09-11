@@ -68,7 +68,7 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
-// Tambah Produk Digital Satuan (Dengan URL Gambar Cover)
+// Tambah Produk Digital Satuan (Dengan URL Cover)
 app.post('/api/admin/products', (req, res) => {
     const { category, name, price, description, downloadUrl, image } = req.body;
     if (!category || !name || !price || !downloadUrl) {
