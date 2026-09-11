@@ -7,8 +7,8 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 
 const dbFile = path.join(__dirname, 'transactions.json');
@@ -52,15 +52,12 @@ app.get('/api/config', (req, res) => {
 
 // --- FITUR PRODUK DIGITAL & ADMIN ---
 
-// Ambil Semua Produk Digital untuk Ditampilkan di Frontend
 app.get('/api/digital-products', (req, res) => {
     res.json({ data: readDigitalDB() });
 });
 
-// Endpoint Login Admin Sederhana
 app.post('/api/admin/login', (req, res) => {
     const { username, password } = req.body;
-    // Password default admin bisa diatur di .env atau hardcoded aman sementara
     const adminUser = process.env.ADMIN_USER || 'admin';
     const adminPass = process.env.ADMIN_PASS || 'twidy2026';
 
@@ -71,7 +68,7 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
-// Endpoint Tambah Produk Digital oleh Admin
+// Tambah Produk Digital Satuan (Dengan Cover URL)
 app.post('/api/admin/products', (req, res) => {
     const { category, name, price, description, downloadUrl, image } = req.body;
     if (!category || !name || !price || !downloadUrl) {
@@ -80,13 +77,13 @@ app.post('/api/admin/products', (req, res) => {
 
     const digitalProducts = readDigitalDB();
     const newProduct = {
-        id: `DIGI-${Date.now()}`,
-        category: category.toLowerCase(), // ebook, ecourse, template
+        id: `DIGI-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+        category: category.toLowerCase(),
         name,
         price: parseInt(price),
         description: description || 'Produk digital siap download',
         downloadUrl,
-        image: image || 'assets/ml-logo.png',
+        image: image && image.trim() !== '' ? image : 'https://via.placeholder.com/150?text=TwidyShop',
         created_at: new Date().toISOString()
     };
 
@@ -95,7 +92,31 @@ app.post('/api/admin/products', (req, res) => {
     res.json({ success: true, message: 'Produk digital berhasil ditambahkan!' });
 });
 
-// Endpoint Hapus Produk Digital oleh Admin
+// Upload Masal (Bulk Import) Data Produk
+app.post('/api/admin/products/bulk', (req, res) => {
+    const { products } = req.body;
+    if (!Array.isArray(products) || products.length === 0) {
+        return res.status(400).json({ success: false, message: 'Format data masal tidak valid!' });
+    }
+
+    let digitalProducts = readDigitalDB();
+    products.forEach(p => {
+        digitalProducts.push({
+            id: `DIGI-${Date.now()}-${Math.floor(Math.random()*1000)}`,
+            category: (p.category || 'ebook').toLowerCase(),
+            name: p.name || 'Produk Tanpa Nama',
+            price: parseInt(p.price || 0),
+            description: p.description || '',
+            downloadUrl: p.downloadUrl || '#',
+            image: p.image || 'https://via.placeholder.com/150?text=TwidyShop',
+            created_at: new Date().toISOString()
+        });
+    });
+
+    saveDigitalDB(digitalProducts);
+    res.json({ success: true, message: `Berhasil mengimpor ${products.length} produk secara masal!` });
+});
+
 app.delete('/api/admin/products/:id', (req, res) => {
     const { id } = req.params;
     let digitalProducts = readDigitalDB();
@@ -106,7 +127,6 @@ app.delete('/api/admin/products/:id', (req, res) => {
 
 // --- END FITUR DIGITAL ---
 
-// Endpoint Tarik Semua Produk Digiflazz (Multi-Kategori) + Margin Profit
 app.get('/api/products', async (req, res) => {
   const user = process.env.DIGIFLAZZ_USERNAME;
   const key = process.env.DIGIFLAZZ_API_KEY;
@@ -127,39 +147,22 @@ app.get('/api/products', async (req, res) => {
 
       const raw = response.data;
       let targetData = [];
-      
-      if (raw.data && Array.isArray(raw.data)) {
-        targetData = raw.data;
-      } else if (Array.isArray(raw)) {
-        targetData = raw;
-      } else {
-        return res.status(400).json({ message: 'Gagal ambil data', error: raw });
-      }
+      if (raw.data && Array.isArray(raw.data)) targetData = raw.data;
+      else if (Array.isArray(raw)) targetData = raw;
 
-      cachedProducts = targetData.map(produk => ({
-          ...produk,
-          price: produk.price + 200
-      }));
-      
+      cachedProducts = targetData.map(produk => ({ ...produk, price: produk.price + 200 }));
       cacheTimestamp = now;
     }
     res.json({ data: cachedProducts });
   } catch (err) {
-    console.error("Digiflazz Error:", err.response?.data || err.message);
-    res.status(500).json({ message: err.message, detail: err.response?.data });
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Endpoint Riwayat Transaksi Real-time
 app.get('/api/transactions', (req, res) => {
-    try {
-        return res.status(200).json(readDB().reverse());
-    } catch (e) {
-        return res.status(500).json({ message: 'Error Database' });
-    }
+    try { return res.status(200).json(readDB().reverse()); } catch (e) { return res.status(500).json({ message: 'Error DB' }); }
 });
 
-// Endpoint Checkout & Buat Transaksi Midtrans (Support PPOB & Produk Digital)
 app.post('/api/checkout', async (req, res) => {
   try {
     const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl } = req.body;
@@ -186,24 +189,15 @@ app.post('/api/checkout', async (req, res) => {
 
     let parameter = {
       transaction_details: { order_id: orderId, gross_amount: amount },
-      item_details: [{
-        id: productCode,
-        price: amount,
-        quantity: 1,
-        name: productName,
-        merchant_data: fullTarget
-      }],
+      item_details: [{ id: productCode, price: amount, quantity: 1, name: productName, merchant_data: fullTarget }],
       customer_details: { first_name: "Pelanggan", last_name: "TwidyShop" }
     };
 
     let transaction = await snap.createTransaction(parameter);
     res.json({ token: transaction.token, orderId });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// Webhook Midtrans & Otomatis Tembak Digiflazz (Atau Auto-Sukses untuk Produk Digital)
 app.post('/api/webhook', async (req, res) => {
   try {
     const notif = req.body;
@@ -217,7 +211,6 @@ app.post('/api/webhook', async (req, res) => {
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
-        // Jika Produk Digital, langsung sukses dan tampilkan link download di SN
         if (trx.is_digital) {
             trx.status = 'SUKSES';
             trx.sn = `DOWNLOAD LINK: ${trx.download_url}`;
@@ -225,7 +218,6 @@ app.post('/api/webhook', async (req, res) => {
             return res.status(200).send("OK");
         }
 
-        // Jika PPOB biasa, tembak Digiflazz
         trx.status = 'DIPROSES';
         saveDB(db);
 
@@ -235,68 +227,37 @@ app.post('/api/webhook', async (req, res) => {
             const sign = crypto.createHash('md5').update(user + key + order_id).digest('hex');
             try {
                 const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
-                    username: user,
-                    buyer_sku_code: trx.product_code,
-                    customer_no: trx.target_id,
-                    ref_id: order_id,
-                    sign: sign,
-                    testing: false
+                    username: user, buyer_sku_code: trx.product_code, customer_no: trx.target_id, ref_id: order_id, sign: sign, testing: false
                 });
                 const result = digiRes.data.data || {};
-                
-                if (result.status === 'Sukses' || result.status === 0) {
-                    trx.status = 'SUKSES';
-                } else if (result.status === 'Gagal') {
-                    trx.status = 'GAGAL';
-                } else {
-                    trx.status = 'DIPROSES';
-                }
-                
-                const resultSn = result.sn || result.message;
-                trx.sn = (resultSn && resultSn.trim() !== '') ? resultSn : 'Diproses (Menunggu Pembaruan)';
+                trx.status = (result.status === 'Sukses' || result.status === 0) ? 'SUKSES' : (result.status === 'Gagal' ? 'GAGAL' : 'DIPROSES');
+                trx.sn = result.sn || result.message || 'Diproses (Menunggu Pembaruan)';
                 saveDB(db);
-            } catch (err) {
-                console.error("Digiflazz Execution Error:", err.message);
-            }
+            } catch (err) { console.error("Digiflazz Error:", err.message); }
         }
     } else if (['expire', 'cancel', 'deny'].includes(transaction_status)) {
         trx.status = 'GAGAL';
         saveDB(db);
     }
     return res.status(200).send("OK");
-  } catch (e) {
-    return res.status(500).send("Error");
-  }
+  } catch (e) { return res.status(500).send("Error"); }
 });
 
-// Webhook Digiflazz Real-Time
 app.post('/api/digiflazz-webhook', (req, res) => {
   try {
     const payload = req.body;
     if (!payload || !payload.data || !payload.data.ref_id) return res.status(200).send("OK");
-
     const { ref_id, status, sn, message } = payload.data;
     let db = readDB();
     let trx = db.find(t => t.order_id === ref_id);
     if (!trx) return res.status(200).send("OK");
 
-    if (status === 'Sukses') trx.status = 'SUKSES';
-    else if (status === 'Gagal') trx.status = 'GAGAL';
-    else trx.status = 'DIPROSES';
-    
-    const currentSn = sn || message;
-    if (currentSn && currentSn.trim() !== '') {
-        trx.sn = currentSn;
-    } else if (status === 'Sukses') {
-        trx.sn = 'Transaksi Berhasil';
-    }
-    
+    trx.status = (status === 'Sukses') ? 'SUKSES' : (status === 'Gagal' ? 'GAGAL' : 'DIPROSES');
+    trx.sn = sn || message || 'Transaksi Berhasil';
     saveDB(db);
     return res.status(200).send("OK");
-  } catch (error) {
-    return res.status(500).send("Error");
-  }
+  } catch (error) { return res.status(500).send("Error"); }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server Twidy Shop berjalan di port ${PORT}`));
+app.listen(PORT, () => console.log(`Server berjalan di port ${PORT}`));
