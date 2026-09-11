@@ -44,7 +44,6 @@
             <span class="font-bold text-lg md:text-xl tracking-wide">TWIDY SHOP</span>
         </div>
         
-        <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
             <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
             <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
@@ -78,7 +77,7 @@
     <!-- CONTENT VIEWS -->
     <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6">
         
-        <!-- VIEW 1: TOPUP & PPOB / PRODUK DIGITAL -->
+        <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6">
             <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
@@ -101,7 +100,7 @@
                 </div>
             </div>
 
-            <!-- Tab Kategori Utama Di Atas (Game, Pulsa, E-Money, PLN, Ebook, Ecourse, Template) -->
+            <!-- Tab Kategori Utama -->
             <div class="flex flex-wrap gap-2 bg-bgCard p-3 rounded-xl border border-borderDim">
                 <button onclick="switchCategory('game')" id="btnCatGame" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
                 <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
@@ -112,10 +111,9 @@
                 <button onclick="switchCategory('template')" id="btnCatTemplate" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
             </div>
 
-            <!-- KONDISI KELAS PPOB VS PRODUK DIGITAL -->
-            <!-- Layout PPOB (Game/Pulsa/Emoney/Pln) -->
+            <!-- Layout PPOB -->
             <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
-                <!-- Left Column: List Item PPOB -->
+                <!-- Left Column -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
@@ -127,7 +125,7 @@
                     </div>
                 </div>
 
-                <!-- Middle Column: Form & Nominal PPOB -->
+                <!-- Middle Column -->
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
                         <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
@@ -176,7 +174,7 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Cart & Payment PPOB -->
+                <!-- Right Column (Cart, Payment, & Banner WhatsApp Dikembalikan di Sini) -->
                 <div class="lg:col-span-3 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max">
                         <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
@@ -210,19 +208,30 @@
                             <span class="text-green-400 text-xs"><i class="fas fa-check-circle"></i></span>
                         </div>
                     </div>
+
+                    <!-- BANNER BANTUAN WHATSAPP YANG DIMINTA KEMBALI -->
+                    <div class="relative bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-xl p-4 md:p-5 overflow-hidden border border-purple-500/30">
+                        <div class="relative z-10 w-2/3">
+                            <h3 class="font-bold text-xs md:text-sm text-white mb-1">Ada pertanyaan?</h3>
+                            <p class="text-[10px] md:text-xs text-purple-200 mb-3 leading-tight">Tim kami siap membantu kendalamu!</p>
+                            <a href="https://wa.me/628970108026?text=Halo%20Twidy%20Shop,%20saya%20ingin%20bertanya." target="_blank" class="bg-white text-blue-900 text-xs font-bold py-1.5 px-3 rounded-full hover:bg-gray-100 transition inline-flex items-center gap-1.5 shadow">
+                                <i class="fab fa-whatsapp"></i> Hubungi Kami
+                            </a>
+                        </div>
+                        <div class="absolute right-0 bottom-0 w-36 md:w-56 pointer-events-none overflow-hidden">
+                            <img src="assets/support-anime.png" alt="Support Anime" class="w-full h-auto object-contain object-bottom opacity-95" onerror="this.style.display='none'">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Layout Produk Digital (Ebook / Ecourse / Template) - Model Grid Card Rapi -->
+            <!-- Layout Produk Digital -->
             <div id="digitalLayout" class="hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h2 id="digitalCategoryTitle" class="text-xl font-bold text-white uppercase">Daftar Produk Digital</h2>
                     <div class="text-xs text-textMuted">Klik produk untuk melihat detail lengkap</div>
                 </div>
-                <!-- Grid Kartu Produk Digital -->
-                <div id="digitalCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Rendered by JS -->
-                </div>
+                <div id="digitalCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
             </div>
         </div>
 
@@ -307,7 +316,6 @@
                     </div>
                 </div>
 
-                <!-- Form Tambah Produk Satuan -->
                 <div class="bg-bgInput p-4 rounded-xl border border-borderDim space-y-4">
                     <h3 class="font-bold text-sm text-white"><i class="fas fa-plus-circle text-blue-400"></i> Tambah Produk Digital Satuan</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -343,7 +351,6 @@
                     <button onclick="addNewDigitalProduct()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-4 py-2 rounded-lg text-xs transition"><i class="fas fa-save"></i> Simpan Produk Digital</button>
                 </div>
 
-                <!-- Form Upload Masal JSON -->
                 <div class="bg-bgInput p-4 rounded-xl border border-borderDim space-y-3">
                     <h3 class="font-bold text-sm text-white"><i class="fas fa-file-upload text-green-400"></i> Upload Masal (Restore / Impor File Backup JSON)</h3>
                     <input type="file" id="bulkFile" accept=".json" class="w-full text-xs text-textMuted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer" />
@@ -359,7 +366,7 @@
 
     </main>
 
-    <!-- MODAL POPUP DETAIL PRODUK DIGITAL (Seperti Gambar 3) -->
+    <!-- MODAL POPUP DETAIL PRODUK DIGITAL -->
     <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 relative shadow-2xl">
             <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim">
@@ -405,30 +412,30 @@
         </div>
     </footer>
 
-    <!-- Template Struk Digital -->
-    <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 25px; width: 340px; font-family: monospace; text-align: center; border-radius: 8px;">
-        <h2 style="margin: 0; font-size: 22px; font-weight: bold;">TWIDY SHOP</h2>
-        <p style="margin: 2px 0 0 0; font-size: 13px;">twidyshop.my.id</p>
-        <p id="struk-waktu" style="font-size: 12px; margin: 4px 0 15px 0;"></p>
+    <!-- Template Struk Digital (Dioptimalkan agar Instan & Tidak Loading Lama) -->
+    <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 20px; width: 320px; font-family: monospace; text-align: center; border-radius: 6px;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: bold;">TWIDY SHOP</h2>
+        <p style="margin: 2px 0 0 0; font-size: 12px;">twidyshop.my.id</p>
+        <p id="struk-waktu" style="font-size: 11px; margin: 4px 0 12px 0;"></p>
         
-        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 8px 0; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 15px; font-weight: bold; letter-spacing: 1px;">STRUK PEMBELIAN</h3>
+        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 6px 0; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 14px; font-weight: bold;">STRUK PEMBELIAN</h3>
         </div>
 
-        <table style="width: 100%; font-size: 13px; text-align: left; border-collapse: collapse; line-height: 1.6;">
-            <tr><td style="width: 75px; font-weight: bold;">TRXID</td><td>:</td><td id="struk-trxid" style="word-break: break-all;"></td></tr>
+        <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; line-height: 1.5;">
+            <tr><td style="width: 70px; font-weight: bold;">TRXID</td><td>:</td><td id="struk-trxid" style="word-break: break-all;"></td></tr>
             <tr><td style="font-weight: bold;">PRODUK</td><td>:</td><td id="struk-produk" style="word-break: break-word;"></td></tr>
             <tr><td style="font-weight: bold;">TUJUAN</td><td>:</td><td id="struk-tujuan" style="word-break: break-all;"></td></tr>
             <tr><td style="font-weight: bold;">HARGA</td><td>:</td><td>Rp <span id="struk-harga"></span></td></tr>
         </table>
 
-        <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
-            <p style="margin: 0; font-size: 12px; font-weight: bold;">*** INFO / LINK DOWNLOAD ***</p>
-            <h3 id="struk-sn" style="margin: 6px 0 0 0; font-size: 12px; word-break: break-all; color: #1e3a8a;"></h3>
+        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
+            <p style="margin: 0; font-size: 11px; font-weight: bold;">*** INFO / LINK DOWNLOAD ***</p>
+            <h3 id="struk-sn" style="margin: 4px 0 0 0; font-size: 11px; word-break: break-all; color: #1e3a8a;"></h3>
         </div>
 
-        <div style="border-top: 1px dashed #000; margin-top: 15px; padding-top: 12px;">
-            <p style="font-size: 11px; margin: 0; line-height: 1.5;">SIMPAN BUKTI INI SEBAGAI<br>BUKTI PEMBELIAN YANG SAH<br><br>Terima Kasih ^_^</p>
+        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
+            <p style="font-size: 10px; margin: 0; line-height: 1.4;">BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
         </div>
     </div>
 
@@ -792,6 +799,7 @@
             }
         }
 
+        // FUNGSI CETAK STRUK DIPERCEPAT TANPA DELAY BERAT
         function downloadStruk(orderId, waktu, produk, tujuan, harga, sn) {
             document.getElementById('struk-trxid').innerText = orderId;
             document.getElementById('struk-waktu').innerText = waktu;
@@ -800,12 +808,14 @@
             document.getElementById('struk-harga').innerText = harga;
             document.getElementById('struk-sn').innerText = sn;
 
-            html2canvas(document.querySelector("#struk-container")).then(canvas => {
-                let link = document.createElement('a');
-                link.download = `Struk-${orderId}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-            });
+            setTimeout(() => {
+                html2canvas(document.querySelector("#struk-container"), { scale: 2, logging: false }).then(canvas => {
+                    let link = document.createElement('a');
+                    link.download = `Struk-${orderId}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
+            }, 50);
         }
 
         function hubungiCS(orderId) {
