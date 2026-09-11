@@ -31,7 +31,6 @@
         .nominal-radio:checked + div { border-color: #3b82f6; background-color: rgba(59, 130, 246, 0.15); }
         .nominal-radio:checked + div .radio-dot { background-color: #3b82f6; border-color: #3b82f6; }
         .nominal-radio:checked + div .radio-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; display: block; }
-        .glass-panel { background: rgba(19, 27, 47, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
 </head>
@@ -113,7 +112,6 @@
 
             <!-- Layout PPOB -->
             <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
-                <!-- Left Column -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
@@ -125,7 +123,6 @@
                     </div>
                 </div>
 
-                <!-- Middle Column -->
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
                         <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
@@ -174,7 +171,6 @@
                     </div>
                 </div>
 
-                <!-- Right Column (Cart, Payment, & Banner WhatsApp Dikembalikan di Sini) -->
                 <div class="lg:col-span-3 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max">
                         <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
@@ -209,7 +205,6 @@
                         </div>
                     </div>
 
-                    <!-- BANNER BANTUAN WHATSAPP YANG DIMINTA KEMBALI -->
                     <div class="relative bg-gradient-to-r from-[#4c1d95] to-[#1e3a8a] rounded-xl p-4 md:p-5 overflow-hidden border border-purple-500/30">
                         <div class="relative z-10 w-2/3">
                             <h3 class="font-bold text-xs md:text-sm text-white mb-1">Ada pertanyaan?</h3>
@@ -225,13 +220,13 @@
                 </div>
             </div>
 
-            <!-- Layout Produk Digital -->
+            <!-- Layout Produk Digital (Diatur grid-cols-2 untuk HP agar rapi berdampingan) -->
             <div id="digitalLayout" class="hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h2 id="digitalCategoryTitle" class="text-xl font-bold text-white uppercase">Daftar Produk Digital</h2>
                     <div class="text-xs text-textMuted">Klik produk untuk melihat detail lengkap</div>
                 </div>
-                <div id="digitalCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+                <div id="digitalCardsContainer" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"></div>
             </div>
         </div>
 
@@ -412,7 +407,7 @@
         </div>
     </footer>
 
-    <!-- Template Struk Digital (Dioptimalkan agar Instan & Tidak Loading Lama) -->
+    <!-- Template Struk Digital -->
     <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 20px; width: 320px; font-family: monospace; text-align: center; border-radius: 6px;">
         <h2 style="margin: 0; font-size: 20px; font-weight: bold;">TWIDY SHOP</h2>
         <p style="margin: 2px 0 0 0; font-size: 12px;">twidyshop.my.id</p>
@@ -600,18 +595,18 @@
             }
 
             container.innerHTML = items.map(item => `
-                <div onclick="openProductModal('${cat}', '${item.id}')" class="bg-bgCard rounded-2xl border border-borderDim p-4 flex flex-col justify-between cursor-pointer transition hover:border-blue-500 hover:shadow-lg group">
+                <div onclick="openProductModal('${cat}', '${item.id}')" class="bg-bgCard rounded-xl border border-borderDim p-3 md:p-4 flex flex-col justify-between cursor-pointer transition hover:border-blue-500 hover:shadow-lg group">
                     <div>
-                        <div class="relative mb-3 overflow-hidden rounded-xl bg-bgInput aspect-[4/3] border border-borderDim">
+                        <div class="relative mb-2.5 overflow-hidden rounded-lg bg-bgInput aspect-[4/3] border border-borderDim">
                             <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x200?text=Cover'">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-blue-400 uppercase border border-white/10">${cat}</span>
+                            <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[9px] font-bold text-blue-400 uppercase border border-white/10">${cat}</span>
                         </div>
-                        <h3 class="font-bold text-white text-sm md:text-base mb-1 line-clamp-2 group-hover:text-blue-400 transition">${item.name}</h3>
-                        <p class="text-textMuted text-xs line-clamp-2 mb-3">${item.desc}</p>
+                        <h3 class="font-bold text-white text-xs md:text-sm mb-1 line-clamp-2 group-hover:text-blue-400 transition">${item.name}</h3>
+                        <p class="text-textMuted text-[11px] line-clamp-2 mb-2">${item.desc}</p>
                     </div>
-                    <div class="pt-3 border-t border-borderDim flex items-center justify-between mt-auto">
-                        <div class="text-sm md:text-base font-extrabold text-blue-400">Rp ${item.price.toLocaleString('id-ID')}</div>
-                        <button class="bg-blue-600/20 text-blue-400 group-hover:bg-blue-600 group-hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Lihat Detail</button>
+                    <div class="pt-2.5 border-t border-borderDim flex items-center justify-between mt-auto">
+                        <div class="text-xs md:text-sm font-extrabold text-blue-400">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        <button class="bg-blue-600/20 text-blue-400 group-hover:bg-blue-600 group-hover:text-white px-2.5 py-1 rounded text-[10px] md:text-xs font-bold transition">Detail</button>
                     </div>
                 </div>
             `).join('');
@@ -799,7 +794,6 @@
             }
         }
 
-        // FUNGSI CETAK STRUK DIPERCEPAT TANPA DELAY BERAT
         function downloadStruk(orderId, waktu, produk, tujuan, harga, sn) {
             document.getElementById('struk-trxid').innerText = orderId;
             document.getElementById('struk-waktu').innerText = waktu;
