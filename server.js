@@ -68,7 +68,7 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
-// Tambah Produk Digital Satuan (Dengan Cover URL)
+// Tambah Produk Digital Satuan (Dengan URL Gambar Cover)
 app.post('/api/admin/products', (req, res) => {
     const { category, name, price, description, downloadUrl, image } = req.body;
     if (!category || !name || !price || !downloadUrl) {
@@ -92,7 +92,7 @@ app.post('/api/admin/products', (req, res) => {
     res.json({ success: true, message: 'Produk digital berhasil ditambahkan!' });
 });
 
-// Upload Masal (Bulk Import) Data Produk
+// Upload Masal / Bulk Import Data Produk
 app.post('/api/admin/products/bulk', (req, res) => {
     const { products } = req.body;
     if (!Array.isArray(products) || products.length === 0) {
