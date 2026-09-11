@@ -183,46 +183,67 @@ app.get('/api/transactions', (req, res) => {
     }
 });
 
-// Endpoint Checkout & Buat Transaksi Midtrans (Support PPOB & Produk Digital)
+// Endpoint Checkout & Buat Transaksi Midtrans (Support PPOB Tunggal & Keranjang Produk Digital)
 app.post('/api/checkout', async (req, res) => {
   try {
-    const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl } = req.body;
-    if (!targetId || !productCode) return res.status(400).json({ message: 'Data kurang lengkap' });
+    const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl, cartItems } = req.body;
+    if (!targetId) return res.status(400).json({ message: 'Data kurang lengkap' });
 
     const orderId = `TWIDY-${Date.now()}`;
-    const amount = parseInt(price || 0);
     const fullTarget = serverId ? `${targetId}${serverId}` : targetId;
-    const originalProductName = productName || 'Produk Digital Twidy';
     
-    // PEMOTONGAN STRING: Batasi nama produk maksimal 50 karakter agar Midtrans tidak menolak request
-    const safeProductName = originalProductName.replace(/[\[\]]/g, '').substring(0, 50);
+    let amount = 0;
+    let originalProductName = '';
+    let itemDetails = [];
+    let finalProductCode = productCode || 'DIGI-MULTI';
+
+    // Deteksi jika ini adalah checkout keranjang (Multi-item Digital)
+    if (isDigital && cartItems && Array.isArray(cartItems)) {
+        amount = cartItems.reduce((sum, item) => sum + parseInt(item.price), 0);
+        originalProductName = `Pembelian ${cartItems.length} Produk Digital`;
+        
+        itemDetails = cartItems.map((item, index) => ({
+            id: `DIGI-${index}`,
+            price: parseInt(item.price),
+            quantity: 1,
+            name: item.name.replace(/[\[\]]/g, '').substring(0, 50),
+            merchant_data: fullTarget
+        }));
+    } else {
+        // Mode PPOB atau Produk Tunggal Lama
+        if (!productCode) return res.status(400).json({ message: 'Data kurang lengkap' });
+        amount = parseInt(price || 0);
+        originalProductName = productName || 'Produk Digital Twidy';
+        
+        itemDetails = [{
+            id: productCode.substring(0, 50),
+            price: amount,
+            quantity: 1,
+            name: originalProductName.replace(/[\[\]]/g, '').substring(0, 50),
+            merchant_data: fullTarget
+        }];
+    }
 
     const db = readDB();
     db.push({
         order_id: orderId,
         target_id: fullTarget,
-        product_code: productCode,
+        product_code: finalProductCode,
         product_name: originalProductName,
         amount: amount,
         status: 'UNPAID',
-        // PERBAIKAN: Sembunyikan link saat UNPAID agar tidak kecolongan
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
         download_url: downloadUrl || '',
+        cart_items: cartItems || null, // Simpan array keranjang ke DB
         created_at: new Date().toISOString()
     });
     saveDB(db);
 
     let parameter = {
       transaction_details: { order_id: orderId, gross_amount: amount },
-      item_details: [{
-        id: productCode.substring(0, 50),
-        price: amount,
-        quantity: 1,
-        name: safeProductName, // Variabel aman yang dikirim ke Midtrans
-        merchant_data: fullTarget
-      }],
-      customer_details: { first_name: "Pelanggan", last_name: "TwidyShop" }
+      item_details: itemDetails,
+      customer_details: { first_name: "Pelanggan", last_name: "TwidyShop", email: isDigital ? targetId : "customer@twidyshop.my.id" }
     };
 
     let transaction = await snap.createTransaction(parameter);
@@ -246,10 +267,14 @@ app.post('/api/webhook', async (req, res) => {
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
-        // Jika Produk Digital, langsung sukses dan tampilkan link download di SN
+        // Jika Produk Digital, susun multi-link jika ada keranjang, atau link tunggal
         if (trx.is_digital) {
             trx.status = 'SUKSES';
-            trx.sn = `DOWNLOAD LINK: ${trx.download_url}`;
+            if (trx.cart_items && Array.isArray(trx.cart_items)) {
+                trx.sn = trx.cart_items.map(item => `[${item.name}]: ${item.downloadUrl}`).join(' \n ');
+            } else {
+                trx.sn = `DOWNLOAD LINK: ${trx.download_url}`;
+            }
             saveDB(db);
             return res.status(200).send("OK");
         }
