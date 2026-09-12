@@ -108,7 +108,7 @@ async function sendEmailReceipt(trx, targetEmail) {
 
     try {
         const response = await axios.post('https://api.resend.com/emails', {
-            from: 'Twidy Shop <noreply@twidyshop.my.id>', // Pastikan domain twidyshop.my.id sudah diverifikasi di Resend
+            from: 'Twidy Shop <noreply@twidyshop.my.id>',
             to: targetEmail,
             subject: `✅ Akses Produk: Pesanan Anda Berhasil! (${trx.order_id})`,
             html: emailHtml
@@ -190,6 +190,30 @@ app.post('/api/admin/products/bulk', (req, res) => {
 
     saveDigitalDB(digitalProducts);
     res.json({ success: true, message: `Berhasil mengimpor ${products.length} produk secara masal!` });
+});
+
+// Edit/Update Produk Digital (BARU)[span_2](start_span)[span_2](end_span)
+app.put('/api/admin/products/:id', (req, res) => {
+    const { id } = req.params;
+    const { category, name, price, description, downloadUrl, image } = req.body;
+    
+    let digitalProducts = readDigitalDB();
+    const index = digitalProducts.findIndex(p => p.id === id);
+    if (index > -1) {
+        digitalProducts[index] = {
+            ...digitalProducts[index],
+            category: category.toLowerCase(),
+            name,
+            price: parseInt(price),
+            description: description || '',
+            downloadUrl,
+            image: image && image.trim() !== '' ? image : 'https://via.placeholder.com/150?text=TwidyShop'
+        };
+        saveDigitalDB(digitalProducts);
+        res.json({ success: true, message: 'Produk berhasil diperbarui!' });
+    } else {
+        res.status(404).json({ success: false, message: 'Produk tidak ditemukan!' });
+    }
 });
 
 app.delete('/api/admin/products/:id', (req, res) => {
@@ -297,7 +321,7 @@ app.post('/api/checkout', async (req, res) => {
     const db = readDB();
     db.push({
         order_id: orderId,
-        target_id: fullTarget, // Untuk produk digital, targetId berisi email pembeli
+        target_id: fullTarget, 
         product_code: finalProductCode,
         product_name: originalProductName,
         amount: amount,
@@ -347,10 +371,6 @@ app.post('/api/webhook', async (req, res) => {
             }
             saveDB(db);
 
-            // ==========================================
-            // MENGIRIM EMAIL NOTA & LINK VIA RESEND
-            // trx.target_id berisi alamat email pelanggan
-            // ==========================================
             sendEmailReceipt(trx, trx.target_id);
 
             return res.status(200).send("OK");
