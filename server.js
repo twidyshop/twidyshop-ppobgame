@@ -192,7 +192,7 @@ app.post('/api/admin/products/bulk', (req, res) => {
     res.json({ success: true, message: `Berhasil mengimpor ${products.length} produk secara masal!` });
 });
 
-// Edit/Update Produk Digital (BARU)[span_2](start_span)[span_2](end_span)
+// Edit/Update Produk Digital
 app.put('/api/admin/products/:id', (req, res) => {
     const { id } = req.params;
     const { category, name, price, description, downloadUrl, image } = req.body;
@@ -258,7 +258,7 @@ app.get('/api/products', async (req, res) => {
 
       cachedProducts = targetData.map(produk => ({
           ...produk,
-          price: produk.price + 200
+          price: produk.price + 200 // Margin
       }));
       
       cacheTimestamp = now;
@@ -269,6 +269,40 @@ app.get('/api/products', async (req, res) => {
     res.status(500).json({ message: err.message, detail: err.response?.data });
   }
 });
+
+// --- FUNGSI BARU: CEK TAGIHAN PASCABAYAR (INQUIRY) ---
+app.post('/api/inquiry-pasca', async (req, res) => {
+    const { sku, targetId } = req.body;
+    const user = process.env.DIGIFLAZZ_USERNAME;
+    const key = process.env.DIGIFLAZZ_API_KEY;
+    
+    if (!user || !key) return res.status(500).json({ success: false, message: 'API Key Digiflazz belum diatur' });
+    
+    const refId = `INQ-${Date.now()}`; // Nomor referensi acak untuk cek tagihan
+    const sign = crypto.createHash('md5').update(user + key + refId).digest('hex');
+
+    try {
+        const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
+            commands: "inq-pasca", // Command khusus tagihan bulanan
+            username: user,
+            buyer_sku_code: sku,
+            customer_no: targetId,
+            ref_id: refId,
+            sign: sign,
+            testing: false
+        });
+
+        const result = digiRes.data.data;
+        if (result && result.status === 'Sukses') {
+            res.json({ success: true, data: result });
+        } else {
+            res.json({ success: false, message: result?.message || 'Gagal cek tagihan' });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.response?.data?.data?.message || err.message });
+    }
+});
+// --- END FUNGSI BARU ---
 
 // Endpoint Riwayat Transaksi Real-time
 app.get('/api/transactions', (req, res) => {
@@ -282,7 +316,7 @@ app.get('/api/transactions', (req, res) => {
 // Endpoint Checkout & Buat Transaksi Midtrans
 app.post('/api/checkout', async (req, res) => {
   try {
-    const { targetId, serverId, price, productName, productCode, isDigital, downloadUrl, cartItems } = req.body;
+    const { targetId, serverId, price, productName, productCode, isDigital, isPasca, downloadUrl, cartItems } = req.body;
     if (!targetId) return res.status(400).json({ message: 'Data kurang lengkap' });
 
     const orderId = `TWIDY-${Date.now()}`;
@@ -328,6 +362,7 @@ app.post('/api/checkout', async (req, res) => {
         status: 'UNPAID',
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
+        is_pasca: !!isPasca, // MENYIMPAN TANDA KALAU INI TRANSAKSI PASCABAYAR
         download_url: downloadUrl || '',
         cart_items: cartItems || null,
         created_at: new Date().toISOString()
@@ -383,15 +418,24 @@ app.post('/api/webhook', async (req, res) => {
         const key = process.env.DIGIFLAZZ_API_KEY;
         if (user && key) {
             const sign = crypto.createHash('md5').update(user + key + order_id).digest('hex');
+            
+            // Payload dinamis Digiflazz (Kalau Pasca pakai command khusus)
+            let payloadDigiflazz = {
+                username: user,
+                buyer_sku_code: trx.product_code,
+                customer_no: trx.target_id,
+                ref_id: order_id,
+                sign: sign,
+                testing: false
+            };
+
+            // KALAU INI TRANSAKSI PASCABAYAR, TAMBAHKAN COMMAND "pay-pasca"
+            if (trx.is_pasca) {
+                payloadDigiflazz.commands = "pay-pasca";
+            }
+
             try {
-                const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
-                    username: user,
-                    buyer_sku_code: trx.product_code,
-                    customer_no: trx.target_id,
-                    ref_id: order_id,
-                    sign: sign,
-                    testing: false
-                });
+                const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', payloadDigiflazz);
                 const result = digiRes.data.data || {};
                 
                 if (result.status === 'Sukses' || result.status === 0) {
@@ -455,7 +499,7 @@ app.post('/api/digiflazz-webhook', (req, res) => {
   }
 });
 
-// ROUTING SPA: Mengarahkan semua request file/path agar diarahkan ke index.html utama
+// ROUTING SPA
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
