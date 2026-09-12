@@ -143,7 +143,7 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
-// Tambah Produk Digital Satuan (Dengan URL Cover Gambar)
+// Tambah Produk Digital Satuan
 app.post('/api/admin/products', (req, res) => {
     const { category, name, price, description, downloadUrl, image } = req.body;
     if (!category || !name || !price || !downloadUrl) {
@@ -278,12 +278,12 @@ app.post('/api/inquiry-pasca', async (req, res) => {
     
     if (!user || !key) return res.status(500).json({ success: false, message: 'API Key Digiflazz belum diatur' });
     
-    const refId = `INQ-${Date.now()}`; // Nomor referensi acak untuk cek tagihan
+    const refId = `INQ-${Date.now()}`; 
     const sign = crypto.createHash('md5').update(user + key + refId).digest('hex');
 
     try {
         const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
-            commands: "inq-pasca", // Command khusus tagihan bulanan
+            commands: "inq-pasca", 
             username: user,
             buyer_sku_code: sku,
             customer_no: targetId,
@@ -362,7 +362,7 @@ app.post('/api/checkout', async (req, res) => {
         status: 'UNPAID',
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
-        is_pasca: !!isPasca, // MENYIMPAN TANDA KALAU INI TRANSAKSI PASCABAYAR
+        is_pasca: !!isPasca, 
         download_url: downloadUrl || '',
         cart_items: cartItems || null,
         created_at: new Date().toISOString()
@@ -419,7 +419,6 @@ app.post('/api/webhook', async (req, res) => {
         if (user && key) {
             const sign = crypto.createHash('md5').update(user + key + order_id).digest('hex');
             
-            // Payload dinamis Digiflazz (Kalau Pasca pakai command khusus)
             let payloadDigiflazz = {
                 username: user,
                 buyer_sku_code: trx.product_code,
@@ -429,7 +428,6 @@ app.post('/api/webhook', async (req, res) => {
                 testing: false
             };
 
-            // KALAU INI TRANSAKSI PASCABAYAR, TAMBAHKAN COMMAND "pay-pasca"
             if (trx.is_pasca) {
                 payloadDigiflazz.commands = "pay-pasca";
             }
