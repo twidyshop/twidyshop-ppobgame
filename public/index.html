@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <!-- Tab Kategori Utama[span_0](start_span)[span_0](end_span) -->
+            <!-- Tab Kategori Utama -->
             <div class="flex flex-wrap gap-2 bg-bgCard p-3 rounded-xl border border-borderDim">
                 <button onclick="switchCategory('game')" id="btnCatGame" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
                 <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
@@ -140,7 +140,7 @@
                                 <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
                             </div>
                             <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
-                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Nominal
+                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Layanan
                             </div>
                         </div>
 
@@ -163,7 +163,7 @@
 
                             <div>
                                 <div class="flex items-center justify-between mb-3">
-                                    <h3 class="text-xs md:text-sm font-bold text-white">Pilih Nominal</h3>
+                                    <h3 class="text-xs md:text-sm font-bold text-white" id="titleNominal">Pilih Nominal</h3>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
@@ -397,7 +397,7 @@
         </div>
     </div>
 
-    <!-- MODAL EDIT PRODUK DIGITAL (BARU) -->
+    <!-- MODAL EDIT PRODUK DIGITAL -->
     <div id="editDigitalModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
             <div class="flex justify-between items-center mb-4 border-b border-borderDim pb-2">
@@ -480,7 +480,6 @@
     </div>
 
     <script>
-        // Kategori Diperbarui[span_1](start_span)[span_1](end_span)
         const categoriesData = {
             game: [
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
@@ -518,7 +517,8 @@
                 { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
             ],
             tagihan: [
-                { id: 'bpjs', name: 'BPJS Kesehatan', brandKey: 'BPJS KESEHATAN', img: 'assets/bpjs.png', hasServer: false, desc: 'Bayar Tagihan Pascabayar BPJS Kesehatan.' }
+                // isPasca = true menandakan alurnya Inquiry Cek Tagihan dulu
+                { id: 'bpjs', name: 'BPJS Kesehatan', brandKey: 'BPJS KESEHATAN', img: 'assets/bpjs.png', hasServer: false, isPasca: true, sku: 'BPJS', desc: 'Bayar Tagihan Pascabayar BPJS Kesehatan.' }
             ],
             ebook: [],
             ecourse: [],
@@ -649,12 +649,15 @@
                 const data = await res.json();
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
-                    if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) renderNominals();
+                    // Jangan panggil renderNominals langsung kalau di kategori tagihan (Pasca)
+                    if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) {
+                        if (!activeItem || !activeItem.isPasca) renderNominals();
+                    }
                 }
             } catch (err) {
                 console.warn('Fetch PPOB timeout', err);
                 const container = document.getElementById('nominalContainer');
-                if(container && allDigiflazzProducts.length === 0) {
+                if(container && allDigiflazzProducts.length === 0 && (!activeItem || !activeItem.isPasca)) {
                     container.innerHTML = '<div class="col-span-2 text-center text-yellow-400 text-xs py-4">Gagal memuat harga dari server. Coba refresh.</div>';
                 }
             }
@@ -941,9 +944,87 @@
             document.getElementById('labelTargetInput').innerHTML = (isPln || isTagihan) ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
+            document.getElementById('titleNominal').innerText = activeItem.isPasca ? 'Cek Tagihan' : 'Pilih Nominal';
 
             renderSidebar(document.getElementById('gameSearch').value);
-            renderNominals();
+            
+            // LOGIKA PASCABAYAR VS PRABAYAR DI UI
+            if (activeItem.isPasca) {
+                document.getElementById('nominalContainer').innerHTML = `
+                    <div class="col-span-2 space-y-4">
+                        <div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg text-xs text-blue-300">
+                            <i class="fas fa-info-circle"></i> Masukkan Nomor Pelanggan lalu klik tombol di bawah untuk mengecek nominal tagihan bulan ini.
+                        </div>
+                        <button onclick="cekTagihanPasca(event)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition text-xs md:text-sm shadow-[0_0_15px_rgba(37,99,235,0.3)]">
+                            <i class="fas fa-search"></i> Cek Tagihan Sekarang
+                        </button>
+                    </div>
+                `;
+                selectedProduct = null;
+                updateCartUI();
+            } else {
+                renderNominals();
+            }
+        }
+
+        // FUNGSI BARU: CEK TAGIHAN PASCABAYAR
+        async function cekTagihanPasca(event) {
+            const targetId = document.getElementById('targetId').value.trim();
+            if(!targetId) {
+                alert('Masukkan Nomor Pelanggan terlebih dahulu!');
+                document.getElementById('targetId').focus();
+                return;
+            }
+
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengecek ke Server...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/inquiry-pasca', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ sku: activeItem.sku, targetId })
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    const tagihan = data.data;
+                    // Tambahkan Margin Profit untuk Pascabayar (Misal Rp 2000)
+                    const margin = 2000;
+                    const finalPrice = tagihan.selling_price + margin; 
+
+                    selectedProduct = {
+                        product_name: `Tagihan ${tagihan.customer_name || targetId}`,
+                        price: finalPrice,
+                        buyer_sku_code: activeItem.sku,
+                        isPasca: true
+                    };
+
+                    const namaCustomer = tagihan.customer_name || 'Tidak ada nama';
+                    // Ambil detail info dari Digiflazz (struktur desc.detail)
+                    const periode = tagihan.desc?.detail?.[0]?.periode || tagihan.desc?.tarif || 'Bulan Berjalan';
+
+                    document.getElementById('nominalContainer').innerHTML = `
+                        <div class="col-span-2 bg-bgInput p-5 rounded-xl border border-blue-500 space-y-3">
+                            <div class="text-[10px] md:text-xs text-blue-400 font-bold uppercase mb-2"><i class="fas fa-check-circle"></i> Tagihan Ditemukan</div>
+                            <div class="flex justify-between text-xs md:text-sm"><span class="text-textMuted">Nama:</span> <span class="font-bold text-white text-right break-words max-w-[60%]">${namaCustomer}</span></div>
+                            <div class="flex justify-between text-xs md:text-sm"><span class="text-textMuted">Periode:</span> <span class="font-bold text-white">${periode}</span></div>
+                            <div class="flex justify-between text-xs md:text-sm pt-2 border-t border-borderDim/50"><span class="text-textMuted">Total Tagihan + Admin:</span> <span class="font-extrabold text-blue-400">Rp ${finalPrice.toLocaleString('id-ID')}</span></div>
+                        </div>
+                    `;
+                    updateCartUI();
+                } else {
+                    alert('Gagal cek tagihan: ' + (data.message || 'Tagihan tidak ditemukan atau sudah lunas.'));
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                alert('Kesalahan jaringan saat mengecek tagihan.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         }
 
         function renderNominals() {
@@ -996,7 +1077,8 @@
             } else {
                 document.getElementById('cartItemName').innerText = activeItem.name;
                 document.getElementById('cartImg').src = activeItem.img;
-                document.getElementById('cartProduct').innerText = 'Pilih Nominal';
+                // Text berbeda kalau kategori Pasca belum di-cek
+                document.getElementById('cartProduct').innerText = (activeItem && activeItem.isPasca) ? 'Lakukan Cek Tagihan' : 'Pilih Nominal';
                 document.getElementById('cartPrice').innerText = 'Rp 0';
             }
         }
@@ -1201,7 +1283,6 @@
             } catch(e) { alert('Gagal menyimpan produk.'); }
         }
 
-        // --- EDIT PRODUCT FUNCTIONS ---
         function openEditDigitalModal(id) {
             const prod = allDigitalProducts.find(p => p.id === id);
             if(!prod) return;
@@ -1307,7 +1388,16 @@
 
             if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
-            if (!selectedProduct) { alert('Pilih nominal produk terlebih dahulu!'); return; }
+            
+            // Tambahan validasi kalau klik bayar tapi belum cek tagihan untuk Pasca
+            if (!selectedProduct) { 
+                if (activeItem.isPasca) {
+                    alert('Silakan Cek Tagihan terlebih dahulu sebelum membayar!');
+                } else {
+                    alert('Pilih nominal produk terlebih dahulu!'); 
+                }
+                return; 
+            }
 
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
@@ -1322,7 +1412,8 @@
                         serverId,
                         price: selectedProduct.price,
                         productName: `${activeItem.name} - ${selectedProduct.product_name}`,
-                        productCode: selectedProduct.buyer_sku_code
+                        productCode: selectedProduct.buyer_sku_code,
+                        isPasca: selectedProduct.isPasca // Penting! Kirim tanda pasca ke backend
                     })
                 });
                 const data = await res.json();
@@ -1332,7 +1423,7 @@
                 if (data.token) {
                     window.snap.pay(data.token, {
                         onSuccess: function(result){ 
-                            alert('Pembayaran Berhasil! Sistem memproses top up otomatis.'); 
+                            alert('Pembayaran Berhasil! Sistem memproses transaksi otomatis.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
