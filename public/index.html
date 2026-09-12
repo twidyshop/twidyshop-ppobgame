@@ -488,8 +488,8 @@
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
                 { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' },
                 { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: false, desc: 'Top Up Oneiric Shard cepat.' },
-                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
-                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
+                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty Mobile', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
+                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok Origin Global', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
                 { id: 'aov', name: 'Arena of Valor', brandKey: 'Arena of Valor', img: 'assets/aov-logo.png', hasServer: false, desc: 'Top Up Voucher AOV instan.' },
                 { id: 'hok', name: 'Honor of Kings', brandKey: 'Honor of Kings', img: 'assets/hok-logo.png', hasServer: false, desc: 'Top Up Tokens Honor of Kings.' },
                 { id: 'lords', name: 'Lords Mobile', brandKey: 'Lords Mobile', img: 'assets/lords-logo.png', hasServer: false, desc: 'Top Up Diamonds Lords Mobile.' },
@@ -517,7 +517,6 @@
                 { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
             ],
             tagihan: [
-                // isPasca = true menandakan alurnya Inquiry Cek Tagihan dulu
                 { id: 'bpjs', name: 'BPJS Kesehatan', brandKey: 'BPJS KESEHATAN', img: 'assets/bpjs.png', hasServer: false, isPasca: true, sku: 'BPJS', desc: 'Bayar Tagihan Pascabayar BPJS Kesehatan.' }
             ],
             ebook: [],
@@ -538,7 +537,7 @@
 
         function initApp() {
             renderSidebar();
-            selectItem('game', categoriesData.game[0].id);
+            selectItem('game', categoriesData.game[0].id, false); // false = jangan auto-scroll pas awal load
 
             fetchDigitalProducts().then(() => {
                 checkUrlSlugOnLoad();
@@ -649,7 +648,6 @@
                 const data = await res.json();
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
-                    // Jangan panggil renderNominals langsung kalau di kategori tagihan (Pasca)
                     if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) {
                         if (!activeItem || !activeItem.isPasca) renderNominals();
                     }
@@ -684,7 +682,7 @@
                 document.getElementById('digitalLayout').classList.add('hidden');
                 renderSidebar();
                 const firstItem = categoriesData[cat][0];
-                if(firstItem) selectItem(cat, firstItem.id);
+                if(firstItem) selectItem(cat, firstItem.id, false); // Jangan auto-scroll ganti tab
                 document.getElementById('floatingCartBtn').classList.replace('scale-100', 'scale-0');
             }
         }
@@ -926,7 +924,8 @@
             renderSidebar(document.getElementById('gameSearch').value);
         }
 
-        function selectItem(cat, id) {
+        // Tambahan Parameter autoScroll = true (default)
+        function selectItem(cat, id, autoScroll = true) {
             currentCategory = cat;
             activeItem = categoriesData[cat].find(i => i.id === id);
             if(!activeItem) return;
@@ -948,7 +947,6 @@
 
             renderSidebar(document.getElementById('gameSearch').value);
             
-            // LOGIKA PASCABAYAR VS PRABAYAR DI UI
             if (activeItem.isPasca) {
                 document.getElementById('nominalContainer').innerHTML = `
                     <div class="col-span-2 space-y-4">
@@ -965,9 +963,16 @@
             } else {
                 renderNominals();
             }
+
+            // AUTO-SCROLL UX FIX
+            if (autoScroll) {
+                setTimeout(() => {
+                    const scrollTarget = document.getElementById('activeItemTitle');
+                    if(scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
         }
 
-        // FUNGSI BARU: CEK TAGIHAN PASCABAYAR
         async function cekTagihanPasca(event) {
             const targetId = document.getElementById('targetId').value.trim();
             if(!targetId) {
@@ -991,7 +996,6 @@
                 
                 if(data.success) {
                     const tagihan = data.data;
-                    // Tambahkan Margin Profit untuk Pascabayar (Misal Rp 2000)
                     const margin = 2000;
                     const finalPrice = tagihan.selling_price + margin; 
 
@@ -1003,7 +1007,6 @@
                     };
 
                     const namaCustomer = tagihan.customer_name || 'Tidak ada nama';
-                    // Ambil detail info dari Digiflazz (struktur desc.detail)
                     const periode = tagihan.desc?.detail?.[0]?.periode || tagihan.desc?.tarif || 'Bulan Berjalan';
 
                     document.getElementById('nominalContainer').innerHTML = `
@@ -1077,7 +1080,6 @@
             } else {
                 document.getElementById('cartItemName').innerText = activeItem.name;
                 document.getElementById('cartImg').src = activeItem.img;
-                // Text berbeda kalau kategori Pasca belum di-cek
                 document.getElementById('cartProduct').innerText = (activeItem && activeItem.isPasca) ? 'Lakukan Cek Tagihan' : 'Pilih Nominal';
                 document.getElementById('cartPrice').innerText = 'Rp 0';
             }
@@ -1112,8 +1114,9 @@
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
 
-            if(!query) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID atau Nomor/Email terlebih dahulu.</td></tr>';
+            // KEAMANAN PRIVASI: Minimal 5 karakter
+            if(query.length < 5) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan minimal 5 karakter (Order ID / Nomor / Email) untuk menjaga privasi.</td></tr>';
                 return;
             }
 
@@ -1389,7 +1392,6 @@
             if (!targetId) { alert('Masukkan Nomor / ID tujuan terlebih dahulu!'); document.getElementById('targetId').focus(); return; }
             if (activeItem.hasServer && !serverId) { alert('Masukkan Server ID!'); document.getElementById('serverId').focus(); return; }
             
-            // Tambahan validasi kalau klik bayar tapi belum cek tagihan untuk Pasca
             if (!selectedProduct) { 
                 if (activeItem.isPasca) {
                     alert('Silakan Cek Tagihan terlebih dahulu sebelum membayar!');
@@ -1413,7 +1415,7 @@
                         price: selectedProduct.price,
                         productName: `${activeItem.name} - ${selectedProduct.product_name}`,
                         productCode: selectedProduct.buyer_sku_code,
-                        isPasca: selectedProduct.isPasca // Penting! Kirim tanda pasca ke backend
+                        isPasca: selectedProduct.isPasca
                     })
                 });
                 const data = await res.json();
