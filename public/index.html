@@ -93,21 +93,23 @@
                         <span class="text-blue-500">Lebih Mudah!</span>
                     </h1>
                     <p class="text-gray-300 mb-4 md:mb-8 text-xs md:text-base max-w-md">
-                        Game, Pulsa, E-Money, Ebook, Ecourse, & Template.<br class="hidden md:inline">
+                        Game, Pulsa, E-Money, Ebook, Ecourse, Template, & Aplikasi.<br class="hidden md:inline">
                         Semua kebutuhan digitalmu ada di sini!
                     </p>
                 </div>
             </div>
 
-            <!-- Tab Kategori Utama -->
+            <!-- Tab Kategori Utama[span_0](start_span)[span_0](end_span) -->
             <div class="flex flex-wrap gap-2 bg-bgCard p-3 rounded-xl border border-borderDim">
                 <button onclick="switchCategory('game')" id="btnCatGame" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
                 <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
                 <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
                 <button onclick="switchCategory('pln')" id="btnCatPln" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
+                <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
                 <button onclick="switchCategory('ebook')" id="btnCatEbook" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
                 <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
                 <button onclick="switchCategory('template')" id="btnCatTemplate" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
+                <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
             </div>
 
             <!-- Layout PPOB -->
@@ -287,6 +289,7 @@
                                 <option value="ebook">Ebook</option>
                                 <option value="ecourse">Ecourse</option>
                                 <option value="template">Template</option>
+                                <option value="aplikasi">Aplikasi</option>
                             </select>
                         </div>
                         <div>
@@ -394,6 +397,49 @@
         </div>
     </div>
 
+    <!-- MODAL EDIT PRODUK DIGITAL (BARU) -->
+    <div id="editDigitalModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <div class="flex justify-between items-center mb-4 border-b border-borderDim pb-2">
+                <h2 class="text-lg font-bold text-white"><i class="fas fa-edit text-blue-400"></i> Edit Produk Digital</h2>
+                <button onclick="closeEditDigitalModal()" class="text-textMuted hover:text-white transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-3">
+                <input type="hidden" id="editProdId" />
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Kategori</label>
+                    <select id="editProdCat" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white">
+                        <option value="ebook">Ebook</option>
+                        <option value="ecourse">Ecourse</option>
+                        <option value="template">Template</option>
+                        <option value="aplikasi">Aplikasi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Nama Produk</label>
+                    <input type="text" id="editProdName" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Harga (Rp)</label>
+                    <input type="number" id="editProdPrice" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">URL Gambar Cover</label>
+                    <input type="text" id="editProdImage" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Link Download</label>
+                    <input type="text" id="editProdUrl" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white" />
+                </div>
+                <div>
+                    <label class="block text-xs text-textMuted mb-1">Deskripsi</label>
+                    <textarea id="editProdDesc" class="w-full bg-bgInput p-2.5 rounded-lg border border-borderDim text-xs text-white" rows="2"></textarea>
+                </div>
+                <button onclick="updateDigitalProduct()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg text-xs transition mt-2"><i class="fas fa-save"></i> Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
         <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -434,6 +480,7 @@
     </div>
 
     <script>
+        // Kategori Diperbarui[span_1](start_span)[span_1](end_span)
         const categoriesData = {
             game: [
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
@@ -445,7 +492,9 @@
                 { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
                 { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
                 { id: 'aov', name: 'Arena of Valor', brandKey: 'Arena of Valor', img: 'assets/aov-logo.png', hasServer: false, desc: 'Top Up Voucher AOV instan.' },
-                { id: 'higgs', name: 'Higgs Domino', brandKey: 'Higgs Domino', img: 'assets/higgs-logo.png', hasServer: false, desc: 'Top Up Koin Emas resmi.' }
+                { id: 'hok', name: 'Honor of Kings', brandKey: 'Honor of Kings', img: 'assets/hok-logo.png', hasServer: false, desc: 'Top Up Tokens Honor of Kings.' },
+                { id: 'lords', name: 'Lords Mobile', brandKey: 'Lords Mobile', img: 'assets/lords-logo.png', hasServer: false, desc: 'Top Up Diamonds Lords Mobile.' },
+                { id: 'pb', name: 'Point Blank', brandKey: 'Point Blank', img: 'assets/pb-logo.png', hasServer: false, desc: 'Top Up PB Cash.' }
             ],
             pulsa: [
                 { id: 'tsel', name: 'Telkomsel', brandKey: 'Telkomsel', img: 'assets/telkomsel.png', hasServer: false, desc: 'Pulsa & Paket Data Telkomsel resmi.' },
@@ -468,9 +517,13 @@
                 { id: 'vidio', name: 'Vidio', brandKey: 'Vidio', img: 'assets/vidio.png', hasServer: false, desc: 'Voucher Streaming Vidio Premier.' },
                 { id: 'wetv', name: 'WeTV', brandKey: 'WeTV', img: 'assets/wetv.png', hasServer: false, desc: 'Voucher VIP WeTV.' }
             ],
+            tagihan: [
+                { id: 'bpjs', name: 'BPJS Kesehatan', brandKey: 'BPJS KESEHATAN', img: 'assets/bpjs.png', hasServer: false, desc: 'Bayar Tagihan Pascabayar BPJS Kesehatan.' }
+            ],
             ebook: [],
             ecourse: [],
-            template: []
+            template: [],
+            aplikasi: []
         };
 
         let currentCategory = 'game';
@@ -488,7 +541,6 @@
             selectItem('game', categoriesData.game[0].id);
 
             fetchDigitalProducts().then(() => {
-                // Cek apakah URL mengandung slug produk saat pertama kali dibuka (SEO Friendly URL Support)
                 checkUrlSlugOnLoad();
             });
 
@@ -496,7 +548,6 @@
             loadMidtransConfig();
         }
 
-        // Helper untuk mengubah nama produk menjadi SEO Slug (Huruf kecil & strip)
         function generateSlug(text) {
             return text.toLowerCase()
                 .replace(/[^\w ]+/g, '')
@@ -513,12 +564,12 @@
                 const json = await res.json();
                 allDigitalProducts = json.data || [];
 
-                ['ebook', 'ecourse', 'template'].forEach(cat => {
+                ['ebook', 'ecourse', 'template', 'aplikasi'].forEach(cat => {
                     const filtered = allDigitalProducts.filter(p => p.category === cat);
                     categoriesData[cat] = filtered.map(p => ({
                         id: p.id,
                         name: p.name,
-                        slug: generateSlug(p.name), // Slug SEO URL
+                        slug: generateSlug(p.name), 
                         brandKey: p.id,
                         img: p.image || 'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>',
                         hasServer: false,
@@ -528,24 +579,22 @@
                     }));
                 });
 
-                if(['ebook', 'ecourse', 'template'].includes(currentCategory)) {
+                if(['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
                     renderDigitalCards(currentCategory);
                 }
             } catch(e) { console.error('Fetch digital timeout/error', e); }
         }
 
-        // Fungsi mengecek URL saat halaman dimuat (jika user buka link produk langsung)
         function checkUrlSlugOnLoad() {
             const pathSegments = window.location.pathname.split('/').filter(Boolean);
             if (pathSegments.length > 0) {
                 const targetSlug = pathSegments[pathSegments.length - 1];
                 
-                // Cari produk digital yang slug-nya cocok
-                for (let cat of ['ebook', 'ecourse', 'template']) {
+                for (let cat of ['ebook', 'ecourse', 'template', 'aplikasi']) {
                     const found = categoriesData[cat].find(p => p.slug === targetSlug);
                     if (found) {
                         switchCategory(cat);
-                        openProductModal(cat, found.id, false); // Buka modal tanpa pushState ulang
+                        openProductModal(cat, found.id, false);
                         break;
                     }
                 }
@@ -564,7 +613,7 @@
             
             if(viewName === 'home' || viewName === 'topup') {
                 document.getElementById('view-topup').classList.remove('hidden');
-                history.pushState({}, '', '/'); // Reset URL ke root
+                history.pushState({}, '', '/');
             } else {
                 const targetView = document.getElementById('view-' + viewName);
                 if(targetView) targetView.classList.remove('hidden');
@@ -600,7 +649,7 @@
                 const data = await res.json();
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
-                    if(['game', 'pulsa', 'emoney', 'pln'].includes(currentCategory)) renderNominals();
+                    if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) renderNominals();
                 }
             } catch (err) {
                 console.warn('Fetch PPOB timeout', err);
@@ -613,14 +662,14 @@
 
         function switchCategory(cat) {
             currentCategory = cat;
-            ['game', 'pulsa', 'emoney', 'pln', 'ebook', 'ecourse', 'template'].forEach(c => {
+            ['game', 'pulsa', 'emoney', 'pln', 'tagihan', 'ebook', 'ecourse', 'template', 'aplikasi'].forEach(c => {
                 const btn = document.getElementById('btnCat' + c.charAt(0).toUpperCase() + c.slice(1));
                 if(btn) {
                     btn.className = (c === cat) ? "px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition" : "px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition";
                 }
             });
 
-            const isDigital = ['ebook', 'ecourse', 'template'].includes(cat);
+            const isDigital = ['ebook', 'ecourse', 'template', 'aplikasi'].includes(cat);
             if(isDigital) {
                 document.getElementById('ppobLayout').classList.add('hidden');
                 document.getElementById('digitalLayout').classList.remove('hidden');
@@ -669,7 +718,6 @@
             `}).join('');
         }
 
-        // SEO Friendly: Update URL Slug saat modal produk dibuka
         function openProductModal(cat, id, updateHistory = true) {
             selectedDigitalProduct = categoriesData[cat].find(i => i.id === id);
             if(!selectedDigitalProduct) return;
@@ -695,14 +743,12 @@
             document.getElementById('productModal').classList.remove('hidden');
 
             if (updateHistory) {
-                // Ubah URL browser menjadi rapi (SEO Friendly URL) tanpa reload halaman
                 history.pushState({ productId: id }, '', '/' + selectedDigitalProduct.slug);
             }
         }
 
         function closeProductModal() {
             document.getElementById('productModal').classList.add('hidden');
-            // Kembalikan URL ke kategori aktif saat modal ditutup
             history.pushState({}, '', '/');
         }
 
@@ -730,7 +776,7 @@
         function updateFloatingCartBtn() {
             const btn = document.getElementById('floatingCartBtn');
             const count = document.getElementById('floatingCartCount');
-            const isDigitalView = ['ebook', 'ecourse', 'template'].includes(currentCategory);
+            const isDigitalView = ['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory);
             
             if(digitalCart.length > 0 && isDigitalView) {
                 btn.classList.replace('scale-0', 'scale-100');
@@ -781,7 +827,7 @@
             digitalCart.splice(index, 1);
             renderCartModal();
             updateFloatingCartBtn();
-            if(['ebook', 'ecourse', 'template'].includes(currentCategory)) {
+            if(['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
                 renderDigitalCards(currentCategory);
             }
             if(digitalCart.length === 0) closeDigitalCart();
@@ -888,10 +934,11 @@
             
             const isGame = cat === 'game';
             const isPln = cat === 'pln' && activeItem.id === 'pln';
+            const isTagihan = cat === 'tagihan';
             
             document.getElementById('serverContainer').style.display = activeItem.hasServer ? 'block' : 'none';
-            document.getElementById('labelTargetHeader').innerHTML = isPln ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
-            document.getElementById('labelTargetInput').innerHTML = isPln ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
+            document.getElementById('labelTargetHeader').innerHTML = (isPln || isTagihan) ? '<i class="fas fa-bolt text-textMuted"></i> Nomor Meter / Pelanggan' : (isGame ? '<i class="fas fa-user text-textMuted"></i> User ID' : '<i class="fas fa-phone text-textMuted"></i> Nomor HP Tujuan');
+            document.getElementById('labelTargetInput').innerHTML = (isPln || isTagihan) ? 'No Meter / ID Pelanggan' : (isGame ? 'Masukkan User ID' : 'Masukkan Nomor HP');
             document.getElementById('targetId').value = '';
             document.getElementById('serverId').value = '';
 
@@ -1113,7 +1160,10 @@
                             <div class="font-bold text-white uppercase text-[10px] text-blue-400">[${p.category}] ${p.name}</div>
                             <div class="text-textMuted truncate">Rp ${p.price.toLocaleString('id-ID')} • Link: <a href="${p.downloadUrl}" target="_blank" class="underline text-blue-300">${p.downloadUrl}</a></div>
                         </div>
-                        <button onclick="deleteDigitalProduct('${p.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-2.5 py-1 rounded transition"><i class="fas fa-trash"></i></button>
+                        <div class="flex gap-2">
+                            <button onclick="openEditDigitalModal('${p.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-1 rounded transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteDigitalProduct('${p.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-2.5 py-1 rounded transition"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>
                 `).join('');
             } catch(e) { console.error(e); }
@@ -1151,6 +1201,55 @@
             } catch(e) { alert('Gagal menyimpan produk.'); }
         }
 
+        // --- EDIT PRODUCT FUNCTIONS ---
+        function openEditDigitalModal(id) {
+            const prod = allDigitalProducts.find(p => p.id === id);
+            if(!prod) return;
+            
+            document.getElementById('editProdId').value = prod.id;
+            document.getElementById('editProdCat').value = prod.category;
+            document.getElementById('editProdName').value = prod.name;
+            document.getElementById('editProdPrice').value = prod.price;
+            document.getElementById('editProdImage').value = prod.image;
+            document.getElementById('editProdUrl').value = prod.downloadUrl;
+            document.getElementById('editProdDesc').value = prod.description;
+
+            document.getElementById('editDigitalModal').classList.remove('hidden');
+        }
+
+        function closeEditDigitalModal() {
+            document.getElementById('editDigitalModal').classList.add('hidden');
+        }
+
+        async function updateDigitalProduct() {
+            const id = document.getElementById('editProdId').value;
+            const category = document.getElementById('editProdCat').value;
+            const name = document.getElementById('editProdName').value.trim();
+            const price = document.getElementById('editProdPrice').value.trim();
+            const downloadUrl = document.getElementById('editProdUrl').value.trim();
+            const image = document.getElementById('editProdImage').value.trim();
+            const description = document.getElementById('editProdDesc').value.trim();
+
+            if(!name || !price || !downloadUrl) {
+                alert('Nama, Harga, dan Link Download wajib diisi!');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, name, price, downloadUrl, image, description })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    closeEditDigitalModal();
+                    alert(data.message);
+                    fetchDigitalProducts().then(loadAdminProducts);
+                } else { alert(data.message); }
+            } catch(e) { alert('Gagal memperbarui produk.'); }
+        }
+
         function exportBackup() {
             fetch('/api/digital-products')
                 .then(res => res.json())
@@ -1180,7 +1279,7 @@
                     const data = await res.json();
                     if(data.success) {
                         alert(data.message);
-                        fetchDigitalProducts().then(() => { loadAdminProducts(); if(['ebook','ecourse','template'].includes(currentCategory)) renderDigitalCards(currentCategory); });
+                        fetchDigitalProducts().then(() => { loadAdminProducts(); if(['ebook','ecourse','template','aplikasi'].includes(currentCategory)) renderDigitalCards(currentCategory); });
                     } else { alert(data.message); }
                 } catch(err) { alert('Format file JSON tidak valid!'); }
             };
@@ -1197,7 +1296,7 @@
                     if(cartIndex > -1) digitalCart.splice(cartIndex, 1);
                     updateFloatingCartBtn();
                     
-                    fetchDigitalProducts().then(() => { loadAdminProducts(); if(['ebook','ecourse','template'].includes(currentCategory)) renderDigitalCards(currentCategory); });
+                    fetchDigitalProducts().then(() => { loadAdminProducts(); if(['ebook','ecourse','template','aplikasi'].includes(currentCategory)) renderDigitalCards(currentCategory); });
                 }
             } catch(e) { alert('Gagal menghapus produk.'); }
         }
