@@ -32,6 +32,10 @@
         .nominal-radio:checked + div .radio-dot { background-color: #3b82f6; border-color: #3b82f6; }
         .nominal-radio:checked + div .radio-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; display: block; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* CSS khusus untuk menyembunyikan scrollbar di menu kategori */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col relative">
@@ -64,7 +68,7 @@
     </nav>
 
     <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-30 sticky top-[57px]">
+    <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[60px]">
         <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
         <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
         <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
@@ -77,7 +81,7 @@
     <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6 pb-24">
         
         <!-- VIEW 1: TOPUP & PPOB -->
-        <div id="view-topup" class="space-y-4 md:space-y-6">
+        <div id="view-topup" class="space-y-4 md:space-y-6 relative">
             <!-- Hero Section -->
             <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
                 <div class="absolute right-0 top-0 bottom-0 w-1/3 md:w-1/2 lg:w-2/3 opacity-50 md:opacity-100 pointer-events-none flex justify-end">
@@ -99,29 +103,29 @@
                 </div>
             </div>
 
-            <!-- Tab Kategori Utama -->
-            <div class="flex flex-wrap gap-2 bg-bgCard p-3 rounded-xl border border-borderDim">
-                <button onclick="switchCategory('game')" id="btnCatGame" class="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
-                <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
-                <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
-                <button onclick="switchCategory('pln')" id="btnCatPln" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
-                <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
-                <button onclick="switchCategory('ebook')" id="btnCatEbook" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
-                <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
-                <button onclick="switchCategory('template')" id="btnCatTemplate" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
-                <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
+            <!-- Tab Kategori Utama (Sticky & Horizontal Scroll) -->
+            <div class="flex overflow-x-auto gap-2 bg-bgCard p-3 rounded-xl border border-borderDim sticky top-[60px] md:top-[74px] z-30 hide-scrollbar scroll-smooth whitespace-nowrap shadow-lg">
+                <button onclick="switchCategory('game')" id="btnCatGame" class="flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
+                <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
+                <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
+                <button onclick="switchCategory('pln')" id="btnCatPln" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
+                <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
+                <button onclick="switchCategory('ebook')" id="btnCatEbook" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
+                <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
+                <button onclick="switchCategory('template')" id="btnCatTemplate" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
+                <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
             </div>
 
             <!-- Layout PPOB -->
-            <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
+            <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
                     <div class="relative">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
                         <input type="text" id="gameSearch" placeholder="Cari layanan..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
-                    <div id="sidebarListContainer" class="max-h-[420px] overflow-y-auto pr-1">
+                    <div id="sidebarListContainer" class="max-h-[500px] overflow-y-auto pr-1 hide-scrollbar">
                         <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop"></ul>
-                        <div class="grid grid-cols-3 gap-2 lg:hidden" id="sidebarGridMobile"></div>
+                        <div class="grid grid-cols-3 gap-3 lg:hidden" id="sidebarGridMobile"></div>
                     </div>
                 </div>
 
@@ -136,7 +140,7 @@
 
                     <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
                         <div class="flex border-b border-borderDim bg-[#101726]">
-                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
+                            <div id="targetLabelSection" class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
                                 <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
                             </div>
                             <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
@@ -165,7 +169,7 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <h3 class="text-xs md:text-sm font-bold text-white" id="titleNominal">Pilih Nominal</h3>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1" id="nominalContainer">
+                                <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1 hide-scrollbar" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
                                 </div>
                             </div>
@@ -174,7 +178,7 @@
                 </div>
 
                 <div class="lg:col-span-3 space-y-4 md:space-y-6">
-                    <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max">
+                    <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max sticky top-[135px]">
                         <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
                             <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Detail Pesanan</span>
                         </h3>
@@ -201,10 +205,10 @@
             </div>
 
             <!-- Layout Produk Digital -->
-            <div id="digitalLayout" class="hidden space-y-6">
+            <div id="digitalLayout" class="hidden space-y-6 pt-2">
                 <div class="flex justify-between items-center">
                     <h2 id="digitalCategoryTitle" class="text-xl font-bold text-white uppercase">Daftar Produk Digital</h2>
-                    <div class="text-xs text-textMuted">Pilih beberapa produk untuk dibeli sekaligus</div>
+                    <div class="text-xs text-textMuted hidden sm:block">Pilih beberapa produk untuk dibeli sekaligus</div>
                 </div>
                 <div id="digitalCardsContainer" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"></div>
             </div>
@@ -272,6 +276,7 @@
             </div>
 
             <div id="adminDashboardBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6 hidden">
+                <!-- Isi admin panel tidak diubah -->
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <h2 class="text-xl font-bold text-white"><i class="fas fa-cogs text-blue-500"></i> Kelola Produk Digital & Backup</h2>
                     <div class="flex gap-2">
@@ -339,6 +344,7 @@
 
     <!-- MODAL KERANJANG DIGITAL -->
     <div id="cartModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <!-- Struktur Modal Keranjang -->
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col relative shadow-2xl">
             <div class="p-5 border-b border-borderDim flex justify-between items-center">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-shopping-cart text-blue-400"></i> Keranjang Digital</h2>
@@ -383,7 +389,7 @@
 
             <div class="space-y-1 pt-2 border-t border-borderDim">
                 <h4 class="text-xs font-bold text-textMuted uppercase mt-2">Deskripsi Produk</h4>
-                <div id="modalDesc" class="text-xs md:text-sm text-gray-300 leading-relaxed whitespace-pre-line bg-bgInput p-3 rounded-lg border border-borderDim max-h-40 overflow-y-auto"></div>
+                <div id="modalDesc" class="text-xs md:text-sm text-gray-300 leading-relaxed whitespace-pre-line bg-bgInput p-3 rounded-lg border border-borderDim max-h-40 overflow-y-auto hide-scrollbar"></div>
             </div>
 
             <div class="grid grid-cols-2 gap-3 pt-2">
@@ -537,7 +543,7 @@
 
         function initApp() {
             renderSidebar();
-            selectItem('game', categoriesData.game[0].id, false); // false = jangan auto-scroll pas awal load
+            selectItem('game', categoriesData.game[0].id, false); 
 
             fetchDigitalProducts().then(() => {
                 checkUrlSlugOnLoad();
@@ -666,7 +672,7 @@
             ['game', 'pulsa', 'emoney', 'pln', 'tagihan', 'ebook', 'ecourse', 'template', 'aplikasi'].forEach(c => {
                 const btn = document.getElementById('btnCat' + c.charAt(0).toUpperCase() + c.slice(1));
                 if(btn) {
-                    btn.className = (c === cat) ? "px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition" : "px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition";
+                    btn.className = (c === cat) ? "flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition" : "flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition";
                 }
             });
 
@@ -682,7 +688,7 @@
                 document.getElementById('digitalLayout').classList.add('hidden');
                 renderSidebar();
                 const firstItem = categoriesData[cat][0];
-                if(firstItem) selectItem(cat, firstItem.id, false); // Jangan auto-scroll ganti tab
+                if(firstItem) selectItem(cat, firstItem.id, false); 
                 document.getElementById('floatingCartBtn').classList.replace('scale-100', 'scale-0');
             }
         }
@@ -824,16 +830,6 @@
             totalEl.innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        function removeFromCartModal(index) {
-            digitalCart.splice(index, 1);
-            renderCartModal();
-            updateFloatingCartBtn();
-            if(['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
-                renderDigitalCards(currentCategory);
-            }
-            if(digitalCart.length === 0) closeDigitalCart();
-        }
-
         async function checkoutMultiDigital() {
             if(digitalCart.length === 0) return alert('Keranjang kosong!');
             
@@ -912,8 +908,16 @@
                 const activeClassDesktop = isActive ? 'bg-blue-600/10 text-white border border-blue-500/30' : 'text-textMuted hover:bg-borderDim/30 hover:text-white transition';
                 htmlDesktop += `<li><a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}"><img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'"><span class="truncate">${item.name}</span></a></li>`;
 
-                const activeClassMobile = isActive ? 'border-blue-500 bg-blue-600/20 text-white shadow' : 'border-borderDim bg-bgInput text-textMuted hover:text-white';
-                htmlMobile += `<div onclick="selectItem('${currentCategory}', '${item.id}')" class="border ${activeClassMobile} rounded-xl p-2.5 flex flex-col items-center text-center cursor-pointer transition"><img src="${item.img}" class="w-10 h-10 rounded-lg object-cover mb-1.5 border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'"><span class="text-[10px] font-semibold truncate w-full">${item.name}</span></div>`;
+                const activeClassMobile = isActive ? 'ring-2 ring-blue-500' : 'ring-1 ring-borderDim';
+                htmlMobile += `
+                <div onclick="selectItem('${currentCategory}', '${item.id}')" class="cursor-pointer overflow-hidden rounded-xl bg-white flex flex-col shadow-sm transition-transform hover:scale-105 ${activeClassMobile}">
+                    <div class="aspect-[4/5] w-full overflow-hidden bg-bgInput">
+                        <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23131b2f\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%238b94a5\\' font-family=\\'sans-serif\\' font-size=\\'8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\'>Logo</text></svg>'">
+                    </div>
+                    <div class="p-2 flex items-center justify-center bg-white h-[36px]">
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-900 truncate text-center w-full">${item.name}</span>
+                    </div>
+                </div>`;
             });
 
             listDesktop.innerHTML = htmlDesktop || '<li class="p-3 text-xs text-textMuted text-center">Layanan tidak ditemukan</li>';
@@ -924,7 +928,6 @@
             renderSidebar(document.getElementById('gameSearch').value);
         }
 
-        // Tambahan Parameter autoScroll = true (default)
         function selectItem(cat, id, autoScroll = true) {
             currentCategory = cat;
             activeItem = categoriesData[cat].find(i => i.id === id);
@@ -964,11 +967,13 @@
                 renderNominals();
             }
 
-            // AUTO-SCROLL UX FIX
             if (autoScroll) {
                 setTimeout(() => {
-                    const scrollTarget = document.getElementById('activeItemTitle');
-                    if(scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const scrollTarget = document.getElementById('targetLabelSection');
+                    if(scrollTarget) {
+                        const y = scrollTarget.getBoundingClientRect().top + window.scrollY - 140;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }
                 }, 100);
             }
         }
@@ -1114,9 +1119,8 @@
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
 
-            // KEAMANAN PRIVASI: Minimal 5 karakter
             if(query.length < 5) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan minimal 5 karakter (Order ID / Nomor / Email) untuk menjaga privasi.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan minimal 5 karakter (Order ID / Nomor / Email) untuk menjaga privasi transaksi.</td></tr>';
                 return;
             }
 
@@ -1199,7 +1203,6 @@
             }
         }
 
-        // --- ADMIN SCRIPT ---
         async function adminLogin() {
             const username = document.getElementById('adminUser').value.trim();
             const password = document.getElementById('adminPass').value.trim();
