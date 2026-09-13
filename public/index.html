@@ -103,17 +103,26 @@
                 </div>
             </div>
 
-            <!-- Tab Kategori Utama (Sticky & Horizontal Scroll) -->
-            <div class="flex overflow-x-auto gap-2 bg-bgCard p-3 rounded-xl border border-borderDim sticky top-[60px] md:top-[74px] z-30 hide-scrollbar scroll-smooth whitespace-nowrap shadow-lg">
-                <button onclick="switchCategory('game')" id="btnCatGame" class="flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
-                <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
-                <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
-                <button onclick="switchCategory('pln')" id="btnCatPln" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
-                <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
-                <button onclick="switchCategory('ebook')" id="btnCatEbook" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
-                <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
-                <button onclick="switchCategory('template')" id="btnCatTemplate" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
-                <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
+            <!-- Tab Kategori Utama (Sticky, Horizontal Scroll & Fade Effect) -->
+            <div class="sticky top-[60px] md:top-[74px] z-30 relative">
+                <div class="flex overflow-x-auto gap-2 bg-bgCard p-3 rounded-xl border border-borderDim hide-scrollbar scroll-smooth whitespace-nowrap shadow-lg">
+                    <button onclick="switchCategory('game')" id="btnCatGame" class="flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
+                    <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
+                    <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
+                    <button onclick="switchCategory('pln')" id="btnCatPln" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
+                    <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
+                    <button onclick="switchCategory('ebook')" id="btnCatEbook" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
+                    <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
+                    <button onclick="switchCategory('template')" id="btnCatTemplate" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
+                    <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
+                    <!-- Spacer agar tombol terakhir tidak tertutup efek fade -->
+                    <div class="min-w-[30px] flex-shrink-0"></div>
+                </div>
+                
+                <!-- Indikator Gradasi Bayangan (Fade Effect) -->
+                <div class="absolute right-[1px] top-[1px] bottom-[1px] w-16 bg-gradient-to-l from-bgCard to-transparent pointer-events-none rounded-r-xl flex items-center justify-end pr-3">
+                    <i class="fas fa-chevron-right text-textMuted/60 text-xs animate-pulse drop-shadow-md"></i>
+                </div>
             </div>
 
             <!-- Layout PPOB -->
@@ -276,7 +285,6 @@
             </div>
 
             <div id="adminDashboardBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6 hidden">
-                <!-- Isi admin panel tidak diubah -->
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <h2 class="text-xl font-bold text-white"><i class="fas fa-cogs text-blue-500"></i> Kelola Produk Digital & Backup</h2>
                     <div class="flex gap-2">
@@ -486,6 +494,7 @@
     </div>
 
     <script>
+        // PERHATIAN: brandKey sekarang lebih disederhanakan agar filter .includes() bekerja lebih maksimal
         const categoriesData = {
             game: [
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
@@ -494,8 +503,8 @@
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
                 { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' },
                 { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: false, desc: 'Top Up Oneiric Shard cepat.' },
-                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty Mobile', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
-                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok Origin Global', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
+                { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
+                { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok Origin', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
                 { id: 'aov', name: 'Arena of Valor', brandKey: 'Arena of Valor', img: 'assets/aov-logo.png', hasServer: false, desc: 'Top Up Voucher AOV instan.' },
                 { id: 'hok', name: 'Honor of Kings', brandKey: 'Honor of Kings', img: 'assets/hok-logo.png', hasServer: false, desc: 'Top Up Tokens Honor of Kings.' },
                 { id: 'lords', name: 'Lords Mobile', brandKey: 'Lords Mobile', img: 'assets/lords-logo.png', hasServer: false, desc: 'Top Up Diamonds Lords Mobile.' },
@@ -909,12 +918,14 @@
                 htmlDesktop += `<li><a href="#topup" onclick="selectItem('${currentCategory}', '${item.id}')" class="flex items-center gap-3 p-3 rounded-lg ${activeClassDesktop}"><img src="${item.img}" class="w-6 h-6 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'"><span class="truncate">${item.name}</span></a></li>`;
 
                 const activeClassMobile = isActive ? 'ring-2 ring-blue-500' : 'ring-1 ring-borderDim';
+                // Implementasi Trik Blur Background untuk format portrait
                 htmlMobile += `
                 <div onclick="selectItem('${currentCategory}', '${item.id}')" class="cursor-pointer overflow-hidden rounded-xl bg-white flex flex-col shadow-sm transition-transform hover:scale-105 ${activeClassMobile}">
-                    <div class="aspect-[4/5] w-full overflow-hidden bg-bgInput">
-                        <img src="${item.img}" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23131b2f\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%238b94a5\\' font-family=\\'sans-serif\\' font-size=\\'8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\'>Logo</text></svg>'">
+                    <div class="aspect-[4/5] w-full relative overflow-hidden bg-[#0a0f1d] flex items-center justify-center p-2">
+                        <img src="${item.img}" class="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125" aria-hidden="true">
+                        <img src="${item.img}" class="w-full h-full object-contain relative z-10 drop-shadow-[0_10px_8px_rgba(0,0,0,0.5)]" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23131b2f\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%238b94a5\\' font-family=\\'sans-serif\\' font-size=\\'8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\'>Logo</text></svg>'">
                     </div>
-                    <div class="p-2 flex items-center justify-center bg-white h-[36px]">
+                    <div class="p-2 flex items-center justify-center bg-white h-[36px] z-20 relative">
                         <span class="text-[10px] sm:text-xs font-bold text-gray-900 truncate text-center w-full">${item.name}</span>
                     </div>
                 </div>`;
@@ -1035,6 +1046,7 @@
             }
         }
 
+        // PERBAIKAN LOGIKA PENCARIAN BRAND DIGIFLAZZ MENGGUNAKAN INCLUDES
         function renderNominals() {
             const container = document.getElementById('nominalContainer');
             if(allDigiflazzProducts.length === 0) {
@@ -1042,7 +1054,11 @@
                 return;
             }
 
-            activeNominals = allDigiflazzProducts.filter(p => p.brand.toLowerCase().trim() === activeItem.brandKey.toLowerCase().trim());
+            activeNominals = allDigiflazzProducts.filter(p => {
+                if (!p.brand) return false;
+                return p.brand.toLowerCase().includes(activeItem.brandKey.toLowerCase().trim());
+            });
+            
             activeNominals.sort((a, b) => a.price - b.price);
 
             if(activeNominals.length === 0) {
