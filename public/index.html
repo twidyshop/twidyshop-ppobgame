@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Twidy Shop - Top Up Game & Produk Digital</title>
+    
+    <!-- Meta SEO & Favicon -->
+    <meta name="description" content="Situs top up game termurah, beli pulsa, e-money (Dana, OVO, Gopay), token PLN, dan produk digital instan otomatis 24 jam di Twidy Shop.">
+    <meta name="keywords" content="top up game murah, twidy shop, beli diamond ml, top up ff, pulsa murah, token pln, digital store">
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -33,11 +39,9 @@
         .nominal-radio:checked + div .radio-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; display: block; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* Menyembunyikan scrollbar di menu kategori */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* FIX: Mencegah auto-zoom yang nyangkut di HP Android/iOS saat input diklik */
         @media screen and (max-width: 768px) {
             input[type="text"], input[type="number"], input[type="password"], select, textarea {
                 font-size: 16px !important;
@@ -50,9 +54,9 @@
     <!-- Sticky Navbar -->
     <nav class="sticky top-0 z-40 flex justify-between items-center px-4 md:px-10 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         
-        <!-- LOGO & TITLE KEREN -->
+        <!-- LOGO BARU TWIDY SHOP -->
         <div class="flex items-center gap-2 md:gap-3 cursor-pointer group" onclick="navigate('home')">
-            <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center font-extrabold text-lg md:text-xl text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300">T</div>
+            <img src="logo.png" alt="Twidy Shop Logo" class="w-8 h-8 md:w-11 md:h-11 rounded-lg md:rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300 object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
             <div class="flex flex-col justify-center">
                 <span class="font-black text-[17px] md:text-xl tracking-wider leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-300 drop-shadow-sm group-hover:scale-[1.02] transition-transform duration-300 origin-left">TWIDY<span class="text-blue-500">SHOP</span></span>
                 <span class="text-[8px] md:text-[9px] text-blue-400 font-bold tracking-widest uppercase mt-0.5">Topup & Digital Store</span>
@@ -64,9 +68,8 @@
             <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
             <a href="#riwayat" onclick="navigate('riwayat')" id="nav-riwayat" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
             <a href="#promo" onclick="navigate('promo')" id="nav-promo" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
-            <!-- MENU PANDUAN & BANTUAN -->
-            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-headset"></i> Panduan & Bantuan</a>
-            <a href="#admin" onclick="navigate('admin')" id="nav-admin" class="hover:text-white transition flex items-center gap-2 text-yellow-400"><i class="fas fa-lock"></i> Admin Panel</a>
+            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-headset"></i> Panduan</a>
+            <a href="#admin" onclick="navigate('admin')" id="nav-admin" class="hover:text-white transition flex items-center gap-2 text-yellow-400"><i class="fas fa-lock"></i> Admin</a>
         </div>
 
         <div class="flex items-center gap-3 lg:hidden">
@@ -75,8 +78,13 @@
             </button>
         </div>
         
-        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-400/10 px-4 py-2 rounded-full border border-green-400/20">
-            <i class="fas fa-shield-check"></i> Fast • Safe • Trusted
+        <div class="hidden sm:flex items-center gap-4">
+            <a href="twidyshop.apk" download class="text-xs font-bold text-green-400 bg-green-400/10 hover:bg-green-400/20 px-3 py-1.5 rounded-full border border-green-400/30 transition flex items-center gap-1.5 shadow-[0_0_10px_rgba(74,222,128,0.2)]">
+                <i class="fab fa-android"></i> Download APK
+            </a>
+            <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400/20">
+                <i class="fas fa-shield-check"></i> Fast & Safe
+            </div>
         </div>
     </nav>
 
@@ -86,9 +94,11 @@
         <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
         <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
         <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo</a>
-        <!-- MENU PANDUAN & BANTUAN MOBILE -->
         <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-headset mr-2"></i> Panduan & Bantuan</a>
-        <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
+        <!-- Download APK Menu Mobile -->
+        <a href="twidyshop.apk" download class="block py-2 text-green-400 font-bold border-t border-borderDim mt-2 pt-2"><i class="fab fa-android mr-2 text-lg"></i> Download Aplikasi (APK)</a>
+        
+        <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400 border-t border-borderDim mt-2 pt-2"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
     </div>
 
     <!-- CONTENT VIEWS -->
@@ -96,25 +106,10 @@
         
         <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6 relative">
-            <!-- Hero Section -->
-            <div id="home" class="relative rounded-2xl bg-gradient-to-r from-[#141d3a] via-[#1c1836] to-[#0f1423] border border-borderDim overflow-hidden p-5 md:p-10 flex items-center shadow-lg min-h-[160px] md:min-h-[280px]">
-                <div class="absolute right-0 top-0 bottom-0 w-1/3 md:w-1/2 lg:w-2/3 opacity-50 md:opacity-100 pointer-events-none flex justify-end">
-                    <img src="assets/hero-anime.png" alt="Anime Character" class="h-full object-cover" style="mask-image: linear-gradient(to right, transparent, black 40%); -webkit-mask-image: linear-gradient(to right, transparent, black 40%);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'600\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'16\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Twidy Shop</text></svg>'">
-                </div>
-                
-                <div class="relative z-10 max-w-2xl w-full">
-                    <div class="inline-flex items-center gap-2 text-[10px] md:text-xs font-bold text-blue-300 bg-blue-900/40 px-3 py-1 rounded-md border border-blue-800/50 mb-2 md:mb-4 tracking-wider uppercase">
-                        <i class="fas fa-bolt text-blue-400"></i> TWIDY SHOP
-                    </div>
-                    <h1 class="text-2xl md:text-5xl lg:text-6xl font-extrabold mb-2 md:mb-4 leading-tight text-white">
-                        Top Up & Produk Digital<br/>
-                        <span class="text-blue-500">Lebih Mudah!</span>
-                    </h1>
-                    <p class="text-gray-300 mb-4 md:mb-8 text-xs md:text-base max-w-md">
-                        Game, Pulsa, E-Money, Ebook, Ecourse, Template, & Aplikasi.<br class="hidden md:inline">
-                        Semua kebutuhan digitalmu ada di sini!
-                    </p>
-                </div>
+            
+            <!-- Hero Banner Responsive -->
+            <div id="home" class="relative rounded-2xl border border-borderDim overflow-hidden shadow-lg group bg-bgCard min-h-[120px] md:min-h-[200px]">
+                <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-auto object-cover md:object-contain max-h-[200px] sm:max-h-[300px] md:max-h-[400px] group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
             </div>
 
             <!-- Tab Kategori Utama -->
@@ -139,17 +134,45 @@
 
             <!-- Layout PPOB -->
             <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
-                <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max space-y-3">
-                    <div class="relative">
+                
+                <!-- Sidebar / Kategori Kiri -->
+                <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max">
+                    
+                    <!-- TOMBOL DOWNLOAD APK FLOATING CARD -->
+                    <a href="twidyshop.apk" download class="block mb-4 bg-gradient-to-r from-blue-900/30 to-[#101726] border border-blue-500/30 rounded-xl p-3 hover:border-blue-400 transition-all shadow-lg relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex items-center justify-between relative z-10">
+                            <div class="flex items-center gap-3">
+                                <!-- Ikon Android dgn indikator kedip hijau -->
+                                <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 relative border border-blue-500/20">
+                                    <i class="fab fa-android text-xl"></i>
+                                    <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full animate-ping"></span>
+                                    <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full"></span>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-extrabold text-white mb-0.5">🚀 Lebih Praktis!</div>
+                                    <div class="text-[10px] text-blue-300">Download App (10MB)</div>
+                                </div>
+                            </div>
+                            <div class="bg-blue-600 group-hover:bg-blue-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(37,99,235,0.3)]">
+                                Unduh <i class="fas fa-download"></i>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Search Input -->
+                    <div class="relative mb-3">
                         <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
                         <input type="text" id="gameSearch" placeholder="Cari layanan..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
                     </div>
+                    
                     <div id="sidebarListContainer" class="max-h-[500px] overflow-y-auto pr-1 hide-scrollbar">
                         <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop"></ul>
                         <div class="grid grid-cols-3 gap-3 lg:hidden" id="sidebarGridMobile"></div>
                     </div>
                 </div>
 
+                <!-- Bagian Tengah (Input & Nominal) -->
                 <div class="lg:col-span-6 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
                         <img id="activeItemImg" src="assets/ml-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
@@ -198,6 +221,7 @@
                     </div>
                 </div>
 
+                <!-- Detail Pembayaran Kanan -->
                 <div class="lg:col-span-3 space-y-4 md:space-y-6">
                     <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max sticky top-[135px]">
                         <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
@@ -222,7 +246,6 @@
                             <i class="fas fa-wallet"></i> Bayar Sekarang &rarr;
                         </button>
 
-                        <!-- LINK BANTUAN DI BAWAH PEMBAYARAN -->
                         <a href="https://wa.me/628970108026?text=Halo%20Admin%20Twidy%20Shop,%20saya%20butuh%20bantuan%20terkait%20transaksi..." target="_blank" class="block text-center text-xs text-textMuted mt-4 hover:text-green-400 transition flex items-center justify-center gap-1.5">
                             <i class="fab fa-whatsapp"></i> Butuh bantuan? Hubungi CS
                         </a>
@@ -293,7 +316,6 @@
                     <div class="md:col-span-2 space-y-4">
                         <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-book text-blue-400"></i> Cara Transaksi</h3>
                         <div class="space-y-3">
-                            <!-- Step 1 -->
                             <div class="bg-bgCard p-4 rounded-xl border border-borderDim flex gap-4 items-start hover:border-blue-500/50 transition">
                                 <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold flex-shrink-0">1</div>
                                 <div>
@@ -301,7 +323,6 @@
                                     <p class="text-xs text-textMuted leading-relaxed">Pilih kategori game, pulsa, atau produk digital yang ingin kamu beli dari halaman utama Twidy Shop.</p>
                                 </div>
                             </div>
-                            <!-- Step 2 -->
                             <div class="bg-bgCard p-4 rounded-xl border border-borderDim flex gap-4 items-start hover:border-blue-500/50 transition">
                                 <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold flex-shrink-0">2</div>
                                 <div>
@@ -309,7 +330,6 @@
                                     <p class="text-xs text-textMuted leading-relaxed">Ketikkan User ID / Nomor HP Tujuan dengan benar. Jangan lupa pilih nominal yang kamu inginkan.</p>
                                 </div>
                             </div>
-                            <!-- Step 3 -->
                             <div class="bg-bgCard p-4 rounded-xl border border-borderDim flex gap-4 items-start hover:border-blue-500/50 transition">
                                 <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold flex-shrink-0">3</div>
                                 <div>
@@ -317,7 +337,6 @@
                                     <p class="text-xs text-textMuted leading-relaxed">Klik tombol "Bayar Sekarang". Anda akan diarahkan ke halaman QRIS. Scan menggunakan Gopay, OVO, Dana, ShopeePay, atau M-Banking.</p>
                                 </div>
                             </div>
-                            <!-- Step 4 -->
                             <div class="bg-bgCard p-4 rounded-xl border border-borderDim flex gap-4 items-start hover:border-blue-500/50 transition">
                                 <div class="w-8 h-8 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold flex-shrink-0">4</div>
                                 <div>
@@ -538,7 +557,7 @@
     <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
         <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-2 text-textMuted">
-                <div class="w-6 h-6 bg-blue-600/50 rounded flex items-center justify-center font-bold text-sm text-white">T</div>
+                <img src="logo.png" alt="Logo" class="w-6 h-6 rounded object-cover shadow-sm">
                 <span class="font-bold text-white text-sm">TWIDY SHOP</span>
                 <span class="text-xs ml-2">PPOB & Top Up Game Otomatis</span>
             </div>
