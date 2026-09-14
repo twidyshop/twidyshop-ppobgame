@@ -107,9 +107,9 @@
         <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6 relative">
             
-            <!-- Hero Banner Responsive -->
-            <div id="home" class="relative rounded-2xl border border-borderDim overflow-hidden shadow-lg group bg-bgCard min-h-[120px] md:min-h-[200px]">
-                <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-auto object-cover md:object-contain max-h-[200px] sm:max-h-[300px] md:max-h-[400px] group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
+            <!-- Hero Banner Responsive (Full Width & Auto Height) -->
+            <div id="home" class="relative rounded-2xl border border-borderDim overflow-hidden shadow-lg group bg-bgCard">
+                <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-auto group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
             </div>
 
             <!-- Tab Kategori Utama -->
@@ -138,23 +138,23 @@
                 <!-- Sidebar / Kategori Kiri -->
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max">
                     
-                    <!-- TOMBOL DOWNLOAD APK FLOATING CARD -->
-                    <a href="twidyshop.apk" download class="block mb-4 bg-gradient-to-r from-blue-900/30 to-[#101726] border border-blue-500/30 rounded-xl p-3 hover:border-blue-400 transition-all shadow-lg relative overflow-hidden group">
+                    <!-- TOMBOL DOWNLOAD APK FLOATING CARD (Slim & Logo Baru) -->
+                    <a href="twidyshop.apk" download class="block mb-3 bg-gradient-to-r from-blue-900/30 to-[#101726] border border-blue-500/30 rounded-xl p-2 md:p-2.5 hover:border-blue-400 transition-all shadow-lg relative overflow-hidden group">
                         <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="flex items-center justify-between relative z-10">
-                            <div class="flex items-center gap-3">
-                                <!-- Ikon Android dgn indikator kedip hijau -->
-                                <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 relative border border-blue-500/20">
-                                    <i class="fab fa-android text-xl"></i>
-                                    <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full animate-ping"></span>
-                                    <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full"></span>
+                            <div class="flex items-center gap-2.5 md:gap-3">
+                                <!-- Ikon APK Pakai Logo Aplikasi -->
+                                <div class="w-9 h-9 md:w-10 md:h-10 shrink-0 relative">
+                                    <img src="logo.png" alt="App Icon" class="w-full h-full rounded-lg object-cover shadow-sm border border-blue-500/30" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
+                                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full animate-ping"></span>
+                                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full"></span>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-extrabold text-white mb-0.5">🚀 Lebih Praktis!</div>
-                                    <div class="text-[10px] text-blue-300">Download App (10MB)</div>
+                                    <div class="text-[11px] md:text-xs font-extrabold text-white mb-0.5">🚀 Lebih Praktis!</div>
+                                    <div class="text-[9px] md:text-[10px] text-blue-300">Download App (10MB)</div>
                                 </div>
                             </div>
-                            <div class="bg-blue-600 group-hover:bg-blue-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(37,99,235,0.3)]">
+                            <div class="bg-blue-600 group-hover:bg-blue-500 text-white text-[9px] md:text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(37,99,235,0.3)]">
                                 Unduh <i class="fas fa-download"></i>
                             </div>
                         </div>
