@@ -14,7 +14,7 @@ app.use(express.static('public'));
 const dbFile = path.join(__dirname, 'transactions.json');
 const digitalDbFile = path.join(__dirname, 'digital_products.json');
 
-// KREDENSIAL & ENDPOINT HAYBI (Sesuai Dokumentasi H2H Format 3)
+// KREDENSIAL & ENDPOINT HAYBI
 const HAYBI_USER = process.env.HAYBI_USERNAME || 'AGN90501C';
 const HAYBI_KEY = process.env.HAYBI_API_KEY || 'zp5yqScvYqtwwavknURzoP8IoUcS1I48';
 const HAYBI_BASE_URL = 'https://haybi.id/api/h2h';
@@ -53,11 +53,10 @@ let cachedProducts = null;
 let cacheTimestamp = 0;
 const CACHE_DURATION = 5 * 60 * 1000;
 
-// Kalkulasi Margin Baru: 1% (Minimal 200, Maksimal 500)
-// Diperbaiki agar tidak menghasilkan NaN / undefined
+// --- FUNGSI HELPER MARGIN (1%, Min Rp 200, Max Rp 500) ---
 function calculateMargin(basePrice) {
     let bp = parseInt(basePrice);
-    if (isNaN(bp) || bp <= 0) return 0; // Kembalikan 0 jika data tidak valid (akan di-filter nanti)
+    if (isNaN(bp) || bp <= 0) return 0; 
     let margin = Math.round(bp * 0.01);
     if (margin < 200) margin = 200;
     if (margin > 500) margin = 500;
@@ -96,21 +95,17 @@ async function sendEmailReceipt(trx, targetEmail) {
                 <h1 style="color: #2563eb; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px;">TWIDY SHOP</h1>
                 <p style="margin: 5px 0 0 0; font-size: 12px; color: #6b7280;">twidyshop.my.id</p>
             </div>
-            
             <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;">
                 <h2 style="color: #111827; margin-top: 0; font-size: 20px;">Terima Kasih atas Pembelian Anda! 🎉</h2>
                 <p style="line-height: 1.6;">Pembayaran untuk pesanan digital Anda telah berhasil dikonfirmasi. Berikut adalah detail pesanan dan tautan akses produk Anda:</p>
-                
                 <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 14px;">
                     <p style="margin: 5px 0;"><strong>Order ID:</strong> <span style="font-family: monospace;">${trx.order_id}</span></p>
                     <p style="margin: 5px 0;"><strong>Total Bayar:</strong> Rp ${trx.amount.toLocaleString('id-ID')}</p>
                     <p style="margin: 5px 0;"><strong>Tanggal:</strong> ${new Date().toLocaleString('id-ID')}</p>
                 </div>
-
                 <h3 style="color: #111827; margin-bottom: 15px; font-size: 16px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">Daftar Produk & Link Unduh:</h3>
                 ${itemsHtml}
             </div>
-
             <p style="margin-top: 20px; font-size: 12px; color: #9ca3af; text-align: center; line-height: 1.5;">
                 Harap simpan email ini sebagai bukti pembelian yang sah.<br>
                 &copy; ${new Date().getFullYear()} Twidy Shop. All rights reserved.
@@ -124,9 +119,7 @@ async function sendEmailReceipt(trx, targetEmail) {
             to: targetEmail,
             subject: `✅ Akses Produk: Pesanan Anda Berhasil! (${trx.order_id})`,
             html: emailHtml
-        }, {
-            headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' }
-        });
+        }, { headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' } });
     } catch (error) {
         console.error(`[Resend Error] Gagal kirim email:`, error.message);
     }
@@ -141,7 +134,6 @@ app.post('/api/admin/login', (req, res) => {
     const { username, password } = req.body;
     const adminUser = process.env.ADMIN_USER || 'admin';
     const adminPass = process.env.ADMIN_PASS || 'twidy2026';
-
     if (username === adminUser && password === adminPass) {
         res.json({ success: true, token: 'twidy-admin-secure-token' });
     } else {
@@ -154,7 +146,6 @@ app.post('/api/admin/products', (req, res) => {
     if (!category || !name || !price || !downloadUrl) {
         return res.status(400).json({ success: false, message: 'Data produk kurang lengkap!' });
     }
-
     const digitalProducts = readDigitalDB();
     const newProduct = {
         id: `DIGI-${Date.now()}-${Math.floor(Math.random()*1000)}`,
@@ -166,7 +157,6 @@ app.post('/api/admin/products', (req, res) => {
         image: image && image.trim() !== '' ? image : 'https://via.placeholder.com/150?text=TwidyShop',
         created_at: new Date().toISOString()
     };
-
     digitalProducts.push(newProduct);
     saveDigitalDB(digitalProducts);
     res.json({ success: true, message: 'Produk digital berhasil ditambahkan!' });
@@ -177,7 +167,6 @@ app.post('/api/admin/products/bulk', (req, res) => {
     if (!Array.isArray(products) || products.length === 0) {
         return res.status(400).json({ success: false, message: 'Format data masal tidak valid!' });
     }
-
     let digitalProducts = readDigitalDB();
     products.forEach(p => {
         digitalProducts.push({
@@ -191,7 +180,6 @@ app.post('/api/admin/products/bulk', (req, res) => {
             created_at: new Date().toISOString()
         });
     });
-
     saveDigitalDB(digitalProducts);
     res.json({ success: true, message: `Berhasil mengimpor ${products.length} produk secara masal!` });
 });
@@ -199,7 +187,6 @@ app.post('/api/admin/products/bulk', (req, res) => {
 app.put('/api/admin/products/:id', (req, res) => {
     const { id } = req.params;
     const { category, name, price, description, downloadUrl, image } = req.body;
-    
     let digitalProducts = readDigitalDB();
     const index = digitalProducts.findIndex(p => p.id === id);
     if (index > -1) {
@@ -227,8 +214,7 @@ app.delete('/api/admin/products/:id', (req, res) => {
     res.json({ success: true, message: 'Produk berhasil dihapus!' });
 });
 
-
-// --- PENGGABUNGAN DATA (DIGIFLAZZ & HAYBI) SUPER KETAT ---
+// --- PENGGABUNGAN DATA (DIGIFLAZZ + HAYBI DENGAN METODE TLIBRARY) ---
 app.get('/api/products', async (req, res) => {
     try {
         const now = Date.now();
@@ -237,17 +223,11 @@ app.get('/api/products', async (req, res) => {
         }
 
         let combinedProducts = [];
+        
+        // Brand yang menjadi tanggung jawab Haybi di TwidyShop
+        const haybiTargetBrands = ['PLN', 'GO PAY', 'OVO', 'DANA', 'SHOPEE PAY', 'LINKAJA', 'FREE FIRE', 'PUBG MOBILE', 'ROBLOX'];
 
-        // Fungsi Detektor: Mengunci Brand Apa Saja yang Boleh Diambil dari Haybi
-        const isHaybiTarget = (brandStr) => {
-            if (!brandStr) return false;
-            // Ubah string jadi huruf besar semua dan hapus spasi (e.g. "GO PAY" jadi "GOPAY")
-            const b = String(brandStr).toUpperCase().replace(/[^A-Z]/g, ''); 
-            const targets = ['PLN', 'GOPAY', 'OVO', 'DANA', 'SHOPEEPAY', 'LINKAJA', 'FREEFIRE', 'PUBGMOBILE', 'ROBLOX'];
-            return targets.some(t => b.includes(t));
-        };
-
-        // 1. Tarik dari Digiflazz
+        // 1. Tarik dari Digiflazz (Hanya produk yang BUKAN wewenang Haybi)
         const digiUser = process.env.DIGIFLAZZ_USERNAME;
         const digiKey = process.env.DIGIFLAZZ_API_KEY;
         if (digiUser && digiKey) {
@@ -269,8 +249,12 @@ app.get('/api/products', async (req, res) => {
                         supplier: 'digiflazz',
                         price: calculateMargin(bp)
                     };
-                }).filter(p => p.price > 0 && p.product_name && !isHaybiTarget(p.brand)); 
-                // Filter di atas mencegah Digiflazz memuat PLN/EMoney/FF/PUBG/Roblox
+                }).filter(p => {
+                    if (p.price <= 0 || !p.product_name) return false;
+                    // Block brand yang ditugaskan ke Haybi
+                    const isHaybiTerritory = haybiTargetBrands.some(target => String(p.brand).toUpperCase() === target);
+                    return !isHaybiTerritory;
+                }); 
 
                 combinedProducts.push(...mappedDigi);
             } catch (err) {
@@ -278,7 +262,7 @@ app.get('/api/products', async (req, res) => {
             }
         }
 
-        // 2. Tarik dari Haybi
+        // 2. Tarik dari Haybi (Parsing Data Cerdas ala TLIBRARY)
         try {
             const refIdHaybi = `PRC-${Date.now()}`;
             const signHaybi = crypto.createHash('md5').update(HAYBI_USER + HAYBI_KEY + refIdHaybi).digest('hex');
@@ -289,41 +273,51 @@ app.get('/api/products', async (req, res) => {
                 sign: signHaybi
             }, { headers: { 'Content-Type': 'application/json' }, timeout: 8000 });
 
-            const rawHaybi = haybiRes.data;
+            const rawHaybi = haybiRes.data?.data || haybiRes.data;
             let haybiData = [];
             
-            // Pencarian Array dalam JSON Response Haybi yang dinamis
-            if (rawHaybi && Array.isArray(rawHaybi.data)) haybiData = rawHaybi.data;
+            if (Array.isArray(rawHaybi)) haybiData = rawHaybi;
             else if (rawHaybi && Array.isArray(rawHaybi.produk)) haybiData = rawHaybi.produk;
-            else if (Array.isArray(rawHaybi)) haybiData = rawHaybi;
-            else {
-                for (let key in rawHaybi) {
-                    if (Array.isArray(rawHaybi[key])) { haybiData = rawHaybi[key]; break; }
-                }
-            }
 
-            const mappedHaybi = haybiData.map(p => {
-                // Haybi biasanya menggunakan key JSON alternatif
-                const bp = parseInt(p.price || p.harga || p.selling_price || p.harga_agen || 0);
-                const pName = p.product_name || p.nama || p.name || p.produk;
-                const pCode = p.buyer_sku_code || p.kode || p.sku || p.code || p.id;
-                const pBrand = p.brand || p.operator || p.kategori || p.category;
-                
-                // Pengecekan Status Aktif (Mencegah produk mati tetap muncul)
-                const s = String(p.status || p.is_active || p.buyer_product_status || '').toLowerCase();
-                const isActive = s === 'sukses' || s === 'aktif' || s === 'normal' || s === '1' || s === 'true' || p.buyer_product_status === true;
+            const mappedHaybi = haybiData.map(produk => {
+                // MENGGUNAKAN LOOP PENCARI HARGA DARI TLIBRARY
+                let hargaDasar = parseInt(produk.harga || produk.price || produk.selling_price || produk.hargadasar || 0);
+                if (hargaDasar === 0) {
+                    for (const k in produk) {
+                        const val = parseInt(produk[k]);
+                        if (!isNaN(val) && val > 500) { hargaDasar = val; break; }
+                    }
+                }
+
+                const skuCode = produk.kode_produk || produk.kode || produk.buyer_sku_code || produk.id;
+                const prodName = produk.nama_produk || produk.nama || produk.product_name || produk.produk;
+                const textCheck = String(skuCode + " " + prodName).toUpperCase();
+
+                // MENGGUNAKAN PEMAKSAAN KATEGORI DARI TLIBRARY
+                let detectedBrand = produk.brand || produk.operator || produk.kategori || 'Haybi';
+                let isTarget = false;
+
+                if (textCheck.includes('PLN') || textCheck.includes('TOKEN')) { detectedBrand = 'PLN'; isTarget = true; }
+                else if (textCheck.includes('DANA')) { detectedBrand = 'DANA'; isTarget = true; }
+                else if (textCheck.includes('OVO')) { detectedBrand = 'OVO'; isTarget = true; }
+                else if (textCheck.includes('GOPAY') || textCheck.includes('GO PAY')) { detectedBrand = 'GO PAY'; isTarget = true; }
+                else if (textCheck.includes('SHOPEE')) { detectedBrand = 'SHOPEE PAY'; isTarget = true; }
+                else if (textCheck.includes('LINKAJA')) { detectedBrand = 'LINKAJA'; isTarget = true; }
+                else if (textCheck.includes('FREE FIRE') || textCheck.includes('FF')) { detectedBrand = 'Free Fire'; isTarget = true; }
+                else if (textCheck.includes('PUBG')) { detectedBrand = 'PUBG Mobile'; isTarget = true; }
+                else if (textCheck.includes('ROBLOX')) { detectedBrand = 'Roblox'; isTarget = true; }
 
                 return {
-                    buyer_sku_code: pCode || '',
-                    product_name: pName || '',
-                    price: calculateMargin(bp),
-                    brand: pBrand || 'Haybi',
-                    buyer_product_status: isActive || !p.status, // Fallback true
-                    note: p.note || p.keterangan || p.desc || 'Tersedia',
-                    supplier: 'haybi'
+                    buyer_sku_code: skuCode || '',
+                    product_name: prodName || '',
+                    price: calculateMargin(hargaDasar),
+                    brand: detectedBrand, // Harus match persis dengan kategori TwidyShop
+                    buyer_product_status: true,
+                    note: produk.keterangan || produk.note || 'Tersedia',
+                    supplier: 'haybi',
+                    isTarget
                 };
-            }).filter(p => p.price > 0 && p.product_name !== '' && p.buyer_sku_code !== '' && isHaybiTarget(p.brand));
-            // Filter di atas HANYA mengizinkan Haybi mengirim PLN/EMoney/FF/PUBG/Roblox. Sisanya (kayak pulsa telkomsel) dibuang.
+            }).filter(p => p.price > 0 && p.product_name !== '' && p.buyer_sku_code !== '' && p.isTarget);
 
             combinedProducts.push(...mappedHaybi);
         } catch (err) {
@@ -372,10 +366,74 @@ app.post('/api/inquiry-pasca', async (req, res) => {
     }
 });
 
-// Endpoint Riwayat Transaksi Real-time
-app.get('/api/transactions', (req, res) => {
+// --- FITUR AUTO-POLLING CEK STATUS REALTIME DARI TLIBRARY ---
+app.get('/api/transactions', async (req, res) => {
     try {
-        return res.status(200).json(readDB().reverse());
+        let db = readDB();
+        let needsSave = false;
+        
+        // AUTO SYNC STATUS: Cek max 5 transaksi terakhir yang masih 'DIPROSES'
+        const pendingTrx = db.filter(t => t.status === 'DIPROSES' && !t.is_digital).slice(-5); 
+        if (pendingTrx.length > 0) {
+            await Promise.all(pendingTrx.map(async (trx) => {
+                try {
+                    if (trx.supplier === 'haybi') {
+                        if (HAYBI_USER && HAYBI_KEY) {
+                            const sign = crypto.createHash('md5').update(HAYBI_USER + HAYBI_KEY + trx.order_id).digest('hex');
+                            const checkRes = await axios.post(`${HAYBI_BASE_URL}/cek-status`, {
+                                username: HAYBI_USER,
+                                ref_id: trx.order_id,
+                                sign: sign
+                            });
+                            const result = checkRes.data;
+                            if (result && result.status) {
+                                const hStatus = result.status.toLowerCase();
+                                if (hStatus === 'sukses' || hStatus === 'success' || result.rc === '00') {
+                                    trx.status = 'SUKSES';
+                                    trx.sn = result.sn || result.pesan || trx.sn;
+                                    needsSave = true;
+                                } else if (hStatus === 'gagal' || hStatus === 'error' || result.rc === '02') {
+                                    trx.status = 'GAGAL';
+                                    trx.sn = result.pesan || 'Transaksi Gagal';
+                                    needsSave = true;
+                                }
+                            }
+                        }
+                    } else {
+                        // Default ke Digiflazz
+                        const user = process.env.DIGIFLAZZ_USERNAME;
+                        const key = process.env.DIGIFLAZZ_API_KEY;
+                        if (user && key) {
+                            const sign = crypto.createHash('md5').update(user + key + trx.order_id).digest('hex');
+                            const checkRes = await axios.post('https://api.digiflazz.com/v1/transaction', {
+                                username: user,
+                                buyer_sku_code: trx.product_code,
+                                customer_no: trx.target_id,
+                                ref_id: trx.order_id,
+                                sign: sign
+                            });
+                            const result = checkRes.data?.data;
+                            if (result && result.status) {
+                                const dStatus = result.status.toLowerCase();
+                                if (dStatus === 'sukses') {
+                                    trx.status = 'SUKSES';
+                                    trx.sn = result.sn || trx.sn;
+                                    needsSave = true;
+                                } else if (dStatus === 'gagal') {
+                                    trx.status = 'GAGAL';
+                                    trx.sn = result.message || 'Transaksi Gagal';
+                                    needsSave = true;
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    // Abaikan error jaringan saat sinkronisasi
+                }
+            }));
+            if (needsSave) saveDB(db);
+        }
+        return res.status(200).json(db.reverse());
     } catch (e) {
         return res.status(500).json({ message: 'Error Database' });
     }
@@ -384,7 +442,6 @@ app.get('/api/transactions', (req, res) => {
 // Endpoint Checkout & Buat Transaksi Midtrans
 app.post('/api/checkout', async (req, res) => {
   try {
-    // Menerima parameter "supplier" langsung dari frontend
     const { targetId, serverId, price, productName, productCode, isDigital, isPasca, downloadUrl, cartItems, supplier } = req.body;
     if (!targetId) return res.status(400).json({ message: 'Data kurang lengkap' });
 
@@ -429,7 +486,7 @@ app.post('/api/checkout', async (req, res) => {
         product_name: originalProductName,
         amount: amount,
         status: 'UNPAID',
-        supplier: supplier || 'digiflazz', // Identitas Api Supplier diselamatkan di sini
+        supplier: supplier || 'digiflazz', // Menyimpan API target
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
         is_pasca: !!isPasca, 
@@ -494,9 +551,11 @@ app.post('/api/webhook', async (req, res) => {
                 });
 
                 const result = haybiRes.data || {};
-                if (result.status === 'sukses' || result.rc === '00') {
+                const rStatus = (result.status || '').toLowerCase();
+                
+                if (rStatus === 'sukses' || rStatus === 'success' || result.rc === '00') {
                     trx.status = 'SUKSES';
-                } else if (result.status === 'error' || result.status === 'gagal' || result.rc === '02') {
+                } else if (rStatus === 'error' || rStatus === 'gagal' || result.rc === '02') {
                     trx.status = 'GAGAL';
                 } else {
                     trx.status = 'DIPROSES';
@@ -526,10 +585,11 @@ app.post('/api/webhook', async (req, res) => {
                 try {
                     const digiRes = await axios.post('https://api.digiflazz.com/v1/transaction', payloadDigiflazz);
                     const result = digiRes.data.data || {};
+                    const rStatus = (result.status || '').toLowerCase();
                     
-                    if (result.status === 'Sukses' || result.status === 0) {
+                    if (rStatus === 'sukses' || result.status === 0) {
                         trx.status = 'SUKSES';
-                    } else if (result.status === 'Gagal') {
+                    } else if (rStatus === 'gagal') {
                         trx.status = 'GAGAL';
                     } else {
                         trx.status = 'DIPROSES';
@@ -564,13 +624,14 @@ app.post('/api/digiflazz-webhook', (req, res) => {
     let trx = db.find(t => t.order_id === ref_id);
     if (!trx) return res.status(200).send("OK");
 
-    if (status === 'Sukses') trx.status = 'SUKSES';
-    else if (status === 'Gagal') trx.status = 'GAGAL';
+    const cStatus = (status || '').toLowerCase();
+    if (cStatus === 'sukses') trx.status = 'SUKSES';
+    else if (cStatus === 'gagal') trx.status = 'GAGAL';
     else trx.status = 'DIPROSES';
     
     const currentSn = sn || message;
     if (currentSn && currentSn.trim() !== '') trx.sn = currentSn;
-    else if (status === 'Sukses') trx.sn = 'Transaksi Berhasil';
+    else if (trx.status === 'SUKSES') trx.sn = 'Transaksi Berhasil';
     
     saveDB(db);
     return res.status(200).send("OK");
@@ -579,7 +640,7 @@ app.post('/api/digiflazz-webhook', (req, res) => {
   }
 });
 
-// Webhook Haybi (Callback)
+// Webhook Haybi
 app.post('/api/haybi-webhook', (req, res) => {
   try {
     const payload = req.body;
@@ -594,9 +655,10 @@ app.post('/api/haybi-webhook', (req, res) => {
     let trx = db.find(t => t.order_id === ref_id);
     if (!trx) return res.status(200).send("OK");
 
-    if (status === 'sukses' || status === 'Sukses' || payload.rc === '00') {
+    const cStatus = (status || '').toLowerCase();
+    if (cStatus === 'sukses' || cStatus === 'success' || payload.rc === '00') {
         trx.status = 'SUKSES';
-    } else if (status === 'error' || status === 'gagal' || status === 'Gagal' || payload.rc === '02') {
+    } else if (cStatus === 'error' || cStatus === 'gagal' || payload.rc === '02') {
         trx.status = 'GAGAL';
     } else {
         trx.status = 'DIPROSES';
