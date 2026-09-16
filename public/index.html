@@ -643,8 +643,9 @@
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
                 { id: 'ff', name: 'Free Fire', brandKey: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, desc: 'Top Up Diamond Free Fire instan.' },
                 { id: 'pubg', name: 'PUBG Mobile', brandKey: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, desc: 'Top Up UC PUBG Mobile harga promo.' },
+                { id: 'roblox', name: 'Roblox', brandKey: 'Roblox', img: 'assets/roblox-logo.png', hasServer: false, desc: 'Top Up Robux Roblox resmi & instan.' },
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
-                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: false, desc: 'Top Up Genesis Crystal resmi.' },
+                { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: true, desc: 'Top Up Genesis Crystal resmi.' },
                 { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: false, desc: 'Top Up Oneiric Shard cepat.' },
                 { id: 'codm', name: 'Call of Duty Mobile', brandKey: 'Call of Duty', img: 'assets/codm-logo.png', hasServer: false, desc: 'Top Up CP Call of Duty Mobile.' },
                 { id: 'ragnarok', name: 'Ragnarok Origin', brandKey: 'Ragnarok Origin', img: 'assets/ragnarok-logo.png', hasServer: false, desc: 'Top Up Nyan Berry termurah.' },
@@ -1065,7 +1066,7 @@
                 <div onclick="selectItem('${currentCategory}', '${item.id}')" class="cursor-pointer overflow-hidden rounded-xl bg-white flex flex-col shadow-sm transition-transform hover:scale-105 ${activeClassMobile}">
                     <div class="aspect-[4/5] w-full relative overflow-hidden bg-[#0a0f1d] flex items-center justify-center p-2">
                         <img src="${item.img}" class="absolute inset-0 w-full h-full object-cover blur-xl opacity-40 scale-125" aria-hidden="true">
-                        <img src="${item.img}" class="w-full h-full object-contain relative z-10 drop-shadow-[0_10px_8px_rgba(0,0,0,0.5)]" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23131b2f\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%238b94a5\\' font-family=\\'sans-serif\\' font-size=\\'8\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\'>Logo</text></svg>'">
+                        <img src="${item.img}" class="w-full h-full object-contain relative z-10 drop-shadow-[0_10px_8px_rgba(0,0,0,0.5)]" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'40\\' height=\\'40\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23131b2f\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%238b94a5\\' font-family=\\'sans-serif\\' font-size=\'8\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
                     </div>
                     <div class="p-2 flex items-center justify-center bg-white h-[36px] z-20 relative">
                         <span class="text-[10px] sm:text-xs font-bold text-gray-900 truncate text-center w-full">${item.name}</span>
@@ -1375,7 +1376,7 @@
                     document.getElementById('adminLoginBox').classList.add('hidden');
                     document.getElementById('adminDashboardBox').classList.remove('hidden');
                     loadAdminProducts();
-                    loadAdminTransactions(); // <--- BARU: Memanggil otomatis data laporan transaksi
+                    loadAdminTransactions();
                 } else {
                     alert(data.message);
                 }
@@ -1614,7 +1615,6 @@
             }
         });
 
-        // --- FUNGSI BARU UNTUK LAPORAN TRANSAKSI ADMIN ---
         let adminTxData = [];
 
         async function loadAdminTransactions() {
