@@ -293,11 +293,11 @@ app.get('/api/products', async (req, res) => {
                 const prodName = produk.nama_produk || produk.nama || produk.product_name || produk.produk;
                 const textCheck = String(skuCode + " " + prodName).toUpperCase();
 
-                // MENGGUNAKAN PEMAKSAAN KATEGORI DARI TLIBRARY
+                // MENGGUNAKAN PEMAKSAAN KATEGORI DARI TLIBRARY (PERBAIKAN PLN KETAT)
                 let detectedBrand = produk.brand || produk.operator || produk.kategori || 'Haybi';
                 let isTarget = false;
 
-                if (textCheck.includes('PLN') || textCheck.includes('TOKEN')) { detectedBrand = 'PLN'; isTarget = true; }
+                if (textCheck.includes('PLN') || textCheck.includes('TOKEN PLN') || textCheck.includes('TOKEN LISTRIK')) { detectedBrand = 'PLN'; isTarget = true; }
                 else if (textCheck.includes('DANA')) { detectedBrand = 'DANA'; isTarget = true; }
                 else if (textCheck.includes('OVO')) { detectedBrand = 'OVO'; isTarget = true; }
                 else if (textCheck.includes('GOPAY') || textCheck.includes('GO PAY')) { detectedBrand = 'GO PAY'; isTarget = true; }
