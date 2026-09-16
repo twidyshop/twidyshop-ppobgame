@@ -24,7 +24,8 @@ const readDB = () => {
 };
 
 const saveDB = (data) => {
-    fs.writeFileSync(dbFile, JSON.stringify(data.slice(-100), null, 2));
+    // Menyimpan hingga 10.000 transaksi agar aman untuk diexport ke Excel
+    fs.writeFileSync(dbFile, JSON.stringify(data.slice(-10000), null, 2));
 };
 
 const readDigitalDB = () => {
