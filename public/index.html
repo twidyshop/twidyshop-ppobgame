@@ -439,6 +439,51 @@
                     <h3 class="font-bold text-sm text-white mb-3">Daftar Produk Digital Aktif</h3>
                     <div id="adminProductList" class="space-y-2"></div>
                 </div>
+
+                <!-- TABEL LAPORAN TRANSAKSI ADMIN -->
+                <div class="bg-bgInput p-4 rounded-xl border border-borderDim space-y-4 mt-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-2">
+                        <h3 class="font-bold text-sm text-white"><i class="fas fa-chart-line text-blue-400"></i> Laporan Semua Transaksi</h3>
+                        <button onclick="exportToExcel()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-3 py-1.5 rounded text-xs transition flex items-center gap-2">
+                            <i class="fas fa-file-excel"></i> Export Excel (CSV)
+                        </button>
+                    </div>
+
+                    <!-- Filter Tanggal -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex-1">
+                            <label class="block text-xs text-textMuted mb-1">Mulai Tanggal</label>
+                            <input type="date" id="filterStart" class="w-full bg-bgCard p-2 rounded border border-borderDim text-xs text-white outline-none focus:border-blue-500" />
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-xs text-textMuted mb-1">Sampai Tanggal</label>
+                            <input type="date" id="filterEnd" class="w-full bg-bgCard p-2 rounded border border-borderDim text-xs text-white outline-none focus:border-blue-500" />
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="loadAdminTransactions()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded text-xs transition">Terapkan Filter</button>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Data -->
+                    <div class="overflow-x-auto border border-borderDim rounded-lg">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="bg-bgCard text-textMuted border-b border-borderDim">
+                                <tr>
+                                    <th class="p-2.5">Waktu</th>
+                                    <th class="p-2.5">Order ID</th>
+                                    <th class="p-2.5">Produk</th>
+                                    <th class="p-2.5">Tujuan</th>
+                                    <th class="p-2.5 text-right">Harga</th>
+                                    <th class="p-2.5 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTxBody" class="divide-y divide-borderDim bg-[#0b101e]">
+                                <!-- Data akan masuk ke sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -1330,6 +1375,7 @@
                     document.getElementById('adminLoginBox').classList.add('hidden');
                     document.getElementById('adminDashboardBox').classList.remove('hidden');
                     loadAdminProducts();
+                    loadAdminTransactions(); // <--- BARU: Memanggil otomatis data laporan transaksi
                 } else {
                     alert(data.message);
                 }
@@ -1567,6 +1613,88 @@
                 btn.disabled = false;
             }
         });
+
+        // --- FUNGSI BARU UNTUK LAPORAN TRANSAKSI ADMIN ---
+        let adminTxData = [];
+
+        async function loadAdminTransactions() {
+            const tbody = document.getElementById('adminTxBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Memuat data...</td></tr>';
+            
+            try {
+                const res = await fetch('/api/transactions');
+                let data = await res.json();
+                
+                const startVal = document.getElementById('filterStart').value;
+                const endVal = document.getElementById('filterEnd').value;
+
+                if (startVal) {
+                    const start = new Date(startVal);
+                    start.setHours(0,0,0,0);
+                    data = data.filter(t => new Date(t.created_at) >= start);
+                }
+                if (endVal) {
+                    const end = new Date(endVal);
+                    end.setHours(23,59,59,999);
+                    data = data.filter(t => new Date(t.created_at) <= end);
+                }
+
+                adminTxData = data;
+
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-yellow-400">Tidak ada transaksi ditemukan pada rentang tanggal ini.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.map(t => {
+                    let badgeColor = 'text-yellow-400';
+                    if(t.status === 'SUKSES') badgeColor = 'text-green-400';
+                    if(t.status === 'GAGAL') badgeColor = 'text-red-400';
+                    
+                    return `
+                        <tr class="hover:bg-borderDim/20 transition">
+                            <td class="p-2.5 whitespace-nowrap">${new Date(t.created_at).toLocaleDateString('id-ID')}</td>
+                            <td class="p-2.5 font-mono text-[10px] text-textMuted">${t.order_id}</td>
+                            <td class="p-2.5 truncate max-w-[150px] font-bold text-white" title="${t.product_name}">${t.product_name}</td>
+                            <td class="p-2.5">${t.target_id}</td>
+                            <td class="p-2.5 text-right text-blue-400 font-bold">Rp ${t.amount.toLocaleString('id-ID')}</td>
+                            <td class="p-2.5 text-center font-bold ${badgeColor}">${t.status}</td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-red-400">Gagal memuat data dari server.</td></tr>';
+            }
+        }
+
+        function exportToExcel() {
+            if (adminTxData.length === 0) {
+                alert('Tidak ada data untuk diekspor!');
+                return;
+            }
+
+            let csvContent = "Tanggal Transaksi,Order ID,Kategori Pembelian,Target / Tujuan,Total Rp,Status,Keterangan (SN)\n";
+
+            adminTxData.forEach(t => {
+                const date = new Date(t.created_at).toLocaleString('id-ID');
+                const orderId = t.order_id;
+                const product = `"${t.product_name.replace(/"/g, '""')}"`; 
+                const target = `="${t.target_id}"`;
+                const amount = t.amount;
+                const status = t.status;
+                const sn = `"${(t.sn || '-').replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+
+                csvContent += `${date},${orderId},${product},${target},${amount},${status},${sn}\n`;
+            });
+
+            const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Laporan_Transaksi_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
         initApp();
     </script>
