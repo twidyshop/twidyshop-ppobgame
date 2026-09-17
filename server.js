@@ -214,7 +214,7 @@ app.delete('/api/admin/products/:id', (req, res) => {
     res.json({ success: true, message: 'Produk berhasil dihapus!' });
 });
 
-// --- PENGGABUNGAN DATA (DIGIFLAZZ + HAYBI DENGAN METODE TLIBRARY) ---
+// --- PENGGABUNGAN DATA (DIGIFLAZZ + HAYBI) ---
 app.get('/api/products', async (req, res) => {
     try {
         const now = Date.now();
@@ -262,7 +262,7 @@ app.get('/api/products', async (req, res) => {
             }
         }
 
-        // 2. Tarik dari Haybi (Parsing Data Cerdas ala TLIBRARY)
+        // 2. Tarik dari Haybi (Parsing Data & Harga Cerdas)
         try {
             const refIdHaybi = `PRC-${Date.now()}`;
             const signHaybi = crypto.createHash('md5').update(HAYBI_USER + HAYBI_KEY + refIdHaybi).digest('hex');
@@ -280,20 +280,27 @@ app.get('/api/products', async (req, res) => {
             else if (rawHaybi && Array.isArray(rawHaybi.produk)) haybiData = rawHaybi.produk;
 
             const mappedHaybi = haybiData.map(produk => {
-                // MENGGUNAKAN LOOP PENCARI HARGA DARI TLIBRARY
-                let hargaDasar = parseInt(produk.harga || produk.price || produk.selling_price || produk.hargadasar || 0);
-                if (hargaDasar === 0) {
+                
+                // MENGGUNAKAN PENCARI HARGA CERDAS (PERBAIKAN BUG FREE FIRE)
+                let hargaDasar = parseInt(produk.harga) || parseInt(produk.price) || parseInt(produk.selling_price) || parseInt(produk.hargadasar) || 0;
+                if (hargaDasar === 0 || isNaN(hargaDasar)) {
+                    let maxVal = 0;
                     for (const k in produk) {
                         const val = parseInt(produk[k]);
-                        if (!isNaN(val) && val > 500) { hargaDasar = val; break; }
+                        const kLower = k.toLowerCase();
+                        // Abaikan fields yang bukan harga agar tidak menangkap jumlah diamond (seperti 545 atau 600)
+                        if (!isNaN(val) && !kLower.includes('kode') && !kLower.includes('id') && !kLower.includes('sku') && !kLower.includes('status')) {
+                            if (val > maxVal) maxVal = val;
+                        }
                     }
+                    hargaDasar = maxVal;
                 }
 
                 const skuCode = produk.kode_produk || produk.kode || produk.buyer_sku_code || produk.id;
                 const prodName = produk.nama_produk || produk.nama || produk.product_name || produk.produk;
                 const textCheck = String(skuCode + " " + prodName).toUpperCase();
 
-                // MENGGUNAKAN PEMAKSAAN KATEGORI DARI TLIBRARY (PERBAIKAN PLN KETAT)
+                // MENGGUNAKAN PEMAKSAAN KATEGORI
                 let detectedBrand = produk.brand || produk.operator || produk.kategori || 'Haybi';
                 let isTarget = false;
 
@@ -366,7 +373,7 @@ app.post('/api/inquiry-pasca', async (req, res) => {
     }
 });
 
-// --- FITUR AUTO-POLLING CEK STATUS REALTIME DARI TLIBRARY ---
+// --- FITUR AUTO-POLLING CEK STATUS REALTIME ---
 app.get('/api/transactions', async (req, res) => {
     try {
         let db = readDB();
