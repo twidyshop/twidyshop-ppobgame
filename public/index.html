@@ -988,21 +988,46 @@
                     updateFloatingCartBtn();
                     renderDigitalCards(currentCategory);
 
+                    // --- PENGECEKAN AGRESIF TIAP 3 DETIK UNTUK CHECKOUT KERANJANG DIGITAL ---
+                    let checkInterval = setInterval(async () => {
+                        try {
+                            const res = await fetch('/api/transactions');
+                            const txs = await res.json();
+                            const currentTx = txs.find(t => t.order_id === data.orderId);
+                            
+                            if (currentTx && currentTx.status === 'SUKSES') {
+                                clearInterval(checkInterval);
+                                window.snap.hide(); 
+                                
+                                alert('Pembayaran Berhasil! Link download dikirim otomatis.');
+                                document.getElementById('searchOrderId').value = data.orderId;
+                                navigate('riwayat');
+                                searchTransaction();
+                            }
+                        } catch (e) { /* abaikan error jaringan background */ }
+                    }, 3000);
+
                     window.snap.pay(data.token, {
                         onSuccess: function(result){ 
+                            clearInterval(checkInterval);
                             alert('Pembayaran Berhasil! Link download dikirim otomatis.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
                         },
                         onPending: function(result){ 
+                            clearInterval(checkInterval);
                             alert('Silakan selesaikan pembayaran QRIS Anda.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
                         },
-                        onError: function(result){ alert('Pembayaran Gagal.'); },
+                        onError: function(result){ 
+                            clearInterval(checkInterval);
+                            alert('Pembayaran Gagal.'); 
+                        },
                         onClose: function(){ 
+                            clearInterval(checkInterval);
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
@@ -1575,7 +1600,7 @@
                         productName: `${activeItem.name} - ${selectedProduct.product_name}`,
                         productCode: selectedProduct.buyer_sku_code,
                         isPasca: selectedProduct.isPasca,
-                        supplier: selectedProduct.supplier // <-- Mengirim identitas API secara akurat
+                        supplier: selectedProduct.supplier
                     })
                 });
                 const data = await res.json();
@@ -1583,21 +1608,46 @@
                 btn.disabled = false;
 
                 if (data.token) {
+                    // --- PENGECEKAN AGRESIF TIAP 3 DETIK UNTUK CHECKOUT REGULER ---
+                    let checkInterval = setInterval(async () => {
+                        try {
+                            const res = await fetch('/api/transactions');
+                            const txs = await res.json();
+                            const currentTx = txs.find(t => t.order_id === data.orderId);
+                            
+                            if (currentTx && currentTx.status === 'SUKSES') {
+                                clearInterval(checkInterval);
+                                window.snap.hide(); 
+                                
+                                alert('Pembayaran Terdeteksi! Sistem memproses transaksi otomatis.');
+                                document.getElementById('searchOrderId').value = data.orderId;
+                                navigate('riwayat');
+                                searchTransaction();
+                            }
+                        } catch (e) { /* abaikan error jaringan background */ }
+                    }, 3000);
+
                     window.snap.pay(data.token, {
                         onSuccess: function(result){ 
+                            clearInterval(checkInterval);
                             alert('Pembayaran Berhasil! Sistem memproses transaksi otomatis.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
                         },
                         onPending: function(result){ 
+                            clearInterval(checkInterval);
                             alert('Silakan selesaikan pembayaran QRIS Anda.'); 
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
                         },
-                        onError: function(result){ alert('Pembayaran Gagal.'); },
+                        onError: function(result){ 
+                            clearInterval(checkInterval);
+                            alert('Pembayaran Gagal.'); 
+                        },
                         onClose: function(){ 
+                            clearInterval(checkInterval);
                             document.getElementById('searchOrderId').value = data.orderId;
                             navigate('riwayat');
                             searchTransaction();
