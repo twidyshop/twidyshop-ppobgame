@@ -1092,7 +1092,7 @@
             const serverContainer = document.getElementById('serverContainer');
             if (activeItem.hasServer) {
                 serverContainer.style.display = 'block';
-                if (activeItem.id === 'hsr' || activeItem.id === 'genshin') {
+                if (activeItem.id === 'hsr' || activeItem.id === 'genshin' || activeItem.id === 'mcgogo') {
                     serverContainer.innerHTML = `
                         <label class="block text-[10px] md:text-xs text-textMuted mb-1">Pilih Server</label>
                         <select id="serverId" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white">
@@ -1100,6 +1100,15 @@
                             <option value="os_usa">America</option>
                             <option value="os_euro">Europe</option>
                             <option value="os_cht">TW,HK,MO</option>
+                        </select>
+                    `;
+                } else if (activeItem.id === 'wwm') {
+                    serverContainer.innerHTML = `
+                        <label class="block text-[10px] md:text-xs text-textMuted mb-1">Pilih Server</label>
+                        <select id="serverId" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white">
+                            <option value="1">Luo Yang</option>
+                            <option value="2">Chang An</option>
+                            <option value="3">Jin Ling</option>
                         </select>
                     `;
                 } else {
