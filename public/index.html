@@ -79,9 +79,6 @@
         </div>
         
         <div class="hidden sm:flex items-center gap-4">
-            <a href="twidyshop.apk" download class="text-xs font-bold text-green-400 bg-green-400/10 hover:bg-green-400/20 px-3 py-1.5 rounded-full border border-green-400/30 transition flex items-center gap-1.5 shadow-[0_0_10px_rgba(74,222,128,0.2)]">
-                <i class="fab fa-android"></i> Download APK
-            </a>
             <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400/20">
                 <i class="fas fa-shield-check"></i> Fast & Safe
             </div>
@@ -95,7 +92,6 @@
         <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
         <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo</a>
         <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-headset mr-2"></i> Panduan & Bantuan</a>
-        <a href="twidyshop.apk" download class="block py-2 text-green-400 font-bold border-t border-borderDim mt-2 pt-2"><i class="fab fa-android mr-2 text-lg"></i> Download Aplikasi (APK)</a>
         <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400 border-t border-borderDim mt-2 pt-2"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
     </div>
 
@@ -615,6 +611,8 @@
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
                 { id: 'ff', name: 'Free Fire', brandKey: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, desc: 'Top Up Diamond Free Fire instan.' },
                 { id: 'pubg', name: 'PUBG Mobile', brandKey: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, desc: 'Top Up UC PUBG Mobile harga promo.' },
+                { id: 'mcgogo', name: 'Magic Chess GoGo', brandKey: 'Magic Chess GoGo', img: 'assets/mcgogo-logo.png', hasServer: true, desc: 'Top Up Magic Chess GoGo.' },
+                { id: 'wwm', name: 'Where Winds Meet', brandKey: 'Where Winds Meet', img: 'assets/wwm-logo.png', hasServer: true, desc: 'Top Up Where Winds Meet.' },
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
                 { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: true, desc: 'Top Up Genesis Crystal resmi.' },
                 { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: true, desc: 'Top Up Oneiric Shard cepat.' },
@@ -639,7 +637,8 @@
                 { id: 'ovo', name: 'OVO', brandKey: 'OVO', img: 'assets/ovo.png', hasServer: false, desc: 'Top Up saldo OVO instan.' },
                 { id: 'dana', name: 'DANA', brandKey: 'DANA', img: 'assets/dana.png', hasServer: false, desc: 'Top Up saldo DANA instan.' },
                 { id: 'shopee', name: 'SHOPEE PAY', brandKey: 'SHOPEE PAY', img: 'assets/shopeepay.png', hasServer: false, desc: 'Top Up saldo ShopeePay.' },
-                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' }
+                { id: 'linkaja', name: 'LinkAja', brandKey: 'LINKAJA', img: 'assets/linkaja.png', hasServer: false, desc: 'Top Up saldo LinkAja.' },
+                { id: 'sakuku', name: 'Sakuku', brandKey: 'Sakuku', img: 'assets/sakuku.png', hasServer: false, desc: 'Top Up saldo Sakuku BCA.' }
             ],
             pln: [
                 { id: 'pln', name: 'Token PLN', brandKey: 'PLN', img: 'assets/pln.png', hasServer: false, desc: 'Beli Token Listrik PLN Prabayar.' },
@@ -988,7 +987,6 @@
                     updateFloatingCartBtn();
                     renderDigitalCards(currentCategory);
 
-                    // --- PENGECEKAN AGRESIF TIAP 3 DETIK UNTUK CHECKOUT KERANJANG DIGITAL ---
                     let checkInterval = setInterval(async () => {
                         try {
                             const res = await fetch('/api/transactions');
@@ -1091,11 +1089,9 @@
             const isPln = cat === 'pln' && activeItem.id === 'pln';
             const isTagihan = cat === 'tagihan';
             
-            // LOGIKA DINAMIS UNTUK SERVER DROPDOWN ATAU TEXT INPUT
             const serverContainer = document.getElementById('serverContainer');
             if (activeItem.hasServer) {
                 serverContainer.style.display = 'block';
-                // Jika game yang dipilih adalah Honkai Star Rail atau Genshin Impact, tampilkan Dropdown
                 if (activeItem.id === 'hsr' || activeItem.id === 'genshin') {
                     serverContainer.innerHTML = `
                         <label class="block text-[10px] md:text-xs text-textMuted mb-1">Pilih Server</label>
@@ -1107,7 +1103,6 @@
                         </select>
                     `;
                 } else {
-                    // Untuk game lain seperti Mobile Legends, tetap gunakan Text Input
                     serverContainer.innerHTML = `
                         <label class="block text-[10px] md:text-xs text-textMuted mb-1">Server ID</label>
                         <input type="text" id="serverId" placeholder="Contoh: 1234 (opsional)" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white" />
@@ -1608,7 +1603,6 @@
                 btn.disabled = false;
 
                 if (data.token) {
-                    // --- PENGECEKAN AGRESIF TIAP 3 DETIK UNTUK CHECKOUT REGULER ---
                     let checkInterval = setInterval(async () => {
                         try {
                             const res = await fetch('/api/transactions');
