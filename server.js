@@ -299,12 +299,15 @@ app.get('/api/products', async (req, res) => {
                     hargaDasar = maxVal;
                 }
 
-                const skuCode = produk.kode_produk || produk.kode || produk.buyer_sku_code || produk.id;
-                const prodName = produk.nama_produk || produk.nama || produk.product_name || produk.produk;
-                const textCheck = String(skuCode + " " + prodName).toUpperCase();
+                const skuCode = produk.kode_produk || produk.kode || produk.buyer_sku_code || produk.id || '';
+                const prodName = produk.nama_produk || produk.nama || produk.product_name || produk.produk || '';
+                
+                // MENGGABUNGKAN KATEGORI/BRAND KE DALAM TEXT CHECK AGAR NAMA GAME YANG HANYA ADA DI KATEGORI IKUT TERBACA
+                const brandInfo = produk.brand || produk.operator || produk.kategori || '';
+                const textCheck = String(skuCode + " " + prodName + " " + brandInfo).toUpperCase();
 
                 // MENGGUNAKAN PEMAKSAAN KATEGORI
-                let detectedBrand = produk.brand || produk.operator || produk.kategori || 'Haybi';
+                let detectedBrand = brandInfo || 'Haybi';
                 let isTarget = false;
 
                 if (textCheck.includes('PLN') || textCheck.includes('TOKEN PLN') || textCheck.includes('TOKEN LISTRIK')) { detectedBrand = 'PLN'; isTarget = true; }
@@ -321,8 +324,8 @@ app.get('/api/products', async (req, res) => {
                 else if (textCheck.includes('SAKUKU')) { detectedBrand = 'Sakuku'; isTarget = true; }
 
                 return {
-                    buyer_sku_code: skuCode || '',
-                    product_name: prodName || '',
+                    buyer_sku_code: skuCode,
+                    product_name: prodName,
                     price: calculateMargin(hargaDasar),
                     brand: detectedBrand, // Harus match persis dengan kategori TwidyShop
                     buyer_product_status: true,
