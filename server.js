@@ -225,7 +225,11 @@ app.get('/api/products', async (req, res) => {
         let combinedProducts = [];
         
         // Brand yang menjadi tanggung jawab Haybi di TwidyShop
-        const haybiTargetBrands = ['PLN', 'GO PAY', 'OVO', 'DANA', 'SHOPEE PAY', 'LINKAJA', 'FREE FIRE', 'PUBG MOBILE', 'ROBLOX'];
+        const haybiTargetBrands = [
+            'PLN', 'GO PAY', 'OVO', 'DANA', 'SHOPEE PAY', 'LINKAJA', 
+            'FREE FIRE', 'PUBG MOBILE', 'ROBLOX', 'MAGIC CHESS GOGO', 
+            'WHERE WINDS MEET', 'SAKUKU'
+        ];
 
         // 1. Tarik dari Digiflazz (Hanya produk yang BUKAN wewenang Haybi)
         const digiUser = process.env.DIGIFLAZZ_USERNAME;
@@ -281,14 +285,13 @@ app.get('/api/products', async (req, res) => {
 
             const mappedHaybi = haybiData.map(produk => {
                 
-                // MENGGUNAKAN PENCARI HARGA CERDAS (PERBAIKAN BUG FREE FIRE)
+                // MENGGUNAKAN PENCARI HARGA CERDAS
                 let hargaDasar = parseInt(produk.harga) || parseInt(produk.price) || parseInt(produk.selling_price) || parseInt(produk.hargadasar) || 0;
                 if (hargaDasar === 0 || isNaN(hargaDasar)) {
                     let maxVal = 0;
                     for (const k in produk) {
                         const val = parseInt(produk[k]);
                         const kLower = k.toLowerCase();
-                        // Abaikan fields yang bukan harga agar tidak menangkap jumlah diamond (seperti 545 atau 600)
                         if (!isNaN(val) && !kLower.includes('kode') && !kLower.includes('id') && !kLower.includes('sku') && !kLower.includes('status')) {
                             if (val > maxVal) maxVal = val;
                         }
@@ -313,6 +316,9 @@ app.get('/api/products', async (req, res) => {
                 else if (textCheck.includes('FREE FIRE') || textCheck.includes('FF')) { detectedBrand = 'Free Fire'; isTarget = true; }
                 else if (textCheck.includes('PUBG')) { detectedBrand = 'PUBG Mobile'; isTarget = true; }
                 else if (textCheck.includes('ROBLOX')) { detectedBrand = 'Roblox'; isTarget = true; }
+                else if (textCheck.includes('MAGIC CHESS')) { detectedBrand = 'Magic Chess GoGo'; isTarget = true; }
+                else if (textCheck.includes('WHERE WINDS MEET') || textCheck.includes('WINDS MEET')) { detectedBrand = 'Where Winds Meet'; isTarget = true; }
+                else if (textCheck.includes('SAKUKU')) { detectedBrand = 'Sakuku'; isTarget = true; }
 
                 return {
                     buyer_sku_code: skuCode || '',
