@@ -611,8 +611,8 @@
                 { id: 'ml', name: 'Mobile Legends', brandKey: 'Mobile Legends', img: 'assets/ml-logo.png', hasServer: true, desc: 'Top Up Diamond Mobile Legends cepat & aman.' },
                 { id: 'ff', name: 'Free Fire', brandKey: 'Free Fire', img: 'assets/ff-logo.png', hasServer: false, desc: 'Top Up Diamond Free Fire instan.' },
                 { id: 'pubg', name: 'PUBG Mobile', brandKey: 'PUBG Mobile', img: 'assets/pubg-logo.png', hasServer: false, desc: 'Top Up UC PUBG Mobile harga promo.' },
-                { id: 'mcgogo', name: 'Magic Chess GoGo', brandKey: 'Magic Chess GoGo', img: 'assets/mcgogo-logo.png', hasServer: true, desc: 'Top Up Magic Chess GoGo.' },
-                { id: 'wwm', name: 'Where Winds Meet', brandKey: 'Where Winds Meet', img: 'assets/wwm-logo.png', hasServer: true, desc: 'Top Up Where Winds Meet.' },
+                { id: 'mcgogo', name: 'Magic Chess GoGo', brandKey: 'Magic Chess GoGo', img: 'assets/mcgogo-logo.png', hasServer: false, desc: 'Top Up Magic Chess GoGo.' },
+                { id: 'wwm', name: 'Where Winds Meet', brandKey: 'Where Winds Meet', img: 'assets/wwm-logo.png', hasServer: false, desc: 'Top Up Where Winds Meet.' },
                 { id: 'valo', name: 'Valorant', brandKey: 'Valorant', img: 'assets/valo-logo.png', hasServer: false, desc: 'Beli Valorant Points cepat.' },
                 { id: 'genshin', name: 'Genshin Impact', brandKey: 'Genshin Impact', img: 'assets/genshin-logo.png', hasServer: true, desc: 'Top Up Genesis Crystal resmi.' },
                 { id: 'hsr', name: 'Honkai: Star Rail', brandKey: 'Honkai Star Rail', img: 'assets/hsr-logo.png', hasServer: true, desc: 'Top Up Oneiric Shard cepat.' },
@@ -1092,7 +1092,7 @@
             const serverContainer = document.getElementById('serverContainer');
             if (activeItem.hasServer) {
                 serverContainer.style.display = 'block';
-                if (activeItem.id === 'hsr' || activeItem.id === 'genshin' || activeItem.id === 'mcgogo') {
+                if (activeItem.id === 'hsr' || activeItem.id === 'genshin') {
                     serverContainer.innerHTML = `
                         <label class="block text-[10px] md:text-xs text-textMuted mb-1">Pilih Server</label>
                         <select id="serverId" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white">
@@ -1100,15 +1100,6 @@
                             <option value="os_usa">America</option>
                             <option value="os_euro">Europe</option>
                             <option value="os_cht">TW,HK,MO</option>
-                        </select>
-                    `;
-                } else if (activeItem.id === 'wwm') {
-                    serverContainer.innerHTML = `
-                        <label class="block text-[10px] md:text-xs text-textMuted mb-1">Pilih Server</label>
-                        <select id="serverId" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white">
-                            <option value="1">Luo Yang</option>
-                            <option value="2">Chang An</option>
-                            <option value="3">Jin Ling</option>
                         </select>
                     `;
                 } else {
