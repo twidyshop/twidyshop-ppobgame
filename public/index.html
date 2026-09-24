@@ -68,7 +68,6 @@
     <!-- Sticky Navbar -->
     <nav class="sticky top-0 z-40 flex justify-between items-center px-4 md:px-10 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         
-        <!-- LOGO BARU TWIDY SHOP -->
         <div class="flex items-center gap-2 md:gap-3 cursor-pointer group" onclick="navigate('home')">
             <img src="logo.png" alt="Twidy Shop Logo" class="w-8 h-8 md:w-11 md:h-11 rounded-lg md:rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300 object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
             <div class="flex flex-col justify-center">
@@ -141,7 +140,6 @@
             <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max">
-                    <!-- TOMBOL INSTALL PWA (Default Hidden) -->
                     <button id="btnInstallPwa" style="display: none;" class="w-full text-left mb-3 bg-gradient-to-r from-blue-900/30 to-[#101726] border border-blue-500/30 rounded-xl p-2 md:p-2.5 hover:border-blue-400 transition-all shadow-lg relative overflow-hidden group">
                         <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div class="flex items-center justify-between relative z-10">
@@ -214,6 +212,13 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1 hide-scrollbar" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
+                                </div>
+                                
+                                <!-- Container Fitur Nominal Bebas (Hidden Default) -->
+                                <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
+                                    <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
+                                    <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
+                                    <div class="text-[10px] text-textMuted mt-2"><i class="fas fa-info-circle"></i> Sistem akan otomatis menambahkan margin/admin.</div>
                                 </div>
                             </div>
                         </div>
@@ -375,6 +380,7 @@
             </div>
 
             <div id="adminDashboardBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6 hidden">
+                <!-- (Bagian Admin lainnya tetap sama) -->
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <h2 class="text-xl font-bold text-white"><i class="fas fa-cogs text-blue-500"></i> Kelola Produk Digital & Backup</h2>
                     <div class="flex gap-2">
@@ -475,20 +481,15 @@
 
     </main>
 
-    <button id="floatingCartBtn" onclick="openDigitalCart()" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.5)] z-40 transition transform scale-0 flex items-center justify-center gap-2">
-        <i class="fas fa-shopping-cart text-lg"></i>
-        <span id="floatingCartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-bgMain">0</span>
-    </button>
-
+    <!-- Modal Keranjang -->
     <div id="cartModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <!-- (Konten Keranjang Tetap Sama) -->
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col relative shadow-2xl">
             <div class="p-5 border-b border-borderDim flex justify-between items-center">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-shopping-cart text-blue-400"></i> Keranjang Digital</h2>
                 <button onclick="closeDigitalCart()" class="w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim"><i class="fas fa-times"></i></button>
             </div>
-            
             <div class="p-5 overflow-y-auto flex-1 space-y-3" id="cartItemsContainer"></div>
-
             <div class="p-5 border-t border-borderDim bg-bgInput rounded-b-2xl space-y-4">
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-textMuted uppercase">Email Penerima Akses</label>
@@ -505,40 +506,35 @@
         </div>
     </div>
 
+    <!-- Modal Produk Digital -->
     <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 relative shadow-2xl">
+            <!-- (Sama) -->
             <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim">
                 <i class="fas fa-times"></i>
             </button>
-            
             <div class="flex items-center gap-3">
                 <span class="px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 font-bold text-[10px] uppercase border border-blue-500/20" id="modalCatBadge">Course</span>
             </div>
-
             <img id="modalImg" src="" alt="Cover" class="w-full h-48 sm:h-56 object-cover rounded-xl border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
-
             <div>
                 <h3 id="modalTitle" class="text-lg md:text-xl font-bold text-white mb-1">Judul Produk</h3>
                 <div class="text-xl font-extrabold text-blue-400 mb-3" id="modalPrice">Rp 0</div>
             </div>
-
             <div class="space-y-1 pt-2 border-t border-borderDim">
                 <h4 class="text-xs font-bold text-textMuted uppercase mt-2">Deskripsi Produk</h4>
                 <div id="modalDesc" class="text-xs md:text-sm text-gray-300 leading-relaxed whitespace-pre-line bg-bgInput p-3 rounded-lg border border-borderDim max-h-40 overflow-y-auto hide-scrollbar"></div>
             </div>
-
             <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="closeProductModal()" class="w-full bg-bgInput hover:bg-borderDim text-white font-bold py-3 px-4 rounded-xl border border-borderDim transition text-sm">
-                    Kembali
-                </button>
-                <button onclick="addToCartModal()" id="btnModalAddToCart" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-                    <i class="fas fa-cart-plus"></i> Tambah Keranjang
-                </button>
+                <button onclick="closeProductModal()" class="w-full bg-bgInput hover:bg-borderDim text-white font-bold py-3 px-4 rounded-xl border border-borderDim transition text-sm">Kembali</button>
+                <button onclick="addToCartModal()" id="btnModalAddToCart" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]"><i class="fas fa-cart-plus"></i> Tambah Keranjang</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal Edit Digital -->
     <div id="editDigitalModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <!-- (Sama) -->
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
             <div class="flex justify-between items-center mb-4 border-b border-borderDim pb-2">
                 <h2 class="text-lg font-bold text-white"><i class="fas fa-edit text-blue-400"></i> Edit Produk Digital</h2>
@@ -580,6 +576,61 @@
         </div>
     </div>
 
+    <!-- MODAL BARU: PREVIEW STRUK & EDIT HARGA -->
+    <div id="receiptModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-bgCard border border-borderDim rounded-2xl max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b border-borderDim flex justify-between items-center">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-receipt text-blue-400"></i> Preview Struk</h2>
+                <button onclick="closeReceiptModal()" class="w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="p-4 overflow-y-auto hide-scrollbar flex-1 bg-gray-100 flex justify-center">
+                <!-- Tampilan HTML Struk di Layar -->
+                <div id="receiptPreview" class="bg-white text-black p-5 rounded font-mono text-[11px] shadow-sm w-full max-w-[300px]">
+                    <!-- Konten struk masuk sini -->
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-borderDim bg-bgInput rounded-b-2xl space-y-4">
+                <div class="bg-blue-900/20 p-3 rounded-lg border border-blue-500/30">
+                    <label class="block text-xs font-bold text-blue-300 mb-1.5"><i class="fas fa-edit"></i> Edit Total Harga (Khusus Reseller)</label>
+                    <input type="number" id="editReceiptPrice" class="w-full bg-bgCard p-2.5 rounded-lg border border-borderDim text-sm text-white outline-none focus:border-blue-500" placeholder="Ubah harga jual..." />
+                    <p class="text-[9px] text-textMuted mt-1">Hanya mengubah angka pada gambar struk, tidak merubah database.</p>
+                </div>
+                <button onclick="executeDownloadStruk()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                    <i class="fas fa-download"></i> Simpan Gambar Struk
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Struk Digital (Hanya untuk Generate Gambar) -->
+    <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 20px; width: 320px; font-family: monospace; text-align: center; border-radius: 6px;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: bold;">TWIDY SHOP</h2>
+        <p style="margin: 2px 0 0 0; font-size: 12px;">twidyshop.my.id</p>
+        <p id="struk-waktu" style="font-size: 11px; margin: 4px 0 12px 0;"></p>
+        
+        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 6px 0; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 14px; font-weight: bold;">STRUK PEMBELIAN</h3>
+        </div>
+
+        <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; line-height: 1.5;">
+            <tr><td style="width: 70px; font-weight: bold;">TRXID</td><td style="width: 10px;">:</td><td id="struk-trxid" style="word-break: break-all;"></td></tr>
+            <tr><td style="font-weight: bold;">PRODUK</td><td>:</td><td id="struk-produk" style="word-break: break-word;"></td></tr>
+            <tr><td style="font-weight: bold;">TUJUAN</td><td>:</td><td id="struk-tujuan" style="word-break: break-all;"></td></tr>
+            <tr><td style="font-weight: bold;">HARGA</td><td>:</td><td>Rp <span id="struk-harga"></span></td></tr>
+        </table>
+
+        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
+            <p style="margin: 0; font-size: 11px; font-weight: bold;">*** INFO / KETERANGAN ***</p>
+            <h3 id="struk-sn" style="margin: 4px 0 0 0; font-size: 11px; word-break: break-all; color: #1e3a8a; white-space: pre-wrap; text-align: left;"></h3>
+        </div>
+
+        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
+            <p style="font-size: 10px; margin: 0; line-height: 1.4;">BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
         <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -592,41 +643,12 @@
         </div>
     </footer>
 
-    <!-- Template Struk Digital -->
-    <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 20px; width: 320px; font-family: monospace; text-align: center; border-radius: 6px;">
-        <h2 style="margin: 0; font-size: 20px; font-weight: bold;">TWIDY SHOP</h2>
-        <p style="margin: 2px 0 0 0; font-size: 12px;">twidyshop.my.id</p>
-        <p id="struk-waktu" style="font-size: 11px; margin: 4px 0 12px 0;"></p>
-        
-        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 6px 0; margin-bottom: 12px;">
-            <h3 style="margin: 0; font-size: 14px; font-weight: bold;">STRUK PEMBELIAN</h3>
-        </div>
-
-        <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; line-height: 1.5;">
-            <tr><td style="width: 70px; font-weight: bold;">TRXID</td><td>:</td><td id="struk-trxid" style="word-break: break-all;"></td></tr>
-            <tr><td style="font-weight: bold;">PRODUK</td><td>:</td><td id="struk-produk" style="word-break: break-word;"></td></tr>
-            <tr><td style="font-weight: bold;">TUJUAN</td><td>:</td><td id="struk-tujuan" style="word-break: break-all;"></td></tr>
-            <tr><td style="font-weight: bold;">HARGA</td><td>:</td><td>Rp <span id="struk-harga"></span></td></tr>
-        </table>
-
-        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
-            <p style="margin: 0; font-size: 11px; font-weight: bold;">*** INFO / LINK DOWNLOAD ***</p>
-            <h3 id="struk-sn" style="margin: 4px 0 0 0; font-size: 11px; word-break: break-all; color: #1e3a8a; white-space: pre-wrap; text-align: left;"></h3>
-        </div>
-
-        <div style="border-top: 1px dashed #000; margin-top: 12px; padding-top: 10px;">
-            <p style="font-size: 10px; margin: 0; line-height: 1.4;">BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
-        </div>
-    </div>
-
     <script>
         // --- PWA INSTALLATION LOGIC ---
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Mencegah munculnya mini-infobar default dari browser
             e.preventDefault();
             deferredPrompt = e;
-            // Menampilkan tombol kustom milik kita
             const installBtn = document.getElementById('btnInstallPwa');
             if (installBtn) installBtn.style.display = 'block';
         });
@@ -639,8 +661,7 @@
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
                         if (outcome === 'accepted') {
-                            console.log('User menerima instalasi PWA');
-                            installBtn.style.display = 'none'; // Sembunyikan setelah diinstall
+                            installBtn.style.display = 'none'; 
                         }
                         deferredPrompt = null;
                     }
@@ -712,6 +733,7 @@
         let selectedDigitalProduct = null;
         let digitalCart = [];
         let snapClientKeyLoaded = false;
+        let activeReceipt = null; // Menyimpan data struk yang sedang dipreview
 
         function initApp() {
             renderSidebar();
@@ -1167,6 +1189,9 @@
             document.getElementById('targetId').value = '';
             document.getElementById('titleNominal').innerText = activeItem.isPasca ? 'Cek Tagihan' : 'Pilih Nominal';
 
+            // Menyembunyikan otomatis container bebas nominal jika pindah kategori
+            document.getElementById('bebasNominalContainer').classList.add('hidden');
+
             renderSidebar(document.getElementById('gameSearch').value);
             
             if (activeItem.isPasca) {
@@ -1295,8 +1320,56 @@
             selectNominalSku(activeNominals[0].buyer_sku_code);
         }
 
+        // FITUR BARU: Handle Input Bebas Nominal
         function selectNominalSku(sku) {
-            selectedProduct = activeNominals.find(n => n.buyer_sku_code === sku);
+            const foundProduct = activeNominals.find(n => n.buyer_sku_code === sku);
+            // Klon data agar tidak merusak list dasar
+            selectedProduct = { ...foundProduct }; 
+            
+            const bebasContainer = document.getElementById('bebasNominalContainer');
+            const isBebasNominal = selectedProduct.product_name.toLowerCase().includes('bebas nominal');
+
+            if (isBebasNominal) {
+                bebasContainer.classList.remove('hidden');
+                document.getElementById('inputBebasNominal').value = ''; 
+                selectedProduct.base_provider_fee = selectedProduct.price; // Menyimpan admin asli dari server/API
+                selectedProduct.price = 0; // Mengosongkan harga dulu sampai user ketik
+                selectedProduct.custom_nominal = 0;
+            } else {
+                bebasContainer.classList.add('hidden');
+            }
+
+            updateCartUI();
+        }
+
+        // Logika penghitungan margin persis dengan API
+        function calculateBebasNominal() {
+            if (!selectedProduct) return;
+            const input = document.getElementById('inputBebasNominal');
+            let val = parseInt(input.value) || 0;
+            
+            // Limit Maksimal
+            if (val > 100000) {
+                val = 100000;
+                input.value = 100000;
+            }
+            if (val < 0) {
+                val = 0;
+                input.value = '';
+            }
+
+            if (val > 0) {
+                let margin = Math.round(val * 0.01);
+                if (margin < 200) margin = 200;
+                if (margin > 500) margin = 500;
+                
+                selectedProduct.price = val + margin + selectedProduct.base_provider_fee;
+                selectedProduct.custom_nominal = val;
+            } else {
+                selectedProduct.price = 0;
+                selectedProduct.custom_nominal = 0;
+            }
+            
             updateCartUI();
         }
 
@@ -1314,25 +1387,95 @@
             }
         }
 
-        function downloadStruk(orderId, waktu, produk, tujuan, harga, sn) {
-            document.getElementById('struk-trxid').innerText = orderId;
-            document.getElementById('struk-waktu').innerText = waktu;
-            document.getElementById('struk-produk').innerText = produk;
-            document.getElementById('struk-tujuan').innerText = tujuan;
-            document.getElementById('struk-harga').innerText = harga;
+        // --- FITUR BARU: MODAL PREVIEW & EDIT STRUK ---
+        function openReceiptModal(orderId, waktu, produk, tujuan, harga, sn) {
+            activeReceipt = { orderId, waktu, produk, tujuan, harga, sn };
             
+            // Format Breakline HTML
             const rawSnText = sn.replace(/<br\s*\/?>/mg, "\n");
-            document.getElementById('struk-sn').innerHTML = sn.includes('<br>') ? rawSnText : sn;
+            const snHtml = sn.includes('<br>') ? rawSnText : sn;
+            
+            const previewHtml = `
+                <div class="text-center mb-4">
+                    <h2 class="m-0 text-base md:text-lg font-extrabold text-black tracking-wider">TWIDY SHOP</h2>
+                    <p class="m-0 text-[10px] text-gray-700">twidyshop.my.id</p>
+                    <p class="text-[9px] mt-1 mb-3 text-gray-600">${waktu}</p>
+                </div>
+                <div class="border-y border-dashed border-gray-400 py-2 mb-3 text-center">
+                    <h3 class="m-0 text-xs md:text-sm font-bold text-black tracking-widest">STRUK PEMBELIAN</h3>
+                </div>
+                <table class="w-full text-[10px] md:text-xs text-left mb-3 text-gray-800">
+                    <tr><td class="w-16 font-bold align-top py-0.5">TRXID</td><td class="w-2 align-top py-0.5">:</td><td class="break-all py-0.5">${orderId}</td></tr>
+                    <tr><td class="font-bold align-top py-0.5">PRODUK</td><td class="align-top py-0.5">:</td><td class="break-words py-0.5">${produk}</td></tr>
+                    <tr><td class="font-bold align-top py-0.5">TUJUAN</td><td class="align-top py-0.5">:</td><td class="break-all py-0.5">${tujuan}</td></tr>
+                    <tr><td class="font-bold align-top py-0.5">HARGA</td><td class="align-top py-0.5">:</td><td class="font-bold text-black py-0.5">Rp <span id="previewHarga">${harga}</span></td></tr>
+                </table>
+                <div class="border-t border-dashed border-gray-400 pt-3">
+                    <p class="m-0 text-[9px] font-bold text-black">*** INFO / KETERANGAN ***</p>
+                    <div class="mt-1 text-[10px] break-all text-gray-800 whitespace-pre-wrap text-left leading-relaxed">${snHtml}</div>
+                </div>
+                <div class="border-t border-dashed border-gray-400 mt-3 pt-3 text-center">
+                    <p class="text-[8px] md:text-[9px] m-0 leading-relaxed text-gray-700">BUKTI PEMBELIAN YANG SAH<br>Terima Kasih ^_^</p>
+                </div>
+            `;
+            
+            document.getElementById('receiptPreview').innerHTML = previewHtml;
+            
+            // Set input nilai default
+            const numericHarga = harga.replace(/\./g, '');
+            document.getElementById('editReceiptPrice').value = numericHarga;
+            
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.add('hidden');
+            activeReceipt = null;
+        }
+
+        // Live Preview saat Reseller mengedit Harga
+        document.getElementById('editReceiptPrice').addEventListener('input', function(e) {
+            if(!activeReceipt) return;
+            const val = parseInt(e.target.value) || 0;
+            document.getElementById('previewHarga').innerText = val.toLocaleString('id-ID');
+        });
+
+        // Eksekusi Download Struk Final
+        function executeDownloadStruk() {
+            if(!activeReceipt) return;
+            
+            const btn = document.querySelector('#receiptModal button.bg-blue-600');
+            const originalBtn = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+            btn.disabled = true;
+
+            const finalPriceVal = parseInt(document.getElementById('editReceiptPrice').value) || parseInt(activeReceipt.harga.replace(/\./g, ''));
+            const finalHarga = finalPriceVal.toLocaleString('id-ID');
+
+            // Masukkan data final ke Canvas Hidden
+            document.getElementById('struk-trxid').innerText = activeReceipt.orderId;
+            document.getElementById('struk-waktu').innerText = activeReceipt.waktu;
+            document.getElementById('struk-produk').innerText = activeReceipt.produk;
+            document.getElementById('struk-tujuan').innerText = activeReceipt.tujuan;
+            document.getElementById('struk-harga').innerText = finalHarga;
+            
+            const rawSnText = activeReceipt.sn.replace(/<br\s*\/?>/mg, "\n");
+            document.getElementById('struk-sn').innerHTML = activeReceipt.sn.includes('<br>') ? rawSnText : activeReceipt.sn;
 
             setTimeout(() => {
                 html2canvas(document.querySelector("#struk-container"), { scale: 2, logging: false }).then(canvas => {
                     let link = document.createElement('a');
-                    link.download = `Struk-${orderId}.png`;
+                    link.download = `Struk-${activeReceipt.orderId}.png`;
                     link.href = canvas.toDataURL("image/png");
                     link.click();
+                    
+                    btn.innerHTML = originalBtn;
+                    btn.disabled = false;
+                    closeReceiptModal();
                 });
-            }, 50);
+            }, 100);
         }
+        // ------------------------------------------
 
         function hubungiCS(orderId) {
             const pesan = `Halo Admin Twidy Shop, saya butuh bantuan untuk pesanan saya dengan TRXID: ${orderId}`;
@@ -1388,7 +1531,7 @@
                             <td class="p-3 font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap">${snDisplay}</td>
                             <td class="p-3 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Simpan Struk"><i class="fas fa-print"></i></button>
+                                    <button onclick="openReceiptModal('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Lihat Struk"><i class="fas fa-print"></i></button>
                                     <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
                                 </div>
                             </td>
@@ -1414,7 +1557,7 @@
                                         ${snDisplay}
                                     </div>
                                     <div class="flex gap-2 pt-1">
-                                        <button onclick="downloadStruk('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fas fa-print"></i> Simpan Struk</button>
+                                        <button onclick="openReceiptModal('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fas fa-print"></i> Cek Struk</button>
                                         <button onclick="hubungiCS('${t.order_id}')" class="flex-1 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fab fa-whatsapp"></i> Bantuan CS</button>
                                     </div>
                                 </div>
@@ -1629,6 +1772,15 @@
                 return; 
             }
 
+            // Validasi Khusus Jika Bebas Nominal Tapi Belum Diisi
+            if (selectedProduct.product_name.toLowerCase().includes('bebas nominal')) {
+                if (!selectedProduct.custom_nominal || selectedProduct.custom_nominal <= 0) {
+                    alert('Masukkan angka nominal bebas terlebih dahulu!');
+                    document.getElementById('inputBebasNominal').focus();
+                    return;
+                }
+            }
+
             const btn = document.getElementById('btnPay');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
@@ -1644,7 +1796,8 @@
                         productName: `${activeItem.name} - ${selectedProduct.product_name}`,
                         productCode: selectedProduct.buyer_sku_code,
                         isPasca: selectedProduct.isPasca,
-                        supplier: selectedProduct.supplier
+                        supplier: selectedProduct.supplier,
+                        customNominal: selectedProduct.custom_nominal || null
                     })
                 });
                 const data = await res.json();
