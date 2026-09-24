@@ -458,7 +458,7 @@ app.get('/api/transactions', async (req, res) => {
 // Endpoint Checkout & Buat Transaksi Midtrans
 app.post('/api/checkout', async (req, res) => {
   try {
-    const { targetId, serverId, price, productName, productCode, isDigital, isPasca, downloadUrl, cartItems, supplier } = req.body;
+    const { targetId, serverId, price, productName, productCode, isDigital, isPasca, downloadUrl, cartItems, supplier, customNominal } = req.body;
     if (!targetId) return res.status(400).json({ message: 'Data kurang lengkap' });
 
     const orderId = `TWIDY-${Date.now()}`;
@@ -502,7 +502,8 @@ app.post('/api/checkout', async (req, res) => {
         product_name: originalProductName,
         amount: amount,
         status: 'UNPAID',
-        supplier: supplier || 'digiflazz', // Menyimpan API target
+        supplier: supplier || 'digiflazz', 
+        custom_nominal: customNominal || null, // Meyimpan data jika itu request bebas nominal
         sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
         is_digital: !!isDigital,
         is_pasca: !!isPasca, 
@@ -558,13 +559,20 @@ app.post('/api/webhook', async (req, res) => {
         if (trx.supplier === 'haybi') {
             try {
                 const signHaybi = crypto.createHash('md5').update(HAYBI_USER + HAYBI_KEY + order_id).digest('hex');
-                const haybiRes = await axios.post(`${HAYBI_BASE_URL}/transaksi`, {
+                let payloadHaybi = {
                     username: HAYBI_USER,
                     ref_id: order_id,
                     sign: signHaybi,
                     produk: trx.product_code,
                     no_tujuan: trx.target_id
-                });
+                };
+                
+                // Tambahkan param amount khusus jika itu transaksi bebas nominal
+                if(trx.custom_nominal) {
+                    payloadHaybi.amount = trx.custom_nominal;
+                }
+
+                const haybiRes = await axios.post(`${HAYBI_BASE_URL}/transaksi`, payloadHaybi);
 
                 const result = haybiRes.data || {};
                 const rStatus = (result.status || '').toLowerCase();
