@@ -114,8 +114,9 @@
         <!-- VIEW 1: TOPUP & PPOB -->
         <div id="view-topup" class="space-y-4 md:space-y-6 relative">
             
+            <!-- Perubahan Banner PC: Ditambahkan batasan tinggi dengan object-cover -->
             <div id="home" class="relative rounded-2xl border border-borderDim overflow-hidden shadow-lg group bg-bgCard">
-                <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-auto group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
+                <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-[140px] md:h-[250px] lg:h-[280px] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
             </div>
 
             <div class="sticky top-[60px] md:top-[74px] z-30 relative">
@@ -204,21 +205,21 @@
                                         <!-- Container untuk dropdown/input server ID -->
                                     </div>
                                 </div>
+                                
+                                <!-- REPOSISI: Container Bebas Nominal dipindah langsung di bawah input Tujuan -->
+                                <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
+                                    <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
+                                    <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
+                                    <div class="text-[10px] text-textMuted mt-2"><i class="fas fa-info-circle"></i> Sistem akan otomatis menambahkan margin/admin.</div>
+                                </div>
                             </div>
 
-                            <div>
+                            <div class="mt-6 border-t border-borderDim/50 pt-5">
                                 <div class="flex items-center justify-between mb-3">
                                     <h3 class="text-xs md:text-sm font-bold text-white" id="titleNominal">Pilih Nominal</h3>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1 hide-scrollbar" id="nominalContainer">
                                     <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
-                                </div>
-                                
-                                <!-- Container Fitur Nominal Bebas (Hidden Default) -->
-                                <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
-                                    <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
-                                    <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
-                                    <div class="text-[10px] text-textMuted mt-2"><i class="fas fa-info-circle"></i> Sistem akan otomatis menambahkan margin/admin.</div>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +282,8 @@
                     </button>
                 </div>
 
-                <div class="overflow-x-auto">
+                <!-- Perbaikan Table agar tidak memanjang keluar div -->
+                <div class="w-full">
                     <table class="w-full text-left text-xs text-gray-300">
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
                             <tr><td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID atau Nomor untuk melacak transaksi.</td></tr>
@@ -380,7 +382,6 @@
             </div>
 
             <div id="adminDashboardBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-4xl mx-auto space-y-6 hidden">
-                <!-- (Bagian Admin lainnya tetap sama) -->
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <h2 class="text-xl font-bold text-white"><i class="fas fa-cogs text-blue-500"></i> Kelola Produk Digital & Backup</h2>
                     <div class="flex gap-2">
@@ -483,7 +484,6 @@
 
     <!-- Modal Keranjang -->
     <div id="cartModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <!-- (Konten Keranjang Tetap Sama) -->
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col relative shadow-2xl">
             <div class="p-5 border-b border-borderDim flex justify-between items-center">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-shopping-cart text-blue-400"></i> Keranjang Digital</h2>
@@ -509,7 +509,6 @@
     <!-- Modal Produk Digital -->
     <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 relative shadow-2xl">
-            <!-- (Sama) -->
             <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim">
                 <i class="fas fa-times"></i>
             </button>
@@ -534,7 +533,6 @@
 
     <!-- Modal Edit Digital -->
     <div id="editDigitalModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <!-- (Sama) -->
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
             <div class="flex justify-between items-center mb-4 border-b border-borderDim pb-2">
                 <h2 class="text-lg font-bold text-white"><i class="fas fa-edit text-blue-400"></i> Edit Produk Digital</h2>
@@ -576,7 +574,7 @@
         </div>
     </div>
 
-    <!-- MODAL BARU: PREVIEW STRUK & EDIT HARGA -->
+    <!-- Modal Preview Struk -->
     <div id="receiptModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh]">
             <div class="p-4 border-b border-borderDim flex justify-between items-center">
@@ -585,9 +583,7 @@
             </div>
             
             <div class="p-4 overflow-y-auto hide-scrollbar flex-1 bg-gray-100 flex justify-center">
-                <!-- Tampilan HTML Struk di Layar -->
                 <div id="receiptPreview" class="bg-white text-black p-5 rounded font-mono text-[11px] shadow-sm w-full max-w-[300px]">
-                    <!-- Konten struk masuk sini -->
                 </div>
             </div>
 
@@ -604,7 +600,7 @@
         </div>
     </div>
 
-    <!-- Template Struk Digital (Hanya untuk Generate Gambar) -->
+    <!-- Template Struk Digital (Hidden) -->
     <div id="struk-container" style="position: absolute; top: -9999px; left: -9999px; background: white; color: black; padding: 20px; width: 320px; font-family: monospace; text-align: center; border-radius: 6px;">
         <h2 style="margin: 0; font-size: 20px; font-weight: bold;">TWIDY SHOP</h2>
         <p style="margin: 2px 0 0 0; font-size: 12px;">twidyshop.my.id</p>
@@ -733,7 +729,7 @@
         let selectedDigitalProduct = null;
         let digitalCart = [];
         let snapClientKeyLoaded = false;
-        let activeReceipt = null; // Menyimpan data struk yang sedang dipreview
+        let activeReceipt = null; 
 
         function initApp() {
             renderSidebar();
@@ -1189,7 +1185,6 @@
             document.getElementById('targetId').value = '';
             document.getElementById('titleNominal').innerText = activeItem.isPasca ? 'Cek Tagihan' : 'Pilih Nominal';
 
-            // Menyembunyikan otomatis container bebas nominal jika pindah kategori
             document.getElementById('bebasNominalContainer').classList.add('hidden');
 
             renderSidebar(document.getElementById('gameSearch').value);
@@ -1320,10 +1315,8 @@
             selectNominalSku(activeNominals[0].buyer_sku_code);
         }
 
-        // FITUR BARU: Handle Input Bebas Nominal
         function selectNominalSku(sku) {
             const foundProduct = activeNominals.find(n => n.buyer_sku_code === sku);
-            // Klon data agar tidak merusak list dasar
             selectedProduct = { ...foundProduct }; 
             
             const bebasContainer = document.getElementById('bebasNominalContainer');
@@ -1332,8 +1325,8 @@
             if (isBebasNominal) {
                 bebasContainer.classList.remove('hidden');
                 document.getElementById('inputBebasNominal').value = ''; 
-                selectedProduct.base_provider_fee = selectedProduct.price; // Menyimpan admin asli dari server/API
-                selectedProduct.price = 0; // Mengosongkan harga dulu sampai user ketik
+                selectedProduct.base_provider_fee = selectedProduct.price; 
+                selectedProduct.price = 0; 
                 selectedProduct.custom_nominal = 0;
             } else {
                 bebasContainer.classList.add('hidden');
@@ -1342,13 +1335,11 @@
             updateCartUI();
         }
 
-        // Logika penghitungan margin persis dengan API
         function calculateBebasNominal() {
             if (!selectedProduct) return;
             const input = document.getElementById('inputBebasNominal');
             let val = parseInt(input.value) || 0;
             
-            // Limit Maksimal
             if (val > 100000) {
                 val = 100000;
                 input.value = 100000;
@@ -1387,11 +1378,9 @@
             }
         }
 
-        // --- FITUR BARU: MODAL PREVIEW & EDIT STRUK ---
         function openReceiptModal(orderId, waktu, produk, tujuan, harga, sn) {
             activeReceipt = { orderId, waktu, produk, tujuan, harga, sn };
             
-            // Format Breakline HTML
             const rawSnText = sn.replace(/<br\s*\/?>/mg, "\n");
             const snHtml = sn.includes('<br>') ? rawSnText : sn;
             
@@ -1421,7 +1410,6 @@
             
             document.getElementById('receiptPreview').innerHTML = previewHtml;
             
-            // Set input nilai default
             const numericHarga = harga.replace(/\./g, '');
             document.getElementById('editReceiptPrice').value = numericHarga;
             
@@ -1433,14 +1421,12 @@
             activeReceipt = null;
         }
 
-        // Live Preview saat Reseller mengedit Harga
         document.getElementById('editReceiptPrice').addEventListener('input', function(e) {
             if(!activeReceipt) return;
             const val = parseInt(e.target.value) || 0;
             document.getElementById('previewHarga').innerText = val.toLocaleString('id-ID');
         });
 
-        // Eksekusi Download Struk Final
         function executeDownloadStruk() {
             if(!activeReceipt) return;
             
@@ -1452,7 +1438,6 @@
             const finalPriceVal = parseInt(document.getElementById('editReceiptPrice').value) || parseInt(activeReceipt.harga.replace(/\./g, ''));
             const finalHarga = finalPriceVal.toLocaleString('id-ID');
 
-            // Masukkan data final ke Canvas Hidden
             document.getElementById('struk-trxid').innerText = activeReceipt.orderId;
             document.getElementById('struk-waktu').innerText = activeReceipt.waktu;
             document.getElementById('struk-produk').innerText = activeReceipt.produk;
@@ -1475,7 +1460,6 @@
                 });
             }, 100);
         }
-        // ------------------------------------------
 
         function hubungiCS(orderId) {
             const pesan = `Halo Admin Twidy Shop, saya butuh bantuan untuk pesanan saya dengan TRXID: ${orderId}`;
@@ -1522,14 +1506,15 @@
                     const dateStr = new Date(t.created_at).toLocaleString('id-ID');
 
                     return `
+                        <!-- PC/Tablet Row -->
                         <tr class="hidden md:table-row border-b border-borderDim">
-                            <td class="p-3 font-mono"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
-                            <td class="p-3 font-medium">${t.target_id}</td>
-                            <td class="p-3">${t.product_name}</td>
-                            <td class="p-3 font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</td>
-                            <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span></td>
-                            <td class="p-3 font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap">${snDisplay}</td>
-                            <td class="p-3 text-center">
+                            <td class="p-3 font-mono break-all"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
+                            <td class="p-3 font-medium break-all min-w-[100px]">${t.target_id}</td>
+                            <td class="p-3 break-words min-w-[150px]">${t.product_name}</td>
+                            <td class="p-3 font-bold text-blue-400 whitespace-nowrap">Rp ${t.amount.toLocaleString('id-ID')}</td>
+                            <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeColor}">${t.status}</span></td>
+                            <td class="p-3 font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap break-all min-w-[150px]">${snDisplay}</td>
+                            <td class="p-3 text-center min-w-[100px]">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <button onclick="openReceiptModal('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Lihat Struk"><i class="fas fa-print"></i></button>
                                     <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
@@ -1537,22 +1522,23 @@
                             </td>
                         </tr>
 
+                        <!-- Mobile Row -->
                         <tr class="md:hidden block border-b border-borderDim p-4 space-y-3">
                             <td colspan="7" class="block w-full p-0">
                                 <div class="bg-bgInput rounded-xl p-4 border border-borderDim space-y-3">
-                                    <div class="flex justify-between items-start border-b border-borderDim pb-2">
-                                        <div>
-                                            <div class="font-mono font-bold text-white text-xs">${t.order_id}</div>
+                                    <div class="flex justify-between items-start border-b border-borderDim pb-2 gap-2">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="font-mono font-bold text-white text-xs break-all">${t.order_id}</div>
                                             <div class="text-[10px] text-textMuted">${dateStr}</div>
                                         </div>
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">${t.status}</span>
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border shrink-0 ${badgeColor}">${t.status}</span>
                                     </div>
                                     <div class="space-y-1 text-xs">
-                                        <div class="flex justify-between"><span class="text-textMuted">Tujuan:</span> <span class="font-medium text-white">${t.target_id}</span></div>
-                                        <div class="flex justify-between"><span class="text-textMuted">Produk:</span> <span class="font-medium text-white text-right max-w-[200px] truncate">${t.product_name}</span></div>
-                                        <div class="flex justify-between"><span class="text-textMuted">Total:</span> <span class="font-bold text-blue-400">Rp ${t.amount.toLocaleString('id-ID')}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Tujuan:</span> <span class="font-medium text-white break-all text-right">${t.target_id}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Produk:</span> <span class="font-medium text-white break-words text-right">${t.product_name}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Total:</span> <span class="font-bold text-blue-400 shrink-0">Rp ${t.amount.toLocaleString('id-ID')}</span></div>
                                     </div>
-                                    <div class="bg-bgCard p-2.5 rounded-lg border border-borderDim font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap">
+                                    <div class="bg-bgCard p-2.5 rounded-lg border border-borderDim font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap break-all">
                                         <div class="text-[10px] text-textMuted uppercase mb-1">SN / Link Download:</div>
                                         ${snDisplay}
                                     </div>
@@ -1772,7 +1758,6 @@
                 return; 
             }
 
-            // Validasi Khusus Jika Bebas Nominal Tapi Belum Diisi
             if (selectedProduct.product_name.toLowerCase().includes('bebas nominal')) {
                 if (!selectedProduct.custom_nominal || selectedProduct.custom_nominal <= 0) {
                     alert('Masukkan angka nominal bebas terlebih dahulu!');
@@ -1820,7 +1805,7 @@
                                 navigate('riwayat');
                                 searchTransaction();
                             }
-                        } catch (e) { /* abaikan error jaringan background */ }
+                        } catch (e) { }
                     }, 3000);
 
                     window.snap.pay(data.token, {
