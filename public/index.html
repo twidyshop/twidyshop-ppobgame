@@ -56,6 +56,25 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Custom Styles for New Tlibrary Look */
+        .cat-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #1f293f;
+            background-color: #131b2f;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8b94a5;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        @media (min-width: 768px) { .cat-pill { font-size: 0.875rem; padding: 0.6rem 1.25rem; } }
+        .cat-pill:hover { border-color: #3b82f6; color: #ffffff; }
+        .cat-pill.active { border-color: #3b82f6; color: #60a5fa; background-color: rgba(59, 130, 246, 0.1); }
+
         @media screen and (max-width: 768px) {
             input[type="text"], input[type="number"], input[type="password"], select, textarea {
                 font-size: 16px !important;
@@ -63,109 +82,79 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative">
+<body class="min-h-screen flex flex-col relative pb-20 md:pb-0">
 
-    <!-- Sticky Navbar -->
-    <nav class="sticky top-0 z-40 flex justify-between items-center px-4 md:px-10 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
+    <!-- Sticky Navbar Tlibrary Style -->
+    <nav class="sticky top-0 z-40 flex justify-between items-center px-4 md:px-8 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         
-        <div class="flex items-center gap-2 md:gap-3 cursor-pointer group" onclick="navigate('home')">
-            <img src="logo.png" alt="Twidy Shop Logo" class="w-8 h-8 md:w-11 md:h-11 rounded-lg md:rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300 object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
-            <div class="flex flex-col justify-center">
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-2 cursor-pointer group shrink-0" onclick="navigate('home')">
+            <img src="logo.png" alt="Twidy Shop Logo" class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300 object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
+            <div class="flex flex-col justify-center hidden sm:flex">
                 <span class="font-black text-[17px] md:text-xl tracking-wider leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-300 drop-shadow-sm group-hover:scale-[1.02] transition-transform duration-300 origin-left">TWIDY<span class="text-blue-500">SHOP</span></span>
-                <span class="text-[8px] md:text-[9px] text-blue-400 font-bold tracking-widest uppercase mt-0.5">Topup & Digital Store</span>
             </div>
         </div>
         
-        <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-textMuted">
-            <a href="#home" onclick="navigate('home')" id="nav-home" class="text-blue-500 flex items-center gap-2 transition hover:text-white"><i class="fas fa-home"></i> Home</a>
-            <a href="#topup" onclick="navigate('topup')" id="nav-topup" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-gamepad"></i> Top Up & PPOB</a>
-            <a href="#riwayat" onclick="navigate('riwayat')" id="nav-riwayat" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-search"></i> Cek Riwayat</a>
-            <a href="#promo" onclick="navigate('promo')" id="nav-promo" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-tag"></i> Promo</a>
-            <a href="#panduan" onclick="navigate('panduan')" id="nav-panduan" class="hover:text-white transition flex items-center gap-2"><i class="fas fa-headset"></i> Panduan</a>
-            <a href="#admin" onclick="navigate('admin')" id="nav-admin" class="hover:text-white transition flex items-center gap-2 text-yellow-400"><i class="fas fa-lock"></i> Admin</a>
+        <!-- Global Search Bar -->
+        <div class="flex-1 mx-3 md:mx-8 flex justify-center relative">
+            <div class="relative w-full max-w-[250px] sm:max-w-[350px] md:max-w-lg">
+                <i class="fas fa-search absolute left-3 md:left-4 top-2.5 md:top-3 text-textMuted text-xs md:text-sm"></i>
+                <input type="text" id="globalSearch" placeholder="Cari layanan, game, ecourse..." autocomplete="off" class="w-full bg-bgInput pl-8 md:pl-10 pr-4 py-2 md:py-2.5 rounded-full border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white transition placeholder-textMuted/70 shadow-inner">
+                
+                <!-- Search Results Dropdown -->
+                <div id="searchResults" class="absolute top-full left-0 w-full mt-2 bg-bgCard border border-borderDim rounded-xl shadow-2xl max-h-80 overflow-y-auto hidden z-50 divide-y divide-borderDim">
+                    <!-- Results injected here -->
+                </div>
+            </div>
         </div>
+        
+        <!-- Desktop Links & Cart -->
+        <div class="flex items-center gap-3 md:gap-5 shrink-0">
+            <!-- Desktop Links -->
+            <div class="hidden lg:flex items-center gap-6 text-sm font-medium text-textMuted mr-4">
+                <a href="#home" onclick="navigate('home')" class="hover:text-white transition"><i class="fas fa-home"></i> Beranda</a>
+                <a href="#riwayat" onclick="navigate('riwayat')" class="hover:text-white transition"><i class="fas fa-receipt"></i> Transaksi</a>
+                <a href="#promo" onclick="navigate('promo')" class="hover:text-white transition"><i class="fas fa-tag"></i> Promo</a>
+            </div>
 
-        <div class="flex items-center gap-3 lg:hidden">
-            <button onclick="toggleMobileMenu()" class="text-white text-xl p-1.5 focus:outline-none">
-                <i class="fas fa-bars"></i>
+            <button onclick="openDigitalCart()" class="relative text-textMuted hover:text-white transition p-1">
+                <i class="fas fa-shopping-cart text-xl"></i>
+                <span id="headerCartCount" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center scale-0 transition-transform shadow-[0_0_8px_rgba(37,99,235,0.8)]">0</span>
             </button>
-        </div>
-        
-        <div class="hidden sm:flex items-center gap-4">
-            <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 bg-blue-400/10 px-4 py-2 rounded-full border border-blue-400/20">
-                <i class="fas fa-shield-check"></i> Fast & Safe
-            </div>
         </div>
     </nav>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobileMenu" class="hidden lg:hidden bg-bgCard border-b border-borderDim px-4 py-3 space-y-2 text-sm font-medium z-40 sticky top-[60px]">
-        <a href="#home" onclick="navigate('home'); toggleMobileMenu();" class="block py-2 text-blue-400"><i class="fas fa-home mr-2"></i> Home</a>
-        <a href="#topup" onclick="navigate('topup'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-gamepad mr-2"></i> Top Up & PPOB</a>
-        <a href="#riwayat" onclick="navigate('riwayat'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-search mr-2"></i> Cek Riwayat</a>
-        <a href="#promo" onclick="navigate('promo'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-tag mr-2"></i> Promo</a>
-        <a href="#panduan" onclick="navigate('panduan'); toggleMobileMenu();" class="block py-2 text-gray-200"><i class="fas fa-headset mr-2"></i> Panduan & Bantuan</a>
-        <a href="#admin" onclick="navigate('admin'); toggleMobileMenu();" class="block py-2 text-yellow-400 border-t border-borderDim mt-2 pt-2"><i class="fas fa-lock mr-2"></i> Admin Panel</a>
-    </div>
-
     <!-- CONTENT VIEWS -->
-    <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6 pb-24">
+    <main class="flex-grow max-w-[1400px] w-full mx-auto p-3 md:p-6 lg:p-8 space-y-4 md:space-y-6">
         
-        <!-- VIEW 1: TOPUP & PPOB -->
-        <div id="view-topup" class="space-y-4 md:space-y-6 relative">
+        <!-- VIEW 1: HOME (TOPUP & DIGITAL) -->
+        <div id="view-topup" class="space-y-6 relative">
             
-            <!-- Perubahan Banner PC: Ditambahkan batasan tinggi dengan object-cover -->
+            <!-- Hero Banner -->
             <div id="home" class="relative rounded-2xl border border-borderDim overflow-hidden shadow-lg group bg-bgCard">
                 <img src="banner-hero.png" alt="Promo Twidy Shop" class="w-full h-[140px] md:h-[250px] lg:h-[280px] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 origin-center" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'400\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'24\' dominant-baseline=\'middle\' text-anchor=\'middle\'>BANNER HERO KOSONG</text></svg>'">
             </div>
 
-            <div class="sticky top-[60px] md:top-[74px] z-30 relative">
-                <div class="flex overflow-x-auto gap-2 bg-bgCard p-3 rounded-xl border border-borderDim hide-scrollbar scroll-smooth whitespace-nowrap shadow-lg">
-                    <button onclick="switchCategory('game')" id="btnCatGame" class="flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition">Game</button>
-                    <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Pulsa</button>
-                    <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">E-Money</button>
-                    <button onclick="switchCategory('pln')" id="btnCatPln" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">PLN/Stream</button>
-                    <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Tagihan</button>
-                    <button onclick="switchCategory('ebook')" id="btnCatEbook" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ebook</button>
-                    <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Ecourse</button>
-                    <button onclick="switchCategory('template')" id="btnCatTemplate" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Template</button>
-                    <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition">Aplikasi</button>
-                    <div class="min-w-[30px] flex-shrink-0"></div>
-                </div>
-                
-                <div class="absolute right-[1px] top-[1px] bottom-[1px] w-16 bg-gradient-to-l from-bgCard to-transparent pointer-events-none rounded-r-xl flex items-center justify-end pr-3">
-                    <i class="fas fa-chevron-right text-textMuted/60 text-xs animate-pulse drop-shadow-md"></i>
+            <!-- Kategori Layanan (Tlibrary Style) -->
+            <div class="pt-2">
+                <h2 class="text-base md:text-xl font-bold text-white mb-3">Kategori Layanan</h2>
+                <div class="flex overflow-x-auto gap-2 md:gap-3 pb-2 hide-scrollbar snap-x">
+                    <button onclick="switchCategory('game')" id="btnCatGame" class="cat-pill snap-start shrink-0 active"><i class="fas fa-gamepad text-blue-400"></i> Game</button>
+                    <button onclick="switchCategory('pulsa')" id="btnCatPulsa" class="cat-pill snap-start shrink-0"><i class="fas fa-mobile-alt text-cyan-400"></i> Pulsa</button>
+                    <button onclick="switchCategory('emoney')" id="btnCatEmoney" class="cat-pill snap-start shrink-0"><i class="fas fa-wallet text-green-400"></i> E-Money</button>
+                    <button onclick="switchCategory('pln')" id="btnCatPln" class="cat-pill snap-start shrink-0"><i class="fas fa-bolt text-yellow-400"></i> Token PLN & Stream</button>
+                    <button onclick="switchCategory('tagihan')" id="btnCatTagihan" class="cat-pill snap-start shrink-0"><i class="fas fa-file-invoice-dollar text-purple-400"></i> Tagihan</button>
+                    <button onclick="switchCategory('ebook')" id="btnCatEbook" class="cat-pill snap-start shrink-0"><i class="fas fa-book text-pink-400"></i> Ebook</button>
+                    <button onclick="switchCategory('ecourse')" id="btnCatEcourse" class="cat-pill snap-start shrink-0"><i class="fas fa-graduation-cap text-blue-500"></i> Ecourse</button>
+                    <button onclick="switchCategory('template')" id="btnCatTemplate" class="cat-pill snap-start shrink-0"><i class="fas fa-file-code text-orange-400"></i> Template</button>
+                    <button onclick="switchCategory('aplikasi')" id="btnCatAplikasi" class="cat-pill snap-start shrink-0"><i class="fab fa-android text-green-500"></i> Aplikasi</button>
                 </div>
             </div>
 
+            <!-- PPOB LAYOUT (Game, Pulsa, dll) -->
             <div id="ppobLayout" class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start pt-2">
                 
                 <div class="lg:col-span-3 bg-bgCard rounded-xl p-4 border border-borderDim h-max">
-                    <button id="btnInstallPwa" style="display: none;" class="w-full text-left mb-3 bg-gradient-to-r from-blue-900/30 to-[#101726] border border-blue-500/30 rounded-xl p-2 md:p-2.5 hover:border-blue-400 transition-all shadow-lg relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="flex items-center justify-between relative z-10">
-                            <div class="flex items-center gap-2.5 md:gap-3">
-                                <div class="w-9 h-9 md:w-10 md:h-10 shrink-0 relative">
-                                    <img src="logo.png" alt="App Icon" class="w-full h-full rounded-lg object-cover shadow-sm border border-blue-500/30" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
-                                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full animate-ping"></span>
-                                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 border-2 border-bgCard rounded-full"></span>
-                                </div>
-                                <div>
-                                    <div class="text-[11px] md:text-xs font-extrabold text-white mb-0.5">🚀 Lebih Praktis!</div>
-                                    <div class="text-[9px] md:text-[10px] text-blue-300">Install ke Layar Utama</div>
-                                </div>
-                            </div>
-                            <div class="bg-blue-600 group-hover:bg-blue-500 text-white text-[9px] md:text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(37,99,235,0.3)]">
-                                Install <i class="fas fa-mobile-alt"></i>
-                            </div>
-                        </div>
-                    </button>
-
-                    <div class="relative mb-3">
-                        <i class="fas fa-search absolute left-3 top-3 text-textMuted text-xs"></i>
-                        <input type="text" id="gameSearch" placeholder="Cari layanan..." oninput="filterSidebarItems()" class="w-full bg-bgInput text-xs md:text-sm pl-8 pr-3 py-2.5 rounded-lg border border-borderDim focus:outline-none focus:border-blue-500 text-white placeholder-textMuted transition" />
-                    </div>
-                    
                     <div id="sidebarListContainer" class="max-h-[500px] overflow-y-auto pr-1 hide-scrollbar">
                         <ul class="space-y-1 text-sm font-semibold hidden lg:block" id="sidebarListDesktop"></ul>
                         <div class="grid grid-cols-3 gap-3 lg:hidden" id="sidebarGridMobile"></div>
@@ -206,7 +195,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- REPOSISI: Container Bebas Nominal dipindah langsung di bawah input Tujuan -->
                                 <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
                                     <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
                                     <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
@@ -257,12 +245,16 @@
                 </div>
             </div>
 
+            <!-- DIGITAL PRODUCTS LAYOUT (Ecourse, dll) - Tlibrary Style -->
             <div id="digitalLayout" class="hidden space-y-6 pt-2">
-                <div class="flex justify-between items-center">
-                    <h2 id="digitalCategoryTitle" class="text-xl font-bold text-white uppercase">Daftar Produk Digital</h2>
-                    <div class="text-xs text-textMuted hidden sm:block">Pilih beberapa produk untuk dibeli sekaligus</div>
+                <div class="flex justify-between items-center bg-bgInput p-4 rounded-xl border border-borderDim">
+                    <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-fire text-orange-500"></i> 
+                        Produk Digital <span id="digitalCategoryTitle" class="uppercase text-blue-400">ECOURSE</span>
+                    </h2>
                 </div>
-                <div id="digitalCardsContainer" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"></div>
+                <p class="text-xs text-textMuted -mt-4 ml-2">Eksplorasi koleksi produk digital terbaik kami.</p>
+                <div id="digitalCardsContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5"></div>
             </div>
         </div>
 
@@ -270,8 +262,8 @@
             <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim max-w-5xl mx-auto space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <div>
-                        <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-search text-blue-500"></i> Cek Riwayat Pesanan</h2>
-                        <p class="text-textMuted text-xs">Masukkan Order ID atau Nomor/Email untuk melacak transaksi.</p>
+                        <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-receipt text-blue-500"></i> Riwayat Transaksi</h2>
+                        <p class="text-textMuted text-xs mt-1">Masukkan Order ID atau Nomor/Email untuk melacak pesanan.</p>
                     </div>
                 </div>
 
@@ -282,7 +274,6 @@
                     </button>
                 </div>
 
-                <!-- Perbaikan Table agar tidak memanjang keluar div -->
                 <div class="w-full">
                     <table class="w-full text-left text-xs text-gray-300">
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
@@ -295,9 +286,10 @@
 
         <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
             <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
+                <div class="text-6xl text-blue-500/30 mb-4"><i class="fas fa-tags"></i></div>
                 <h2 class="text-2xl font-bold text-white">Promo & Diskon Spesial</h2>
                 <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik setiap hari di Twidy Shop!</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition">Kembali ke Home</button>
+                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition mt-4">Belanja Sekarang</button>
             </div>
         </div>
 
@@ -305,7 +297,7 @@
             <div class="max-w-5xl mx-auto space-y-6">
                 <div class="bg-gradient-to-r from-blue-900/40 to-bgCard p-6 md:p-8 rounded-2xl border border-borderDim shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-2">Pusat Panduan & Bantuan</h2>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-2">Pusat Info & Bantuan</h2>
                         <p class="text-textMuted text-sm md:text-base">Temukan jawaban untuk pertanyaanmu atau hubungi layanan pelanggan kami.</p>
                     </div>
                     <div class="hidden md:block text-6xl text-blue-500/30"><i class="fas fa-headset"></i></div>
@@ -367,9 +359,9 @@
         </div>
 
         <div id="view-admin" class="space-y-6 hidden min-h-[60vh]">
-            <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4">
-                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Admin Panel</h2>
-                <p class="text-textMuted text-xs">Masukkan kredensial admin untuk mengelola produk digital.</p>
+            <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4 mt-8">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Akun Admin</h2>
+                <p class="text-textMuted text-xs">Masukkan kredensial admin untuk mengelola produk digital & laporan.</p>
                 <div>
                     <label class="block text-xs text-textMuted mb-1">Username</label>
                     <input type="text" id="adminUser" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm text-white outline-none focus:border-blue-500" placeholder="admin" />
@@ -482,6 +474,29 @@
 
     </main>
 
+    <!-- BOTTOM NAVIGATION BAR (Mobile Only) - Tlibrary Style -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-bgCard border-t border-borderDim z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+        <div class="flex justify-around items-center py-2 px-1">
+            <a href="#home" onclick="navigate('home')" class="nav-item flex flex-col items-center gap-1 text-blue-500 text-[10px] font-semibold w-16 transition-colors" data-target="home">
+                <i class="fas fa-home text-lg mb-0.5"></i> Beranda
+            </a>
+            <a href="#promo" onclick="navigate('promo')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="promo">
+                <i class="fas fa-tags text-lg mb-0.5"></i> Promo
+            </a>
+            <a href="#riwayat" onclick="navigate('riwayat')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="riwayat">
+                <i class="fas fa-receipt text-lg mb-0.5"></i> Transaksi
+            </a>
+            <a href="#panduan" onclick="navigate('panduan')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="panduan">
+                <i class="fas fa-info-circle text-lg mb-0.5"></i> Info
+            </a>
+            <a href="#admin" onclick="navigate('admin')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="admin">
+                <i class="fas fa-user text-lg mb-0.5"></i> Akun
+            </a>
+        </div>
+        <!-- Safe area padding for iPhones -->
+        <div class="pb-[env(safe-area-inset-bottom)]"></div>
+    </div>
+
     <!-- Modal Keranjang -->
     <div id="cartModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col relative shadow-2xl">
@@ -509,13 +524,15 @@
     <!-- Modal Produk Digital -->
     <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-bgCard border border-borderDim rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 relative shadow-2xl">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-bgInput text-textMuted hover:text-white flex items-center justify-center transition border border-borderDim">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black flex items-center justify-center transition border border-white/20 z-10">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="flex items-center gap-3">
-                <span class="px-2.5 py-1 rounded bg-blue-500/10 text-blue-400 font-bold text-[10px] uppercase border border-blue-500/20" id="modalCatBadge">Course</span>
+            
+            <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-borderDim bg-bgInput">
+                <img id="modalImg" src="" alt="Cover" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white font-bold text-[10px] uppercase border border-white/20 shadow-sm" id="modalCatBadge">Course</span>
             </div>
-            <img id="modalImg" src="" alt="Cover" class="w-full h-48 sm:h-56 object-cover rounded-xl border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
+            
             <div>
                 <h3 id="modalTitle" class="text-lg md:text-xl font-bold text-white mb-1">Judul Produk</h3>
                 <div class="text-xl font-extrabold text-blue-400 mb-3" id="modalPrice">Rp 0</div>
@@ -628,7 +645,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="mt-12 bg-[#080b14] py-8 border-t border-borderDim">
+    <footer class="mt-8 bg-[#080b14] py-8 border-t border-borderDim">
         <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-2 text-textMuted">
                 <img src="logo.png" alt="Logo" class="w-6 h-6 rounded object-cover shadow-sm">
@@ -731,6 +748,81 @@
         let snapClientKeyLoaded = false;
         let activeReceipt = null; 
 
+        // GLOBAL SEARCH LOGIC
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const resBox = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                resBox.classList.add('hidden');
+                return;
+            }
+            
+            let html = '';
+            
+            // Search PPOB
+            let ppobFound = false;
+            ['game', 'pulsa', 'emoney', 'pln', 'tagihan'].forEach(cat => {
+                categoriesData[cat].forEach(item => {
+                    if (item.name.toLowerCase().includes(query)) {
+                        ppobFound = true;
+                        html += `<div onclick="selectSearchResult('${cat}', '${item.id}', false)" class="p-3 hover:bg-bgInput cursor-pointer flex items-center gap-3 border-b border-borderDim transition">
+                            <img src="${item.img}" class="w-10 h-10 rounded-lg object-cover border border-borderDim">
+                            <div>
+                                <div class="text-sm font-bold text-white leading-tight">${item.name}</div>
+                                <div class="text-[10px] text-blue-400 font-bold uppercase mt-0.5">${cat}</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+            });
+
+            // Search Digital
+            let digiFound = false;
+            ['ebook', 'ecourse', 'template', 'aplikasi'].forEach(cat => {
+                categoriesData[cat].forEach(item => {
+                    if (item.name.toLowerCase().includes(query)) {
+                        digiFound = true;
+                        html += `<div onclick="selectSearchResult('${cat}', '${item.id}', true)" class="p-3 hover:bg-bgInput cursor-pointer flex items-center gap-3 border-b border-borderDim transition">
+                            <img src="${item.img}" class="w-10 h-10 rounded-lg object-cover border border-borderDim">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-bold text-white truncate">${item.name}</div>
+                                <div class="text-[10px] text-orange-400 font-bold uppercase mt-0.5">Produk Digital - ${cat}</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+            });
+
+            if (!ppobFound && !digiFound) {
+                html = `<div class="p-5 text-center text-sm text-textMuted"><i class="fas fa-search mb-2 text-xl opacity-50 block"></i> Layan tidak ditemukan.</div>`;
+            }
+
+            resBox.innerHTML = html;
+            resBox.classList.remove('hidden');
+        });
+
+        // Hide search results if click outside
+        document.addEventListener('click', function(e) {
+            const searchBar = document.getElementById('globalSearch');
+            const searchResults = document.getElementById('searchResults');
+            if (e.target !== searchBar && !searchResults.contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        function selectSearchResult(cat, id, isDigital) {
+            document.getElementById('searchResults').classList.add('hidden');
+            document.getElementById('globalSearch').value = '';
+            navigate('home');
+            switchCategory(cat);
+            if (isDigital) {
+                openProductModal(cat, id);
+            } else {
+                selectItem(cat, id, true);
+            }
+        }
+
         function initApp() {
             renderSidebar();
             selectItem('game', categoriesData.game[0].id, false); 
@@ -796,8 +888,16 @@
             }
         }
 
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
+        function updateBottomNavActiveState(viewName) {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('text-blue-500');
+                el.classList.add('text-textMuted');
+            });
+            const activeEl = document.querySelector(`.nav-item[data-target="${viewName}"]`);
+            if (activeEl) {
+                activeEl.classList.remove('text-textMuted');
+                activeEl.classList.add('text-blue-500');
+            }
         }
 
         function navigate(viewName) {
@@ -809,11 +909,13 @@
             if(viewName === 'home' || viewName === 'topup') {
                 document.getElementById('view-topup').classList.remove('hidden');
                 history.pushState({}, '', '/');
+                updateBottomNavActiveState('home');
             } else {
                 const targetView = document.getElementById('view-' + viewName);
                 if(targetView) targetView.classList.remove('hidden');
                 if(viewName === 'admin') loadAdminProducts();
                 history.pushState({}, '', '/' + viewName);
+                updateBottomNavActiveState(viewName);
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -859,10 +961,16 @@
 
         function switchCategory(cat) {
             currentCategory = cat;
+            
+            // Handle Pill styling (Tlibrary style)
             ['game', 'pulsa', 'emoney', 'pln', 'tagihan', 'ebook', 'ecourse', 'template', 'aplikasi'].forEach(c => {
                 const btn = document.getElementById('btnCat' + c.charAt(0).toUpperCase() + c.slice(1));
                 if(btn) {
-                    btn.className = (c === cat) ? "flex-shrink-0 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs md:text-sm font-bold transition" : "flex-shrink-0 px-4 py-2 rounded-lg bg-bgInput text-textMuted hover:text-white border border-borderDim text-xs md:text-sm font-bold transition";
+                    if (c === cat) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
                 }
             });
 
@@ -870,19 +978,18 @@
             if(isDigital) {
                 document.getElementById('ppobLayout').classList.add('hidden');
                 document.getElementById('digitalLayout').classList.remove('hidden');
-                document.getElementById('digitalCategoryTitle').innerText = `Daftar Produk ${cat.toUpperCase()}`;
+                document.getElementById('digitalCategoryTitle').innerText = cat.toUpperCase();
                 renderDigitalCards(cat);
-                updateFloatingCartBtn();
             } else {
                 document.getElementById('ppobLayout').classList.remove('hidden');
                 document.getElementById('digitalLayout').classList.add('hidden');
                 renderSidebar();
                 const firstItem = categoriesData[cat][0];
                 if(firstItem) selectItem(cat, firstItem.id, false); 
-                document.getElementById('floatingCartBtn').classList.replace('scale-100', 'scale-0');
             }
         }
 
+        // Tlibrary Style Digital Cards Rendering
         function renderDigitalCards(cat) {
             const container = document.getElementById('digitalCardsContainer');
             const items = categoriesData[cat] || [];
@@ -894,22 +1001,23 @@
 
             container.innerHTML = items.map(item => {
                 const inCart = digitalCart.find(c => c.id === item.id);
-                const btnText = inCart ? '<i class="fas fa-check"></i> Di Keranjang' : '<i class="fas fa-cart-plus"></i> Tambah';
-                const btnColor = inCart ? 'bg-green-600 text-white' : 'bg-blue-600/20 text-blue-400 group-hover:bg-blue-600 group-hover:text-white';
+                const btnText = inCart ? '<i class="fas fa-check"></i> Sudah di Keranjang' : '<i class="fas fa-shopping-cart"></i> Beli';
+                const btnColor = inCart ? 'bg-green-600/10 text-green-400 border border-green-500/20' : 'bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/20';
                 
                 return `
-                <div class="bg-bgCard rounded-xl border border-borderDim p-3 md:p-4 flex flex-col justify-between transition hover:border-blue-500 hover:shadow-lg group">
-                    <div class="cursor-pointer" onclick="openProductModal('${cat}', '${item.id}')">
-                        <div class="relative mb-2.5 overflow-hidden rounded-lg bg-bgInput aspect-[4/3] border border-borderDim">
-                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
-                            <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-[9px] font-bold text-blue-400 uppercase border border-white/10">${cat}</span>
-                        </div>
-                        <h3 class="font-bold text-white text-xs md:text-sm mb-1 line-clamp-2 group-hover:text-blue-400 transition">${item.name}</h3>
-                        <p class="text-textMuted text-[11px] line-clamp-2 mb-2">${item.desc}</p>
+                <div class="bg-bgCard rounded-2xl border border-borderDim p-3 flex flex-col hover:border-blue-500 transition-all shadow-sm cursor-pointer group" onclick="openProductModal('${cat}', '${item.id}')">
+                    <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-bgInput">
+                        <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'14\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Cover</text></svg>'">
+                        <span class="absolute top-2 left-2 bg-black/60 backdrop-blur-md border border-white/20 text-white text-[9px] font-bold px-2 py-0.5 rounded-md uppercase">${cat}</span>
                     </div>
-                    <div class="pt-2.5 border-t border-borderDim flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-auto">
-                        <div class="text-xs md:text-sm font-extrabold text-blue-400">Rp ${item.price.toLocaleString('id-ID')}</div>
-                        <button onclick="toggleCartItem('${item.id}', '${item.name}', ${item.price}, '${item.downloadUrl}', '${item.img}')" class="${btnColor} px-2.5 py-1.5 rounded text-[10px] md:text-xs font-bold transition flex justify-center items-center gap-1">${btnText}</button>
+                    <h3 class="font-bold text-white text-xs md:text-sm mb-1 line-clamp-2 group-hover:text-blue-400 transition">${item.name}</h3>
+                    <p class="text-[10px] md:text-xs text-textMuted line-clamp-2 mb-3">${item.desc}</p>
+                    
+                    <div class="mt-auto flex items-center justify-between pt-3 border-t border-borderDim/50">
+                        <div class="font-extrabold text-blue-400 text-xs md:text-sm">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        <button onclick="event.stopPropagation(); toggleCartItem('${item.id}', '${item.name}', ${item.price}, '${item.downloadUrl}', '${item.img}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors ${btnColor}">
+                            ${btnText}
+                        </button>
                     </div>
                 </div>
             `}).join('');
@@ -967,19 +1075,18 @@
                 digitalCart.push({ id, name, price, downloadUrl, img });
             }
             updateFloatingCartBtn();
-            renderDigitalCards(currentCategory);
+            if (['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
+                renderDigitalCards(currentCategory);
+            }
         }
 
         function updateFloatingCartBtn() {
-            const btn = document.getElementById('floatingCartBtn');
-            const count = document.getElementById('floatingCartCount');
-            const isDigitalView = ['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory);
-            
-            if(digitalCart.length > 0 && isDigitalView) {
-                btn.classList.replace('scale-0', 'scale-100');
+            const count = document.getElementById('headerCartCount');
+            if(digitalCart.length > 0) {
                 count.innerText = digitalCart.length;
+                count.classList.replace('scale-0', 'scale-100');
             } else {
-                btn.classList.replace('scale-100', 'scale-0');
+                count.classList.replace('scale-100', 'scale-0');
             }
         }
 
@@ -1020,6 +1127,15 @@
             totalEl.innerText = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
+        function removeFromCartModal(index) {
+            digitalCart.splice(index, 1);
+            updateFloatingCartBtn();
+            renderCartModal();
+            if (['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
+                renderDigitalCards(currentCategory);
+            }
+        }
+
         async function checkoutMultiDigital() {
             if(digitalCart.length === 0) return alert('Keranjang kosong!');
             
@@ -1052,7 +1168,10 @@
                     closeDigitalCart();
                     digitalCart = [];
                     updateFloatingCartBtn();
-                    renderDigitalCards(currentCategory);
+                    
+                    if (['ebook', 'ecourse', 'template', 'aplikasi'].includes(currentCategory)) {
+                        renderDigitalCards(currentCategory);
+                    }
 
                     let checkInterval = setInterval(async () => {
                         try {
@@ -1108,6 +1227,7 @@
             }
         }
 
+        // Keep existing logic for sidebar and PPOB processing
         function renderSidebar(filter = '') {
             const listDesktop = document.getElementById('sidebarListDesktop');
             const gridMobile = document.getElementById('sidebarGridMobile');
@@ -1140,7 +1260,8 @@
         }
 
         function filterSidebarItems() {
-            renderSidebar(document.getElementById('gameSearch').value);
+            // Disabled internal sidebar search bar, replaced by global search. 
+            // Left this function empty if old event listeners trigger it.
         }
 
         function selectItem(cat, id, autoScroll = true) {
@@ -1187,7 +1308,7 @@
 
             document.getElementById('bebasNominalContainer').classList.add('hidden');
 
-            renderSidebar(document.getElementById('gameSearch').value);
+            renderSidebar('');
             
             if (activeItem.isPasca) {
                 document.getElementById('nominalContainer').innerHTML = `
@@ -1579,8 +1700,8 @@
         }
 
         function adminLogout() {
-            document.getElementById('adminLoginBox').classList.add('hidden');
-            document.getElementById('adminDashboardBox').classList.remove('hidden');
+            document.getElementById('adminLoginBox').classList.remove('hidden');
+            document.getElementById('adminDashboardBox').classList.add('hidden');
         }
 
         async function loadAdminProducts() {
