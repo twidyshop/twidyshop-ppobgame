@@ -85,21 +85,21 @@
 <body class="min-h-screen flex flex-col relative pb-20 md:pb-0">
 
     <!-- Sticky Navbar Tlibrary Style -->
-    <nav class="sticky top-0 z-40 flex justify-between items-center px-4 md:px-8 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
+    <nav class="sticky top-0 z-40 flex justify-between items-center px-3 md:px-8 py-3 bg-bgCard/95 backdrop-blur-md border-b border-borderDim shadow-md">
         
-        <!-- Logo & Title -->
+        <!-- Logo & Title (Diperbaiki agar tampil di HP) -->
         <div class="flex items-center gap-2 cursor-pointer group shrink-0" onclick="navigate('home')">
             <img src="logo.png" alt="Twidy Shop Logo" class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] transition-all duration-300 object-cover" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%233b82f6\' rx=\'10\'/><text x=\'50%\' y=\'50%\' fill=\'white\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' dominant-baseline=\'middle\' text-anchor=\'middle\'>T</text></svg>'">
-            <div class="flex flex-col justify-center hidden sm:flex">
-                <span class="font-black text-[17px] md:text-xl tracking-wider leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-300 drop-shadow-sm group-hover:scale-[1.02] transition-transform duration-300 origin-left">TWIDY<span class="text-blue-500">SHOP</span></span>
+            <div class="flex flex-col justify-center">
+                <span class="font-black text-[13px] sm:text-[17px] md:text-xl tracking-wider leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-300 drop-shadow-sm group-hover:scale-[1.02] transition-transform duration-300 origin-left">TWIDY<span class="text-blue-500">SHOP</span></span>
             </div>
         </div>
         
-        <!-- Global Search Bar -->
-        <div class="flex-1 mx-3 md:mx-8 flex justify-center relative">
-            <div class="relative w-full max-w-[250px] sm:max-w-[350px] md:max-w-lg">
+        <!-- Global Search Bar (Dipersempit di HP) -->
+        <div class="flex-1 mx-2 md:mx-6 flex justify-center md:justify-center relative">
+            <div class="relative w-full max-w-[170px] sm:max-w-[280px] md:max-w-lg">
                 <i class="fas fa-search absolute left-3 md:left-4 top-2.5 md:top-3 text-textMuted text-xs md:text-sm"></i>
-                <input type="text" id="globalSearch" placeholder="Cari layanan, game, ecourse..." autocomplete="off" class="w-full bg-bgInput pl-8 md:pl-10 pr-4 py-2 md:py-2.5 rounded-full border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white transition placeholder-textMuted/70 shadow-inner">
+                <input type="text" id="globalSearch" placeholder="Cari layanan, game..." autocomplete="off" class="w-full bg-bgInput pl-8 md:pl-10 pr-3 py-2 md:py-2.5 rounded-full border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white transition placeholder-textMuted/70 shadow-inner">
                 
                 <!-- Search Results Dropdown -->
                 <div id="searchResults" class="absolute top-full left-0 w-full mt-2 bg-bgCard border border-borderDim rounded-xl shadow-2xl max-h-80 overflow-y-auto hidden z-50 divide-y divide-borderDim">
@@ -118,7 +118,7 @@
             </div>
 
             <button onclick="openDigitalCart()" class="relative text-textMuted hover:text-white transition p-1">
-                <i class="fas fa-shopping-cart text-xl"></i>
+                <i class="fas fa-shopping-cart text-[18px] md:text-xl"></i>
                 <span id="headerCartCount" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center scale-0 transition-transform shadow-[0_0_8px_rgba(37,99,235,0.8)]">0</span>
             </button>
         </div>
@@ -161,88 +161,103 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-6 space-y-4 md:space-y-6">
-                    <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
-                        <img id="activeItemImg" src="assets/roblox-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'12\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
-                        <div class="flex-1 min-w-0">
-                            <h2 id="activeItemTitle" class="text-lg md:text-2xl font-bold mb-1 text-white truncate">Roblox</h2>
-                            <p id="activeItemDesc" class="text-textMuted text-xs md:text-sm truncate">Top Up Robux Roblox resmi & instan.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
-                        <div class="flex border-b border-borderDim bg-[#101726]">
-                            <div id="targetLabelSection" class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
-                                <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
-                            </div>
-                            <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
-                                <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Layanan
-                            </div>
-                        </div>
-
-                        <div class="p-4 md:p-6 space-y-6">
-                            <div>
-                                <h3 class="text-xs md:text-sm font-bold text-white mb-3 flex items-center gap-2" id="labelTargetHeader">
-                                    <i class="fas fa-user text-textMuted"></i> User ID
-                                </h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-[10px] md:text-xs text-textMuted mb-1" id="labelTargetInput">Masukkan User ID</label>
-                                        <input type="text" id="targetId" placeholder="Masukkan ID Tujuan" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white" />
-                                    </div>
-                                    <div id="serverContainer">
-                                        <!-- Container untuk dropdown/input server ID -->
-                                    </div>
-                                </div>
-                                
-                                <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
-                                    <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
-                                    <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
-                                    <div class="text-[10px] text-textMuted mt-2"><i class="fas fa-info-circle"></i> Sistem akan otomatis menambahkan margin/admin.</div>
-                                </div>
-                            </div>
-
-                            <div class="mt-6 border-t border-borderDim/50 pt-5">
-                                <div class="flex items-center justify-between mb-3">
-                                    <h3 class="text-xs md:text-sm font-bold text-white" id="titleNominal">Pilih Nominal</h3>
-                                </div>
-                                <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1 hide-scrollbar" id="nominalContainer">
-                                    <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- STATE: KOSONG (Belum Ada Layanan Yang Dipilih) -->
+                <div id="emptySelectionState" class="lg:col-span-9 bg-bgCard rounded-xl p-10 border border-borderDim flex flex-col items-center justify-center min-h-[300px] lg:min-h-[500px]">
+                    <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-inner"><i class="fas fa-mouse-pointer"></i></div>
+                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Pilih Layanan Terlebih Dahulu</h3>
+                    <p class="text-xs md:text-sm text-textMuted text-center max-w-sm">Silakan pilih game, pulsa, atau layanan lainnya dari menu di samping untuk mulai bertransaksi.</p>
                 </div>
 
-                <div class="lg:col-span-3 space-y-4 md:space-y-6">
-                    <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max sticky top-[135px]">
-                        <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
-                            <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Detail Pesanan</span>
-                        </h3>
+                <!-- STATE: AKTIF (Form Pengisian Data & Nominal) -->
+                <div id="activeSelectionState" class="lg:col-span-9 hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-9 gap-4 md:gap-6">
                         
-                        <div class="flex gap-3 mb-4">
-                            <img id="cartImg" src="assets/roblox-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'100%\' height=\'100%\' fill=\'%23131b2f\'/><text x=\'50%\' y=\'50%\' fill=\'%238b94a5\' font-family=\'sans-serif\' font-size=\'10\' dominant-baseline=\'middle\' text-anchor=\'middle\'>Logo</text></svg>'">
-                            <div class="flex-1 min-w-0">
-                                <div id="cartItemName" class="text-[10px] md:text-xs text-textMuted mb-0.5 font-medium truncate">Roblox</div>
-                                <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
-                                <div class="text-[10px] text-blue-400 mt-0.5">Instan & Otomatis</div>
+                        <div class="lg:col-span-6 space-y-4 md:space-y-6">
+                            <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim flex items-center gap-4">
+                                <img id="activeItemImg" src="assets/roblox-logo.png" alt="Logo" class="w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover shadow-lg border border-borderDim bg-bgInput">
+                                <div class="flex-1 min-w-0">
+                                    <h2 id="activeItemTitle" class="text-lg md:text-2xl font-bold mb-1 text-white truncate">Roblox</h2>
+                                    <p id="activeItemDesc" class="text-textMuted text-xs md:text-sm truncate">Top Up Robux Roblox resmi & instan.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-bgCard rounded-xl p-0 border border-borderDim overflow-hidden">
+                                <div class="flex border-b border-borderDim bg-[#101726]">
+                                    <div id="targetLabelSection" class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 border-b-2 border-blue-500 text-white bg-bgCard">
+                                        <span class="w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] flex items-center justify-center">1</span> <span id="targetLabelTitle">Masukkan Data</span>
+                                    </div>
+                                    <div class="flex-1 py-3 md:py-4 text-xs md:text-sm font-semibold flex items-center justify-center gap-2 text-textMuted">
+                                        <span class="w-5 h-5 rounded-full bg-borderDim text-textMuted text-[10px] flex items-center justify-center">2</span> Pilih Layanan
+                                    </div>
+                                </div>
+
+                                <div class="p-4 md:p-6 space-y-6">
+                                    <div>
+                                        <h3 class="text-xs md:text-sm font-bold text-white mb-3 flex items-center gap-2" id="labelTargetHeader">
+                                            <i class="fas fa-user text-textMuted"></i> User ID
+                                        </h3>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                            <div>
+                                                <label class="block text-[10px] md:text-xs text-textMuted mb-1" id="labelTargetInput">Masukkan User ID</label>
+                                                <input type="text" id="targetId" placeholder="Masukkan ID Tujuan" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white" />
+                                            </div>
+                                            <div id="serverContainer">
+                                                <!-- Container untuk dropdown/input server ID -->
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="bebasNominalContainer" class="hidden mt-4 bg-blue-900/20 border border-blue-500/30 p-4 rounded-xl">
+                                            <label class="block text-xs font-bold text-blue-300 mb-2">Masukkan Nominal Bebas (Maks Rp 100.000)</label>
+                                            <input type="number" id="inputBebasNominal" oninput="calculateBebasNominal()" placeholder="Contoh: 15000" class="w-full bg-bgInput p-3 rounded-lg border border-borderDim text-sm focus:border-blue-500 outline-none text-white" />
+                                            <div class="text-[10px] text-textMuted mt-2"><i class="fas fa-info-circle"></i> Sistem akan otomatis menambahkan margin/admin.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-6 border-t border-borderDim/50 pt-5">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-xs md:text-sm font-bold text-white" id="titleNominal">Pilih Nominal</h3>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1 hide-scrollbar" id="nominalContainer">
+                                            <div class="col-span-2 text-center text-textMuted text-sm py-4"><i class="fas fa-spinner fa-spin mr-2"></i> Sedang memuat daftar harga...</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="bg-bgInput rounded-lg p-3 mb-4">
-                            <div class="text-[10px] md:text-xs text-textMuted mb-1">Total Pembayaran</div>
-                            <div class="text-lg md:text-xl font-bold text-blue-400" id="cartPrice">Rp 0</div>
+                        <div class="lg:col-span-3 space-y-4 md:space-y-6">
+                            <div class="bg-bgCard rounded-xl p-4 md:p-5 border border-borderDim h-max sticky top-[135px]">
+                                <h3 class="font-bold text-xs md:text-sm mb-3 pb-3 border-b border-borderDim flex items-center justify-between text-white">
+                                    <span class="flex items-center gap-2"><i class="fas fa-shopping-cart"></i> Detail Pesanan</span>
+                                </h3>
+                                
+                                <div class="flex gap-3 mb-4">
+                                    <img id="cartImg" src="assets/roblox-logo.png" alt="Logo" class="w-10 h-10 rounded object-cover border border-borderDim bg-bgInput">
+                                    <div class="flex-1 min-w-0">
+                                        <div id="cartItemName" class="text-[10px] md:text-xs text-textMuted mb-0.5 font-medium truncate">Roblox</div>
+                                        <div class="text-xs md:text-sm font-bold text-white leading-tight break-words" id="cartProduct">Pilih Nominal</div>
+                                        <div class="text-[10px] text-blue-400 mt-0.5">Instan & Otomatis</div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-bgInput rounded-lg p-3 mb-4">
+                                    <div class="text-[10px] md:text-xs text-textMuted mb-1">Total Pembayaran</div>
+                                    <div class="text-lg md:text-xl font-bold text-blue-400" id="cartPrice">Rp 0</div>
+                                </div>
+
+                                <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition text-xs md:text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                    <i class="fas fa-wallet"></i> Bayar Sekarang &rarr;
+                                </button>
+
+                                <a href="https://wa.me/628970108026?text=Halo%20Admin%20Twidy%20Shop,%20saya%20butuh%20bantuan%20terkait%20transaksi..." target="_blank" class="block text-center text-xs text-textMuted mt-4 hover:text-green-400 transition flex items-center justify-center gap-1.5">
+                                    <i class="fab fa-whatsapp"></i> Butuh bantuan? Hubungi CS
+                                </a>
+                            </div>
                         </div>
 
-                        <button id="btnPay" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition text-xs md:text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-                            <i class="fas fa-wallet"></i> Bayar Sekarang &rarr;
-                        </button>
-
-                        <a href="https://wa.me/628970108026?text=Halo%20Admin%20Twidy%20Shop,%20saya%20butuh%20bantuan%20terkait%20transaksi..." target="_blank" class="block text-center text-xs text-textMuted mt-4 hover:text-green-400 transition flex items-center justify-center gap-1.5">
-                            <i class="fab fa-whatsapp"></i> Butuh bantuan? Hubungi CS
-                        </a>
                     </div>
                 </div>
+
             </div>
 
             <!-- DIGITAL PRODUCTS LAYOUT (Ecourse, dll) - Tlibrary Style -->
@@ -740,7 +755,7 @@
         let currentCategory = 'game';
         let allDigiflazzProducts = [];
         let allDigitalProducts = [];
-        let activeItem = categoriesData.game[0];
+        let activeItem = null; // Diubah agar awal masuk web tidak langsung terbuka produk apapun
         let activeNominals = [];
         let selectedProduct = null;
         let selectedDigitalProduct = null;
@@ -825,7 +840,7 @@
 
         function initApp() {
             renderSidebar();
-            selectItem('game', categoriesData.game[0].id, false); 
+            // Menghapus trigger 'selectItem' default di awal buka aplikasi
 
             fetchDigitalProducts().then(() => {
                 checkUrlSlugOnLoad();
@@ -947,7 +962,7 @@
                 if (data.data) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
                     if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) {
-                        if (!activeItem || !activeItem.isPasca) renderNominals();
+                        if (activeItem && !activeItem.isPasca) renderNominals();
                     }
                 }
             } catch (err) {
@@ -984,8 +999,16 @@
                 document.getElementById('ppobLayout').classList.remove('hidden');
                 document.getElementById('digitalLayout').classList.add('hidden');
                 renderSidebar();
-                const firstItem = categoriesData[cat][0];
-                if(firstItem) selectItem(cat, firstItem.id, false); 
+                
+                // Mencegah auto-select produk ketika memindah kategori
+                if (activeItem && categoriesData[cat].find(i => i.id === activeItem.id)) {
+                    // Jika produk yang dipilih sebelumnya masih ada dalam kategori ini, biarkan aktif
+                } else {
+                    activeItem = null;
+                    document.getElementById('activeSelectionState').classList.add('hidden');
+                    document.getElementById('emptySelectionState').classList.remove('hidden');
+                    document.getElementById('emptySelectionState').classList.add('flex');
+                }
             }
         }
 
@@ -1064,7 +1087,7 @@
                 toggleCartItem(selectedDigitalProduct.id, selectedDigitalProduct.name, selectedDigitalProduct.price, selectedDigitalProduct.downloadUrl, selectedDigitalProduct.img);
             }
             closeProductModal();
-            openDigitalCart();
+            // Menghapus popup keranjang paksa (Cukup update notif di navbar)
         }
 
         function toggleCartItem(id, name, price, downloadUrl, img) {
@@ -1261,13 +1284,17 @@
 
         function filterSidebarItems() {
             // Disabled internal sidebar search bar, replaced by global search. 
-            // Left this function empty if old event listeners trigger it.
         }
 
         function selectItem(cat, id, autoScroll = true) {
             currentCategory = cat;
             activeItem = categoriesData[cat].find(i => i.id === id);
             if(!activeItem) return;
+
+            // Merubah Tampilan Ke State Aktif
+            document.getElementById('emptySelectionState').classList.add('hidden');
+            document.getElementById('emptySelectionState').classList.remove('flex');
+            document.getElementById('activeSelectionState').classList.remove('hidden');
             
             document.getElementById('activeItemTitle').innerText = activeItem.name;
             document.getElementById('activeItemDesc').innerText = activeItem.desc;
