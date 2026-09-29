@@ -114,7 +114,7 @@
             <div class="hidden lg:flex items-center gap-6 text-sm font-medium text-textMuted mr-4">
                 <a href="#home" onclick="navigate('home')" class="hover:text-white transition"><i class="fas fa-home"></i> Beranda</a>
                 <a href="#riwayat" onclick="navigate('riwayat')" class="hover:text-white transition"><i class="fas fa-receipt"></i> Transaksi</a>
-                <a href="#promo" onclick="navigate('promo')" class="hover:text-white transition"><i class="fas fa-tag"></i> Promo</a>
+                <a href="#nontondrama" onclick="navigate('nontondrama')" class="hover:text-white transition"><i class="fas fa-film"></i> NontonDrama</a>
             </div>
 
             <button onclick="openDigitalCart()" class="relative text-textMuted hover:text-white transition p-1">
@@ -273,6 +273,7 @@
             </div>
         </div>
 
+        <!-- VIEW RIWAYAT -->
         <div id="view-riwayat" class="space-y-6 hidden min-h-[60vh]">
             <div class="bg-bgCard rounded-xl p-4 md:p-6 border border-borderDim max-w-5xl mx-auto space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
@@ -299,15 +300,14 @@
             </div>
         </div>
 
-        <div id="view-promo" class="space-y-6 hidden min-h-[60vh]">
-            <div class="bg-bgCard rounded-xl p-8 border border-borderDim text-center max-w-2xl mx-auto space-y-4">
-                <div class="text-6xl text-blue-500/30 mb-4"><i class="fas fa-tags"></i></div>
-                <h2 class="text-2xl font-bold text-white">Promo & Diskon Spesial</h2>
-                <p class="text-textMuted text-sm">Nikmati berbagai penawaran menarik setiap hari di Twidy Shop!</p>
-                <button onclick="navigate('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-blue-500 transition mt-4">Belanja Sekarang</button>
+        <!-- VIEW NONTONDRAMA -->
+        <div id="view-nontondrama" class="hidden w-full h-[85vh] md:h-[80vh] flex flex-col">
+            <div class="bg-bgCard rounded-xl border border-borderDim overflow-hidden flex-grow w-full h-full shadow-lg">
+                <iframe src="https://tplay-coral.vercel.app/" class="w-full h-full border-none bg-black" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
+        <!-- VIEW PANDUAN -->
         <div id="view-panduan" class="space-y-6 hidden min-h-[60vh]">
             <div class="max-w-5xl mx-auto space-y-6">
                 <div class="bg-gradient-to-r from-blue-900/40 to-bgCard p-6 md:p-8 rounded-2xl border border-borderDim shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
@@ -373,6 +373,7 @@
             </div>
         </div>
 
+        <!-- VIEW ADMIN -->
         <div id="view-admin" class="space-y-6 hidden min-h-[60vh]">
             <div id="adminLoginBox" class="bg-bgCard rounded-xl p-6 border border-borderDim max-w-md mx-auto space-y-4 mt-8">
                 <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-lock text-yellow-400"></i> Login Akun Admin</h2>
@@ -495,8 +496,8 @@
             <a href="#home" onclick="navigate('home')" class="nav-item flex flex-col items-center gap-1 text-blue-500 text-[10px] font-semibold w-16 transition-colors" data-target="home">
                 <i class="fas fa-home text-lg mb-0.5"></i> Beranda
             </a>
-            <a href="#promo" onclick="navigate('promo')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="promo">
-                <i class="fas fa-tags text-lg mb-0.5"></i> Promo
+            <a href="#nontondrama" onclick="navigate('nontondrama')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="nontondrama">
+                <i class="fas fa-film text-lg mb-0.5"></i> NontonDrama
             </a>
             <a href="#riwayat" onclick="navigate('riwayat')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="riwayat">
                 <i class="fas fa-receipt text-lg mb-0.5"></i> Transaksi
@@ -916,7 +917,7 @@
         }
 
         function navigate(viewName) {
-            ['topup', 'riwayat', 'promo', 'panduan', 'admin'].forEach(v => {
+            ['topup', 'riwayat', 'nontondrama', 'panduan', 'admin'].forEach(v => {
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
