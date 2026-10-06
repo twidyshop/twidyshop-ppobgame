@@ -97,7 +97,7 @@
         
         <!-- Global Search Bar (Dipersempit di HP) -->
         <div class="flex-1 mx-2 md:mx-6 flex justify-center md:justify-center relative">
-            <div class="relative w-full max-w-[170px] sm:max-w-[280px] md:max-w-lg">
+            <div class="relative w-full max-w-[170px] sm:max-w-[280px] md:max-w-[240px] lg:max-w-lg">
                 <i class="fas fa-search absolute left-3 md:left-4 top-2.5 md:top-3 text-textMuted text-xs md:text-sm"></i>
                 <input type="text" id="globalSearch" placeholder="Cari layanan, game..." autocomplete="off" class="w-full bg-bgInput pl-8 md:pl-10 pr-3 py-2 md:py-2.5 rounded-full border border-borderDim text-xs md:text-sm focus:border-blue-500 outline-none text-white transition placeholder-textMuted/70 shadow-inner">
                 
@@ -110,11 +110,11 @@
         
         <!-- Desktop Links, Cart & Hamburger -->
         <div class="flex items-center gap-3 md:gap-4 shrink-0 relative">
-            <!-- Desktop Links -->
-            <div class="hidden xl:flex items-center gap-5 text-sm font-medium text-textMuted mr-2">
-                <a href="#home" onclick="navigate('home')" class="hover:text-white transition"><i class="fas fa-home"></i> Beranda</a>
-                <a href="#nontondrama" onclick="navigate('nontondrama')" class="hover:text-white transition"><i class="fas fa-film"></i> NontonDrama</a>
-                <a href="#bacakomik" onclick="navigate('bacakomik')" class="hover:text-white transition"><i class="fas fa-book-open"></i> BacaKomik</a>
+            <!-- Desktop Links (Revisi: muncul mulai md/tablet, menyesuaikan jarak dan ukuran teks) -->
+            <div class="hidden md:flex items-center gap-3 lg:gap-5 text-xs lg:text-sm font-medium text-textMuted mr-1 lg:mr-2">
+                <a href="#home" onclick="navigate('home')" class="hover:text-white transition flex items-center gap-1.5"><i class="fas fa-home"></i> Beranda</a>
+                <a href="#nontondrama" onclick="navigate('nontondrama')" class="hover:text-white transition flex items-center gap-1.5"><i class="fas fa-film"></i> NontonDrama</a>
+                <a href="#bacakomik" onclick="navigate('bacakomik')" class="hover:text-white transition flex items-center gap-1.5"><i class="fas fa-book-open"></i> BacaKomik</a>
             </div>
 
             <!-- Cart -->
