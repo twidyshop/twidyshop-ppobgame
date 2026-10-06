@@ -108,19 +108,32 @@
             </div>
         </div>
         
-        <!-- Desktop Links & Cart -->
-        <div class="flex items-center gap-3 md:gap-5 shrink-0">
+        <!-- Desktop Links, Cart & Hamburger -->
+        <div class="flex items-center gap-3 md:gap-4 shrink-0 relative">
             <!-- Desktop Links -->
-            <div class="hidden lg:flex items-center gap-6 text-sm font-medium text-textMuted mr-4">
+            <div class="hidden xl:flex items-center gap-5 text-sm font-medium text-textMuted mr-2">
                 <a href="#home" onclick="navigate('home')" class="hover:text-white transition"><i class="fas fa-home"></i> Beranda</a>
-                <a href="#riwayat" onclick="navigate('riwayat')" class="hover:text-white transition"><i class="fas fa-receipt"></i> Transaksi</a>
                 <a href="#nontondrama" onclick="navigate('nontondrama')" class="hover:text-white transition"><i class="fas fa-film"></i> NontonDrama</a>
+                <a href="#bacakomik" onclick="navigate('bacakomik')" class="hover:text-white transition"><i class="fas fa-book-open"></i> BacaKomik</a>
             </div>
 
+            <!-- Cart -->
             <button onclick="openDigitalCart()" class="relative text-textMuted hover:text-white transition p-1">
                 <i class="fas fa-shopping-cart text-[18px] md:text-xl"></i>
                 <span id="headerCartCount" class="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center scale-0 transition-transform shadow-[0_0_8px_rgba(37,99,235,0.8)]">0</span>
             </button>
+            
+            <!-- Hamburger Menu for remaining items -->
+            <div class="relative">
+                <button id="hamburgerBtn" onclick="toggleHamburger()" class="text-textMuted hover:text-white transition p-1 ml-1 md:ml-2">
+                    <i class="fas fa-bars text-[18px] md:text-xl"></i>
+                </button>
+                <div id="hamburgerDropdown" class="hidden absolute right-0 mt-3 w-48 bg-bgCard border border-borderDim rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-borderDim">
+                    <a href="#riwayat" onclick="navigate('riwayat'); toggleHamburger()" class="block px-4 py-3 text-sm text-textMuted hover:bg-bgInput hover:text-white transition"><i class="fas fa-receipt mr-2 w-5 text-center"></i> Riwayat Transaksi</a>
+                    <a href="#panduan" onclick="navigate('panduan'); toggleHamburger()" class="block px-4 py-3 text-sm text-textMuted hover:bg-bgInput hover:text-white transition"><i class="fas fa-info-circle mr-2 w-5 text-center"></i> Info & Panduan</a>
+                    <a href="#admin" onclick="navigate('admin'); toggleHamburger()" class="block px-4 py-3 text-sm text-textMuted hover:bg-bgInput hover:text-white transition"><i class="fas fa-user-shield mr-2 w-5 text-center"></i> Akun / Panel</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -304,6 +317,13 @@
         <div id="view-nontondrama" class="hidden w-full h-[85vh] md:h-[80vh] flex flex-col">
             <div class="bg-bgCard rounded-xl border border-borderDim overflow-hidden flex-grow w-full h-full shadow-lg">
                 <iframe src="https://tplaysansekai.vercel.app/" class="w-full h-full border-none bg-black" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- VIEW BACA KOMIK -->
+        <div id="view-bacakomik" class="hidden w-full h-[85vh] md:h-[80vh] flex flex-col">
+            <div class="bg-bgCard rounded-xl border border-borderDim overflow-hidden flex-grow w-full h-full shadow-lg">
+                <iframe src="https://komiktlib.vercel.app/" class="w-full h-full border-none bg-black" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
 
@@ -494,19 +514,19 @@
     <div class="md:hidden fixed bottom-0 left-0 w-full bg-bgCard border-t border-borderDim z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
         <div class="flex justify-around items-center py-2 px-1">
             <a href="#home" onclick="navigate('home')" class="nav-item flex flex-col items-center gap-1 text-blue-500 text-[10px] font-semibold w-16 transition-colors" data-target="home">
-                <i class="fas fa-home text-lg mb-0.5"></i> Beranda
+                <i class="fas fa-gem text-lg mb-0.5"></i> Top Up
             </a>
             <a href="#nontondrama" onclick="navigate('nontondrama')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="nontondrama">
                 <i class="fas fa-film text-lg mb-0.5"></i> NontonDrama
             </a>
             <a href="#riwayat" onclick="navigate('riwayat')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="riwayat">
-                <i class="fas fa-receipt text-lg mb-0.5"></i> Transaksi
+                <i class="fas fa-receipt text-lg mb-0.5"></i> Riwayat
+            </a>
+            <a href="#bacakomik" onclick="navigate('bacakomik')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="bacakomik">
+                <i class="fas fa-book-open text-lg mb-0.5"></i> Baca Komik
             </a>
             <a href="#panduan" onclick="navigate('panduan')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="panduan">
                 <i class="fas fa-info-circle text-lg mb-0.5"></i> Info
-            </a>
-            <a href="#admin" onclick="navigate('admin')" class="nav-item flex flex-col items-center gap-1 text-textMuted hover:text-blue-400 text-[10px] font-semibold w-16 transition-colors" data-target="admin">
-                <i class="fas fa-user text-lg mb-0.5"></i> Akun
             </a>
         </div>
         <!-- Safe area padding for iPhones -->
@@ -818,12 +838,26 @@
             resBox.classList.remove('hidden');
         });
 
-        // Hide search results if click outside
+        // Toggle Hamburger Menu
+        function toggleHamburger() {
+            const el = document.getElementById('hamburgerDropdown');
+            el.classList.toggle('hidden');
+        }
+
+        // Hide search results & hamburger if click outside
         document.addEventListener('click', function(e) {
             const searchBar = document.getElementById('globalSearch');
             const searchResults = document.getElementById('searchResults');
             if (e.target !== searchBar && !searchResults.contains(e.target)) {
                 searchResults.classList.add('hidden');
+            }
+            
+            const hamburgerDropdown = document.getElementById('hamburgerDropdown');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            if (hamburgerDropdown && hamburgerBtn) {
+                if (e.target !== hamburgerDropdown && e.target !== hamburgerBtn && !hamburgerDropdown.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                    hamburgerDropdown.classList.add('hidden');
+                }
             }
         });
 
@@ -917,7 +951,7 @@
         }
 
         function navigate(viewName) {
-            ['topup', 'riwayat', 'nontondrama', 'panduan', 'admin'].forEach(v => {
+            ['topup', 'riwayat', 'nontondrama', 'bacakomik', 'panduan', 'admin'].forEach(v => {
                 const el = document.getElementById('view-' + v);
                 if(el) el.classList.add('hidden');
             });
