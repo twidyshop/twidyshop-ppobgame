@@ -52,6 +52,34 @@ let snap = new midtransClient.Snap({
 let cachedProducts = null;
 let cacheTimestamp = 0;
 const CACHE_DURATION = 5 * 60 * 1000;
+const adminSessions = new Map();
+const pascaQuotes = new Map();
+
+function isAdmin(req) {
+    const header = String(req.headers.authorization || '');
+    const token = header.startsWith('Bearer ') ? header.slice(7) : '';
+    const expiresAt = adminSessions.get(token);
+    if (!token || !expiresAt || expiresAt < Date.now()) {
+        if (token) adminSessions.delete(token);
+        return false;
+    }
+    return true;
+}
+function requireAdmin(req, res, next) {
+    if (!isAdmin(req)) return res.status(401).json({ success: false, message: 'Sesi admin tidak valid. Silakan login ulang.' });
+    next();
+}
+function constantTimeEqual(a, b) {
+    const left = Buffer.from(String(a || ''), 'utf8');
+    const right = Buffer.from(String(b || ''), 'utf8');
+    return left.length === right.length && crypto.timingSafeEqual(left, right);
+}
+function verifyMidtransNotification(notif) {
+    const serverKey = process.env.MIDTRANS_SERVER_KEY;
+    if (!serverKey || !notif || !notif.order_id || !notif.status_code || !notif.gross_amount || !notif.signature_key) return false;
+    const expected = crypto.createHash('sha512').update(String(notif.order_id) + String(notif.status_code) + String(notif.gross_amount) + serverKey).digest('hex');
+    return constantTimeEqual(expected.toLowerCase(), String(notif.signature_key).toLowerCase());
+}
 
 // --- FUNGSI HELPER MARGIN (1%, Min Rp 200, Max Rp 500) ---
 function calculateMargin(basePrice) {
@@ -127,21 +155,27 @@ async function sendEmailReceipt(trx, targetEmail) {
 
 // --- FITUR PRODUK DIGITAL & ADMIN ---
 app.get('/api/digital-products', (req, res) => {
+    const safeProducts = readDigitalDB().map(({ downloadUrl, ...product }) => product);
+    res.json({ data: safeProducts });
+});
+app.get('/api/admin/products', requireAdmin, (req, res) => {
     res.json({ data: readDigitalDB() });
 });
 
 app.post('/api/admin/login', (req, res) => {
-    const { username, password } = req.body;
-    const adminUser = process.env.ADMIN_USER || 'admin';
-    const adminPass = process.env.ADMIN_PASS || 'twidy2026';
-    if (username === adminUser && password === adminPass) {
-        res.json({ success: true, token: 'twidy-admin-secure-token' });
-    } else {
-        res.status(401).json({ success: false, message: 'Username atau Password salah!' });
+    const { username, password } = req.body || {};
+    const adminUser = process.env.ADMIN_USER;
+    const adminPass = process.env.ADMIN_PASS;
+    if (!adminUser || !adminPass) return res.status(503).json({ success: false, message: 'ADMIN_USER dan ADMIN_PASS wajib disetel di environment server.' });
+    if (constantTimeEqual(username, adminUser) && constantTimeEqual(password, adminPass)) {
+        const token = crypto.randomBytes(32).toString('hex');
+        adminSessions.set(token, Date.now() + 8 * 60 * 60 * 1000);
+        return res.json({ success: true, token });
     }
+    return res.status(401).json({ success: false, message: 'Username atau Password salah!' });
 });
 
-app.post('/api/admin/products', (req, res) => {
+app.post('/api/admin/products', requireAdmin, (req, res) => {
     const { category, name, price, description, downloadUrl, image } = req.body;
     if (!category || !name || !price || !downloadUrl) {
         return res.status(400).json({ success: false, message: 'Data produk kurang lengkap!' });
@@ -162,7 +196,7 @@ app.post('/api/admin/products', (req, res) => {
     res.json({ success: true, message: 'Produk digital berhasil ditambahkan!' });
 });
 
-app.post('/api/admin/products/bulk', (req, res) => {
+app.post('/api/admin/products/bulk', requireAdmin, (req, res) => {
     const { products } = req.body;
     if (!Array.isArray(products) || products.length === 0) {
         return res.status(400).json({ success: false, message: 'Format data masal tidak valid!' });
@@ -184,7 +218,7 @@ app.post('/api/admin/products/bulk', (req, res) => {
     res.json({ success: true, message: `Berhasil mengimpor ${products.length} produk secara masal!` });
 });
 
-app.put('/api/admin/products/:id', (req, res) => {
+app.put('/api/admin/products/:id', requireAdmin, (req, res) => {
     const { id } = req.params;
     const { category, name, price, description, downloadUrl, image } = req.body;
     let digitalProducts = readDigitalDB();
@@ -206,7 +240,7 @@ app.put('/api/admin/products/:id', (req, res) => {
     }
 });
 
-app.delete('/api/admin/products/:id', (req, res) => {
+app.delete('/api/admin/products/:id', requireAdmin, (req, res) => {
     const { id } = req.params;
     let digitalProducts = readDigitalDB();
     digitalProducts = digitalProducts.filter(p => p.id !== id);
@@ -353,7 +387,10 @@ app.get('/api/products', async (req, res) => {
 
 // --- FUNGSI CEK TAGIHAN PASCABAYAR (INQUIRY) ---
 app.post('/api/inquiry-pasca', async (req, res) => {
-    const { sku, targetId } = req.body;
+    const { sku, targetId } = req.body || {};
+    if (typeof sku !== 'string' || !sku.trim() || typeof targetId !== 'string' || !targetId.trim() || targetId.length > 100) {
+        return res.status(400).json({ success: false, message: 'SKU atau nomor pelanggan tidak valid.' });
+    }
     const user = process.env.DIGIFLAZZ_USERNAME;
     const key = process.env.DIGIFLAZZ_API_KEY;
     
@@ -375,7 +412,12 @@ app.post('/api/inquiry-pasca', async (req, res) => {
 
         const result = digiRes.data.data;
         if (result && result.status === 'Sukses') {
-            res.json({ success: true, data: result });
+            const base = Number(result.selling_price);
+            if (!Number.isFinite(base) || base <= 0) return res.status(502).json({ success: false, message: 'Harga tagihan dari supplier tidak valid.' });
+            const quoteToken = crypto.randomBytes(24).toString('hex');
+            const quotePrice = Math.round(base + 2000);
+            pascaQuotes.set(quoteToken, { sku: String(sku), targetId: String(targetId), price: quotePrice, expiresAt: Date.now() + 5 * 60 * 1000 });
+            res.json({ success: true, data: result, quoteToken, quotePrice });
         } else {
             res.json({ success: false, message: result?.message || 'Gagal cek tagihan' });
         }
@@ -391,7 +433,9 @@ app.get('/api/transactions', async (req, res) => {
         let needsSave = false;
         
         // AUTO SYNC STATUS: Cek max 5 transaksi terakhir yang masih 'DIPROSES'
-        const pendingTrx = db.filter(t => t.status === 'DIPROSES' && !t.is_digital).slice(-5); 
+        const requestedOrderId = String(req.query.orderId || '');
+        const adminRequest = isAdmin(req);
+        const pendingTrx = db.filter(t => t.status === 'DIPROSES' && !t.is_digital && (adminRequest || (requestedOrderId && t.order_id === requestedOrderId))).slice(-5); 
         if (pendingTrx.length > 0) {
             await Promise.all(pendingTrx.map(async (trx) => {
                 try {
@@ -451,7 +495,13 @@ app.get('/api/transactions', async (req, res) => {
             }));
             if (needsSave) saveDB(db);
         }
-        return res.status(200).json(db.reverse());
+        if (adminRequest) return res.status(200).json(db.reverse());
+        if (requestedOrderId) {
+            if (!/^TWIDY-\d+-[a-f0-9]{12}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
+            const found = db.find(t => t.order_id === requestedOrderId);
+            return found ? res.status(200).json([found]) : res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
+        }
+        return res.status(401).json({ message: 'Gunakan Order ID untuk mengecek transaksi.' });
     } catch (e) {
         return res.status(500).json({ message: 'Error Database' });
     }
@@ -460,71 +510,70 @@ app.get('/api/transactions', async (req, res) => {
 // Endpoint Checkout & Buat Transaksi Midtrans
 app.post('/api/checkout', async (req, res) => {
   try {
-    const { targetId, serverId, price, productName, productCode, isDigital, isPasca, downloadUrl, cartItems, supplier, customNominal } = req.body;
-    if (!targetId) return res.status(400).json({ message: 'Data kurang lengkap' });
-
-    const orderId = `TWIDY-${Date.now()}`;
-    const fullTarget = serverId ? `${targetId}${serverId}` : targetId;
-    
-    let amount = 0;
-    let originalProductName = '';
-    let itemDetails = [];
-    let finalProductCode = productCode || 'DIGI-MULTI';
-
-    if (isDigital && cartItems && Array.isArray(cartItems)) {
-        amount = cartItems.reduce((sum, item) => sum + parseInt(item.price), 0);
-        originalProductName = `Pembelian ${cartItems.length} Produk Digital`;
-        
-        itemDetails = cartItems.map((item, index) => ({
-            id: `DIGI-${index}`,
-            price: parseInt(item.price),
-            quantity: 1,
-            name: item.name.replace(/[\[\]]/g, '').substring(0, 50),
-            merchant_data: fullTarget
-        }));
+    const body = req.body || {};
+    const { targetId, serverId, isDigital, isPasca, cartItems, quoteToken } = body;
+    if (typeof targetId !== 'string' || !targetId.trim() || targetId.length > 100) return res.status(400).json({ message: 'Nomor tujuan atau email tidak valid.' });
+    if (!process.env.MIDTRANS_SERVER_KEY || !process.env.MIDTRANS_CLIENT_KEY) return res.status(503).json({ message: 'Pembayaran sedang dinonaktifkan: konfigurasi Midtrans belum lengkap.' });
+    const orderId = `TWIDY-${Date.now()}-${crypto.randomBytes(6).toString('hex')}`;
+    const fullTarget = serverId ? `${targetId.trim()}${String(serverId).trim()}` : targetId.trim();
+    let amount = 0, originalProductName = '', itemDetails = [], finalProductCode = '', finalSupplier = 'digiflazz', finalCustomNominal = null, finalCartItems = null;
+    if (isDigital === true) {
+      if (!Array.isArray(cartItems) || cartItems.length < 1 || cartItems.length > 20) return res.status(400).json({ message: 'Keranjang produk digital tidak valid.' });
+      const catalog = readDigitalDB();
+      const authoritativeItems = [];
+      for (const requested of cartItems) {
+        const item = catalog.find(p => p.id && String(p.id) === String(requested && requested.id));
+        if (!item || !Number.isSafeInteger(Number(item.price)) || Number(item.price) <= 0 || !item.downloadUrl || item.downloadUrl === '#') return res.status(400).json({ message: 'Ada produk digital yang sudah tidak tersedia. Muat ulang halaman dan coba lagi.' });
+        authoritativeItems.push({ id: item.id, name: item.name, price: Number(item.price), downloadUrl: item.downloadUrl });
+      }
+      amount = authoritativeItems.reduce((sum, item) => sum + item.price, 0);
+      originalProductName = `Pembelian ${authoritativeItems.length} Produk Digital`;
+      finalProductCode = 'DIGI-MULTI'; finalSupplier = 'digital'; finalCartItems = authoritativeItems;
+      itemDetails = authoritativeItems.map(item => ({ id: String(item.id).substring(0, 50), price: item.price, quantity: 1, name: String(item.name || 'Produk Digital').replace(/[\[\]]/g, '').substring(0, 50) }));
+    } else if (isPasca === true) {
+      const quote = pascaQuotes.get(String(quoteToken || ''));
+      if (!quote || quote.expiresAt < Date.now() || quote.targetId !== targetId.trim() || quote.sku !== String(body.productCode || '')) return res.status(400).json({ message: 'Kutipan tagihan kedaluwarsa atau tidak cocok. Silakan cek tagihan lagi.' });
+      pascaQuotes.delete(String(quoteToken));
+      amount = quote.price; originalProductName = 'Pembayaran Tagihan Pascabayar'; finalProductCode = quote.sku; finalSupplier = 'digiflazz';
+      itemDetails = [{ id: finalProductCode.substring(0, 50), price: amount, quantity: 1, name: originalProductName }];
     } else {
-        if (!productCode) return res.status(400).json({ message: 'Data kurang lengkap' });
-        amount = parseInt(price || 0);
-        originalProductName = productName || 'Produk Digital Twidy';
-        
-        itemDetails = [{
-            id: productCode.substring(0, 50),
-            price: amount,
-            quantity: 1,
-            name: originalProductName.replace(/[\[\]]/g, '').substring(0, 50),
-            merchant_data: fullTarget
-        }];
+      const requestedCode = String(body.productCode || '');
+      const requestedSupplier = String(body.supplier || '');
+      if (!requestedCode || !['digiflazz', 'haybi'].includes(requestedSupplier)) return res.status(400).json({ message: 'Produk atau supplier tidak valid.' });
+      if (!cachedProducts || Date.now() - cacheTimestamp > CACHE_DURATION) return res.status(503).json({ message: 'Daftar harga sedang diperbarui. Muat ulang halaman sebelum checkout.' });
+      const product = cachedProducts.find(p => String(p.buyer_sku_code || '') === requestedCode && String(p.supplier || '') === requestedSupplier && p.buyer_product_status !== false);
+      if (!product) return res.status(400).json({ message: 'Produk tidak ditemukan atau supplier tidak cocok. Muat ulang halaman.' });
+      if (body.customNominal !== undefined && body.customNominal !== null && body.customNominal !== '') {
+        const nominal = Number(body.customNominal);
+        if (!String(product.product_name || '').toLowerCase().includes('bebas nominal') || !Number.isSafeInteger(nominal) || nominal < 1000 || nominal > 1000000) return res.status(400).json({ message: 'Nominal bebas tidak valid untuk produk ini.' });
+        finalCustomNominal = nominal;
+        amount = nominal + Math.max(200, Math.min(500, Math.round(nominal * 0.01)));
+      } else amount = Number(product.price);
+      if (!Number.isSafeInteger(amount) || amount <= 0) return res.status(400).json({ message: 'Harga produk tidak valid.' });
+      originalProductName = `${product.brand ? product.brand + ' - ' : ''}${product.product_name || 'Produk'}`.substring(0, 120);
+      finalProductCode = requestedCode; finalSupplier = requestedSupplier;
+      itemDetails = [{ id: requestedCode.substring(0, 50), price: amount, quantity: 1, name: originalProductName.replace(/[\[\]]/g, '').substring(0, 50) }];
     }
-
-    const db = readDB();
-    db.push({
-        order_id: orderId,
-        target_id: fullTarget, 
-        product_code: finalProductCode,
-        product_name: originalProductName,
-        amount: amount,
-        status: 'UNPAID',
-        supplier: supplier || 'digiflazz', 
-        custom_nominal: customNominal || null, // Meyimpan data jika itu request bebas nominal
-        sn: isDigital ? 'Menunggu Pembayaran (Link akan muncul otomatis setelah lunas)...' : '-',
-        is_digital: !!isDigital,
-        is_pasca: !!isPasca, 
-        download_url: downloadUrl || '',
-        cart_items: cartItems || null,
-        created_at: new Date().toISOString()
-    });
-    saveDB(db);
-
-    let parameter = {
+    if (!Number.isSafeInteger(amount) || amount < 1 || amount > 100000000) return res.status(400).json({ message: 'Total pembayaran tidak valid.' });
+    const parameter = {
       transaction_details: { order_id: orderId, gross_amount: amount },
       item_details: itemDetails,
-      customer_details: { first_name: "Pelanggan", last_name: "TwidyShop", email: isDigital ? targetId : "customer@twidyshop.my.id" }
+      customer_details: { first_name: 'Pelanggan', last_name: 'TwidyShop', email: isDigital ? targetId.trim() : 'customer@twidyshop.my.id' }
     };
-
-    let transaction = await snap.createTransaction(parameter);
-    res.json({ token: transaction.token, orderId });
+    const transaction = await snap.createTransaction(parameter);
+    const db = readDB();
+    db.push({
+      order_id: orderId, target_id: fullTarget, product_code: finalProductCode, product_name: originalProductName,
+      amount, status: 'UNPAID', supplier: finalSupplier, custom_nominal: finalCustomNominal,
+      sn: isDigital ? 'Menunggu Pembayaran (tautan hanya tersedia setelah lunas).' : '-',
+      is_digital: isDigital === true, is_pasca: isPasca === true, download_url: '', cart_items: finalCartItems,
+      created_at: new Date().toISOString()
+    });
+    saveDB(db);
+    return res.json({ token: transaction.token, orderId });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('[Checkout] Gagal membuat transaksi Midtrans:', error.message);
+    return res.status(500).json({ error: 'Gagal membuat pembayaran. Silakan coba lagi.' });
   }
 });
 
@@ -532,13 +581,23 @@ app.post('/api/checkout', async (req, res) => {
 app.post('/api/webhook', async (req, res) => {
   try {
     const notif = req.body;
-    if (!notif || !notif.transaction_status) return res.status(200).send("OK");
-
+    if (!verifyMidtransNotification(notif)) {
+      console.warn('[Midtrans Webhook] Ditolak: signature tidak valid atau konfigurasi key kosong.');
+      return res.status(401).send('Invalid notification signature');
+    }
     const { transaction_status, order_id } = notif;
     let db = readDB();
     let trx = db.find(t => t.order_id === order_id);
-    if (!trx) return res.status(200).send("OK");
-
+    if (!trx) return res.status(200).send('OK');
+    const paidAmount = Number(notif.gross_amount);
+    const paidEvent = transaction_status === 'settlement' || transaction_status === 'capture';
+    if (!Number.isFinite(paidAmount) || Math.round(paidAmount) !== Number(trx.amount) ||
+        (paidEvent && String(notif.status_code) !== '200') ||
+        (notif.currency && String(notif.currency).toUpperCase() !== 'IDR') ||
+        (paidEvent && notif.fraud_status && String(notif.fraud_status).toLowerCase() !== 'accept')) {
+      console.warn('[Midtrans Webhook] Ditolak: amount/status/currency/fraud tidak cocok untuk', order_id);
+      return res.status(400).send('Transaction verification failed');
+    }
     if (transaction_status === 'settlement' || transaction_status === 'capture') {
         if (['SUKSES', 'DIPROSES', 'GAGAL'].includes(trx.status)) return res.status(200).send("OK");
         
@@ -645,6 +704,7 @@ app.post('/api/digiflazz-webhook', (req, res) => {
     const payload = req.body;
     if (!payload || !payload.data || !payload.data.ref_id) return res.status(200).send("OK");
 
+    if (!process.env.DIGIFLAZZ_WEBHOOK_SECRET || !constantTimeEqual(req.get('x-webhook-secret'), process.env.DIGIFLAZZ_WEBHOOK_SECRET)) return res.status(401).send('Webhook authentication required');
     const { ref_id, status, sn, message } = payload.data;
     let db = readDB();
     let trx = db.find(t => t.order_id === ref_id);
@@ -670,6 +730,7 @@ app.post('/api/digiflazz-webhook', (req, res) => {
 app.post('/api/haybi-webhook', (req, res) => {
   try {
     const payload = req.body;
+    if (!process.env.HAYBI_WEBHOOK_SECRET || !constantTimeEqual(req.get('x-webhook-secret'), process.env.HAYBI_WEBHOOK_SECRET)) return res.status(401).send('Webhook authentication required');
     const ref_id = payload.ref_id || payload.trxid || payload.data?.ref_id;
     const status = payload.status || payload.data?.status;
     const sn = payload.sn || payload.data?.sn;
