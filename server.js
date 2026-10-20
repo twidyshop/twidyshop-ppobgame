@@ -313,7 +313,7 @@ app.get('/api/products', async (req, res) => {
                 if (textCheck.includes('PLN') || textCheck.includes('TOKEN PLN') || textCheck.includes('TOKEN LISTRIK')) { detectedBrand = 'PLN'; isTarget = true; }
                 else if (textCheck.includes('DANA')) { detectedBrand = 'DANA'; isTarget = true; }
                 // E-money selain DANA tidak lagi diambil dari Haybi; sumbernya Digiflazz.
-                else if (textCheck.includes('FREE FIRE') || /\\bFF\\b/.test(textCheck)) { detectedBrand = 'Free Fire'; isTarget = true; }
+                else if (textCheck.includes('FREE FIRE') || textCheck.includes('FF')) { detectedBrand = 'Free Fire'; isTarget = true; }
                 else if (textCheck.includes('PUBG')) { detectedBrand = 'PUBG Mobile'; isTarget = true; }
                 else if (textCheck.includes('ROBLOX')) { detectedBrand = 'Roblox'; isTarget = true; }
                 else if (textCheck.includes('MAGIC CHESS')) { detectedBrand = 'Magic Chess GoGo'; isTarget = true; }
