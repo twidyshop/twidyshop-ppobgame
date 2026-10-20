@@ -1,0 +1,16 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Runtime data contains customer/order information
+transactions.json
+digital_products.json
+
+# Node.js and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
+.DS_Store
