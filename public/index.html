@@ -1237,9 +1237,9 @@
 
                     let checkInterval = setInterval(async () => {
                         try {
-                            const res = await fetch('/api/transactions');
+                            const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(data.orderId));
                             const txs = await res.json();
-                            const currentTx = txs.find(t => t.order_id === data.orderId);
+                            const currentTx = Array.isArray(txs) ? txs.find(t => t.order_id === data.orderId) : null;
                             
                             if (currentTx && currentTx.status === 'SUKSES') {
                                 clearInterval(checkInterval);
@@ -1432,8 +1432,9 @@
 
                     selectedProduct = {
                         product_name: `Tagihan ${tagihan.customer_name || targetId}`,
-                        price: finalPrice,
+                        price: data.quotePrice || finalPrice,
                         buyer_sku_code: activeItem.sku,
+                        quoteToken: data.quoteToken,
                         isPasca: true,
                         supplier: 'digiflazz'
                     };
@@ -1665,9 +1666,9 @@
             tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
 
             try {
-                const res = await fetch('/api/transactions');
+                const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(query));
                 const data = await res.json();
-                const filtered = data.filter(t => t.order_id.toLowerCase().includes(query.toLowerCase()) || t.target_id.toLowerCase().includes(query.toLowerCase()));
+                const filtered = Array.isArray(data) ? data.filter(t => t.order_id.toLowerCase() === query.toLowerCase()) : [];
 
                 if(filtered.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan.</td></tr>';
@@ -1754,7 +1755,8 @@
                     body: JSON.stringify({ username, password })
                 });
                 const data = await res.json();
-                if(data.success) {
+                if(data.success && data.token) {
+                    sessionStorage.setItem('twidyAdminToken', data.token);
                     document.getElementById('adminLoginBox').classList.add('hidden');
                     document.getElementById('adminDashboardBox').classList.remove('hidden');
                     loadAdminProducts();
@@ -1766,15 +1768,19 @@
         }
 
         function adminLogout() {
+            sessionStorage.removeItem('twidyAdminToken');
             document.getElementById('adminLoginBox').classList.remove('hidden');
             document.getElementById('adminDashboardBox').classList.add('hidden');
         }
 
         async function loadAdminProducts() {
             try {
-                const res = await fetch('/api/digital-products');
+                const adminToken = sessionStorage.getItem('twidyAdminToken') || '';
+                const res = await fetch('/api/admin/products', { headers: { 'Authorization': 'Bearer ' + adminToken } });
+                if (!res.ok) throw new Error('Sesi admin tidak valid. Silakan login ulang.');
                 const json = await res.json();
                 const list = json.data || [];
+                allDigitalProducts = list;
                 const container = document.getElementById('adminProductList');
 
                 if(list.length === 0) {
@@ -1814,7 +1820,7 @@
             try {
                 const res = await fetch('/api/admin/products', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (sessionStorage.getItem('twidyAdminToken') || '') },
                     body: JSON.stringify({ category, name, price, downloadUrl, image, description })
                 });
                 const data = await res.json();
@@ -1866,7 +1872,7 @@
             try {
                 const res = await fetch(`/api/admin/products/${id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (sessionStorage.getItem('twidyAdminToken') || '') },
                     body: JSON.stringify({ category, name, price, downloadUrl, image, description })
                 });
                 const data = await res.json();
@@ -1879,7 +1885,7 @@
         }
 
         function exportBackup() {
-            fetch('/api/digital-products')
+            fetch('/api/admin/products', { headers: { 'Authorization': 'Bearer ' + (sessionStorage.getItem('twidyAdminToken') || '') } })
                 .then(res => res.json())
                 .then(json => {
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json.data, null, 2));
@@ -1901,7 +1907,7 @@
                 try {
                     const products = JSON.parse(e.target.result);
                     const res = await fetch('/api/admin/products/bulk', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (sessionStorage.getItem('twidyAdminToken') || '') },
                         body: JSON.stringify({ products })
                     });
                     const data = await res.json();
@@ -1917,7 +1923,7 @@
         async function deleteDigitalProduct(id) {
             if(!confirm('Yakin ingin menghapus produk ini?')) return;
             try {
-                const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+                const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + (sessionStorage.getItem('twidyAdminToken') || '') } });
                 const data = await res.json();
                 if(data.success) {
                     const cartIndex = digitalCart.findIndex(c => c.id === id);
@@ -1969,7 +1975,8 @@
                         productCode: selectedProduct.buyer_sku_code,
                         isPasca: selectedProduct.isPasca,
                         supplier: selectedProduct.supplier,
-                        customNominal: selectedProduct.custom_nominal || null
+                        customNominal: selectedProduct.custom_nominal || null,
+                        quoteToken: selectedProduct.quoteToken || null
                     })
                 });
                 const data = await res.json();
@@ -1979,9 +1986,9 @@
                 if (data.token) {
                     let checkInterval = setInterval(async () => {
                         try {
-                            const res = await fetch('/api/transactions');
+                            const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(data.orderId));
                             const txs = await res.json();
-                            const currentTx = txs.find(t => t.order_id === data.orderId);
+                            const currentTx = Array.isArray(txs) ? txs.find(t => t.order_id === data.orderId) : null;
                             
                             if (currentTx && currentTx.status === 'SUKSES') {
                                 clearInterval(checkInterval);
@@ -2038,8 +2045,10 @@
             tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Memuat data...</td></tr>';
             
             try {
-                const res = await fetch('/api/transactions');
+                const adminToken = sessionStorage.getItem('twidyAdminToken') || '';
+                const res = await fetch('/api/transactions', { headers: { 'Authorization': 'Bearer ' + adminToken } });
                 let data = await res.json();
+                if (!res.ok || !Array.isArray(data)) throw new Error('Sesi admin tidak valid. Silakan login ulang.');
                 
                 const startVal = document.getElementById('filterStart').value;
                 const endVal = document.getElementById('filterEnd').value;
