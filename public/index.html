@@ -297,7 +297,7 @@
                 </div>
 
                 <div class="flex gap-3">
-                    <input type="text" id="searchOrderId" placeholder="Masukkan Order ID atau No Tujuan/Email..." class="flex-1 bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
+                    <input type="text" id="searchOrderId" placeholder="Masukkan Order ID lengkap" class="flex-1 bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
                     <button onclick="searchTransaction()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-3 rounded-lg text-xs md:text-sm transition flex items-center gap-2">
                         <i class="fas fa-search"></i> Cari
                     </button>
@@ -1077,7 +1077,7 @@
                     
                     <div class="mt-auto flex items-center justify-between pt-3 border-t border-borderDim/50">
                         <div class="font-extrabold text-blue-400 text-xs md:text-sm">Rp ${item.price.toLocaleString('id-ID')}</div>
-                        <button onclick="event.stopPropagation(); toggleCartItem('${item.id}', '${item.name}', ${item.price}, '${item.downloadUrl}', '${item.img}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors ${btnColor}">
+                        <button onclick="event.stopPropagation(); toggleCartItem('${item.id}', '${item.name}', ${item.price}, '', '${item.img}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition-colors ${btnColor}">
                             ${btnText}
                         </button>
                     </div>
@@ -1123,7 +1123,7 @@
             if(!selectedDigitalProduct) return;
             const inCart = digitalCart.find(c => c.id === selectedDigitalProduct.id);
             if(!inCart) {
-                toggleCartItem(selectedDigitalProduct.id, selectedDigitalProduct.name, selectedDigitalProduct.price, selectedDigitalProduct.downloadUrl, selectedDigitalProduct.img);
+                toggleCartItem(selectedDigitalProduct.id, selectedDigitalProduct.name, selectedDigitalProduct.price, '', selectedDigitalProduct.img);
             }
             closeProductModal();
             // Menghapus popup keranjang paksa (Cukup update notif di navbar)
@@ -1659,7 +1659,7 @@
             const tbody = document.getElementById('transactionResultBody');
 
             if(query.length < 5) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan minimal 5 karakter (Order ID / Nomor / Email) untuk menjaga privasi transaksi.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan Order ID lengkap untuk menjaga privasi transaksi.</td></tr>';
                 return;
             }
 
