@@ -513,6 +513,7 @@ app.post('/api/checkout', async (req, res) => {
     const body = req.body || {};
     const { targetId, serverId, isDigital, isPasca, cartItems, quoteToken } = body;
     if (typeof targetId !== 'string' || !targetId.trim() || targetId.length > 100) return res.status(400).json({ message: 'Nomor tujuan atau email tidak valid.' });
+    if (String(process.env.CHECKOUT_ENABLED || '').toLowerCase() !== 'true') return res.status(503).json({ message: 'Checkout sementara dinonaktifkan demi keamanan. Hubungi admin.' });
     if (!process.env.MIDTRANS_SERVER_KEY || !process.env.MIDTRANS_CLIENT_KEY) return res.status(503).json({ message: 'Pembayaran sedang dinonaktifkan: konfigurasi Midtrans belum lengkap.' });
     const orderId = `TWIDY-${Date.now()}-${crypto.randomBytes(16).toString('hex')}`;
     const fullTarget = serverId ? `${targetId.trim()}${String(serverId).trim()}` : targetId.trim();
