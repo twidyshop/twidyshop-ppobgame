@@ -497,7 +497,7 @@ app.get('/api/transactions', async (req, res) => {
         }
         if (adminRequest) return res.status(200).json(db.reverse());
         if (requestedOrderId) {
-            if (!/^TWIDY-\\d+-[a-f0-9]{12}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
+            if (!/^TWIDY-\d+-[a-f0-9]{12}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
             const found = db.find(t => t.order_id === requestedOrderId);
             return found ? res.status(200).json([found]) : res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
         }
