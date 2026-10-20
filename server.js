@@ -15,8 +15,8 @@ const dbFile = path.join(__dirname, 'transactions.json');
 const digitalDbFile = path.join(__dirname, 'digital_products.json');
 
 // KREDENSIAL & ENDPOINT HAYBI
-const HAYBI_USER = process.env.HAYBI_USERNAME || 'AGN90501C';
-const HAYBI_KEY = process.env.HAYBI_API_KEY || 'zp5yqScvYqtwwavknURzoP8IoUcS1I48';
+const HAYBI_USER = process.env.HAYBI_USERNAME || '';
+const HAYBI_KEY = process.env.HAYBI_API_KEY || '';
 const HAYBI_BASE_URL = 'https://haybi.id/api/h2h';
 
 const readDB = () => {
@@ -224,11 +224,11 @@ app.get('/api/products', async (req, res) => {
 
         let combinedProducts = [];
         
-        // Brand yang menjadi tanggung jawab Haybi di TwidyShop
+        // Brand yang tetap menggunakan Haybi. E-money selain DANA dialihkan ke Digiflazz.
         const haybiTargetBrands = [
-            'PLN', 'GO PAY', 'OVO', 'DANA', 'SHOPEE PAY', 'LINKAJA', 
-            'FREE FIRE', 'PUBG MOBILE', 'ROBLOX', 'MAGIC CHESS GOGO', 
-            'WHERE WINDS MEET', 'SAKUKU'
+            'PLN', 'DANA',
+            'FREE FIRE', 'PUBG MOBILE', 'ROBLOX', 'MAGIC CHESS GOGO',
+            'WHERE WINDS MEET'
         ];
 
         // 1. Tarik dari Digiflazz (Hanya produk yang BUKAN wewenang Haybi)
@@ -312,17 +312,13 @@ app.get('/api/products', async (req, res) => {
 
                 if (textCheck.includes('PLN') || textCheck.includes('TOKEN PLN') || textCheck.includes('TOKEN LISTRIK')) { detectedBrand = 'PLN'; isTarget = true; }
                 else if (textCheck.includes('DANA')) { detectedBrand = 'DANA'; isTarget = true; }
-                else if (textCheck.includes('OVO')) { detectedBrand = 'OVO'; isTarget = true; }
-                else if (textCheck.includes('GOPAY') || textCheck.includes('GO PAY')) { detectedBrand = 'GO PAY'; isTarget = true; }
-                else if (textCheck.includes('SHOPEE')) { detectedBrand = 'SHOPEE PAY'; isTarget = true; }
-                else if (textCheck.includes('LINKAJA')) { detectedBrand = 'LINKAJA'; isTarget = true; }
-                else if (textCheck.includes('FREE FIRE') || textCheck.includes('FF')) { detectedBrand = 'Free Fire'; isTarget = true; }
+                // E-money selain DANA tidak lagi diambil dari Haybi; sumbernya Digiflazz.
+                else if (textCheck.includes('FREE FIRE') || /\\bFF\\b/.test(textCheck)) { detectedBrand = 'Free Fire'; isTarget = true; }
                 else if (textCheck.includes('PUBG')) { detectedBrand = 'PUBG Mobile'; isTarget = true; }
                 else if (textCheck.includes('ROBLOX')) { detectedBrand = 'Roblox'; isTarget = true; }
                 else if (textCheck.includes('MAGIC CHESS')) { detectedBrand = 'Magic Chess GoGo'; isTarget = true; }
                 else if (textCheck.includes('WHERE WINDS MEET') || textCheck.includes('WINDS MEET')) { detectedBrand = 'Where Winds Meet'; isTarget = true; }
-                else if (textCheck.includes('SAKUKU')) { detectedBrand = 'Sakuku'; isTarget = true; }
-
+                
                 return {
                     buyer_sku_code: skuCode,
                     product_name: prodName,
