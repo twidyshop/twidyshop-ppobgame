@@ -986,26 +986,30 @@
             } catch (e) { console.error(e); }
         }
 
-        async function fetchProductsWithTimeout(timeoutMs = 8000) {
+        async function fetchProductsWithTimeout(timeoutMs = 25000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
+                // Backend memuat daftar Digiflazz dan Haybi; beri waktu untuk kedua supplier.
                 const res = await fetch('/api/products', { signal: controller.signal });
-                clearTimeout(timeoutId);
+                if (!res.ok) throw new Error(`HTTP ${res.status} saat memuat produk`);
                 const data = await res.json();
-                if (data.data) {
+                if (Array.isArray(data.data)) {
                     allDigiflazzProducts = data.data.filter(i => i.buyer_product_status);
                     if(['game', 'pulsa', 'emoney', 'pln', 'tagihan'].includes(currentCategory)) {
                         if (activeItem && !activeItem.isPasca) renderNominals();
                     }
+                } else {
+                    throw new Error(data.message || 'Respons daftar produk tidak valid');
                 }
             } catch (err) {
-                console.warn('Fetch PPOB timeout', err);
+                console.warn('Gagal memuat daftar PPOB:', err);
                 const container = document.getElementById('nominalContainer');
                 if(container && allDigiflazzProducts.length === 0 && (!activeItem || !activeItem.isPasca)) {
                     container.innerHTML = '<div class="col-span-2 text-center text-yellow-400 text-xs py-4">Gagal memuat harga dari server. Coba refresh.</div>';
                 }
+            } finally {
+                clearTimeout(timeoutId);
             }
         }
 
