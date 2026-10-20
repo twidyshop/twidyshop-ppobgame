@@ -268,6 +268,9 @@ app.get('/api/products', async (req, res) => {
 
         // 2. Tarik dari Haybi (Parsing Data & Harga Cerdas)
         try {
+            if (!HAYBI_USER || !HAYBI_KEY) {
+                throw new Error('Kredensial HAYBI_USERNAME/HAYBI_API_KEY belum disetel di environment hosting');
+            }
             const refIdHaybi = `PRC-${Date.now()}`;
             const signHaybi = crypto.createHash('md5').update(HAYBI_USER + HAYBI_KEY + refIdHaybi).digest('hex');
             
@@ -333,7 +336,10 @@ app.get('/api/products', async (req, res) => {
 
             combinedProducts.push(...mappedHaybi);
         } catch (err) {
-            console.error("Haybi Fetch Error:", err.message);
+            console.error("Haybi Fetch Error:", err.message, {
+                status: err.response?.status,
+                response: err.response?.data
+            });
         }
 
         cachedProducts = combinedProducts;
