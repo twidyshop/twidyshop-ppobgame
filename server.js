@@ -371,7 +371,7 @@ app.get('/api/transactions', async (req, res) => {
         }
         if (adminRequest) return res.status(200).json(db.reverse());
         if (requestedOrderId) {
-            if (!/^TWIDY-\d+-[a-f0-9]{32}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
+            if (!/^TW-\d+-[a-f0-9]{16}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
             const found = db.find(t => t.order_id === requestedOrderId);
             return found ? res.status(200).json([found]) : res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
         }
@@ -389,7 +389,7 @@ app.post('/api/checkout', async (req, res) => {
     if (typeof targetId !== 'string' || !targetId.trim() || targetId.length > 100) return res.status(400).json({ message: 'Nomor tujuan atau email tidak valid.' });
     if (String(process.env.CHECKOUT_ENABLED || '').toLowerCase() !== 'true') return res.status(503).json({ message: 'Checkout sementara dinonaktifkan demi keamanan. Hubungi admin.' });
     if (!process.env.MIDTRANS_SERVER_KEY || !process.env.MIDTRANS_CLIENT_KEY) return res.status(503).json({ message: 'Pembayaran sedang dinonaktifkan: konfigurasi Midtrans belum lengkap.' });
-    const orderId = `TWIDY-${Date.now()}-${crypto.randomBytes(16).toString('hex')}`;
+    const orderId = `TW-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
     const fullTarget = serverId ? `${targetId.trim()}${String(serverId).trim()}` : targetId.trim();
     let amount = 0, originalProductName = '', itemDetails = [], finalProductCode = '', finalSupplier = 'digiflazz', finalCustomNominal = null, finalCartItems = null;
     if (isDigital === true) {
