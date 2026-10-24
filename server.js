@@ -336,6 +336,8 @@ app.get('/api/transactions', async (req, res) => {
         if (pendingTrx.length > 0) {
             await Promise.all(pendingTrx.map(async (trx) => {
                 try {
+                    // Pesanan lama dari supplier yang sudah dihentikan tidak boleh dikirim ke Digiflazz.
+                    if (trx.supplier !== 'digiflazz') return;
                     const user = process.env.DIGIFLAZZ_USERNAME;
                     const key = process.env.DIGIFLAZZ_API_KEY;
                     if (!user || !key || !trx.product_code || !trx.order_id) return;
@@ -484,6 +486,14 @@ app.post('/api/webhook', async (req, res) => {
             saveDB(db);
             sendEmailReceipt(trx, trx.target_id);
             return res.status(200).send("OK");
+        }
+
+        // Pesanan lama dari supplier non-Digiflazz perlu pemeriksaan admin, jangan kirim SKU asing ke supplier.
+        if (trx.supplier !== 'digiflazz') {
+            trx.status = 'DIPROSES';
+            trx.sn = 'Pembayaran terkonfirmasi; pesanan lama dari supplier yang sudah dihentikan perlu pemeriksaan admin.';
+            saveDB(db);
+            return res.status(200).send('OK');
         }
 
         trx.status = 'DIPROSES';
