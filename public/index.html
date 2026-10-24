@@ -990,7 +990,7 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
             try {
-                // Backend memuat daftar Digiflazz dan Haybi; beri waktu untuk kedua supplier.
+                // Semua produk topup dan PPOB berasal dari Digiflazz.
                 const res = await fetch('/api/products', { signal: controller.signal });
                 if (!res.ok) throw new Error(`HTTP ${res.status} saat memuat produk`);
                 const data = await res.json();
