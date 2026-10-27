@@ -370,12 +370,40 @@ app.get('/api/transactions', async (req, res) => {
             if (needsSave) saveDB(db);
         }
         if (adminRequest) return res.status(200).json(db.reverse());
+
+        // Public exact-match lookup by destination/customer ID or stored email.
+        // Do not expose SN/download URLs when looking up by an identifier.
+        const identifier = String(req.query.identifier || '').trim();
+        if (identifier) {
+            if (identifier.length < 5 || identifier.length > 100) {
+                return res.status(400).json({ message: 'Masukkan nomor/email yang valid.' });
+            }
+            const normalized = identifier.toLowerCase();
+            const matches = db
+                .filter(t => String(t.target_id || '').trim().toLowerCase() === normalized)
+                .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
+                .slice(0, 20)
+                .map(t => ({
+                    order_id: t.order_id,
+                    target_id: t.target_id,
+                    product_name: t.product_name,
+                    amount: t.amount,
+                    status: t.status,
+                    sn: t.is_digital ? 'Untuk keamanan, gunakan Order ID untuk detail produk digital.' : '-',
+                    created_at: t.created_at,
+                    identifier_lookup: true
+                }));
+            return matches.length
+                ? res.status(200).json(matches)
+                : res.status(404).json({ message: 'Transaksi tidak ditemukan untuk nomor/email tersebut.' });
+        }
+
         if (requestedOrderId) {
             if (!/^TW-\d+-[a-f0-9]{16}$/i.test(requestedOrderId)) return res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
             const found = db.find(t => t.order_id === requestedOrderId);
             return found ? res.status(200).json([found]) : res.status(404).json({ message: 'Transaksi tidak ditemukan.' });
         }
-        return res.status(401).json({ message: 'Gunakan Order ID untuk mengecek transaksi.' });
+        return res.status(401).json({ message: 'Gunakan Order ID atau nomor tujuan untuk mengecek transaksi.' });
     } catch (e) {
         return res.status(500).json({ message: 'Error Database' });
     }
