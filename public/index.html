@@ -1683,7 +1683,7 @@
                 }
 
                 if (res.status === 404) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID atau nomor tujuan.</td></tr>';
                     return;
                 }
                 if (!res.ok) {
@@ -1726,7 +1726,7 @@
                     const escapedProductName = escapeHtml(productName);
                     const escapedStatus = escapeHtml(status);
                     const escapedSn = escapeHtml(rawSn);
-                    const snDisplay = escapedSn.replace(/(https?:&#x2F;&#x2F;[^\\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Buka Link</a>');
+                    const snDisplay = escapedSn.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Buka Link</a>');
                     const safeAmount = amount.toLocaleString('id-ID');
 
                     return `
