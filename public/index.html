@@ -292,12 +292,12 @@
                 <div class="flex justify-between items-center pb-4 border-b border-borderDim">
                     <div>
                         <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-receipt text-blue-500"></i> Riwayat Transaksi</h2>
-                        <p class="text-textMuted text-xs mt-1">Masukkan Order ID lengkap untuk melacak pesanan dengan aman.</p>
+                        <p class="text-textMuted text-xs mt-1">Cari transaksi dengan Order ID, nomor HP/nomor pelanggan, atau email yang digunakan saat transaksi.</p>
                     </div>
                 </div>
 
                 <div class="flex gap-3">
-                    <input type="text" id="searchOrderId" placeholder="Masukkan Order ID lengkap" class="flex-1 bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
+                    <input type="text" id="searchOrderId" placeholder="Order ID / nomor HP / nomor pelanggan / email" class="flex-1 bg-bgInput p-3 rounded-lg border border-borderDim text-xs md:text-sm text-white focus:border-blue-500 outline-none" />
                     <button onclick="searchTransaction()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-3 rounded-lg text-xs md:text-sm transition flex items-center gap-2">
                         <i class="fas fa-search"></i> Cari
                     </button>
@@ -306,7 +306,7 @@
                 <div class="w-full">
                     <table class="w-full text-left text-xs text-gray-300">
                         <tbody id="transactionResultBody" class="divide-y divide-borderDim">
-                            <tr><td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID lengkap (format TW-...) untuk melacak transaksi.</td></tr>
+                            <tr><td colspan="7" class="text-center py-8 text-textMuted">Masukkan Order ID, nomor HP/nomor pelanggan, atau email untuk melacak transaksi.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1658,17 +1658,18 @@
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
 
-            // Pencarian publik hanya memakai Order ID agar data transaksi/SN tidak bocor
-            // melalui pencarian nomor telepon atau email milik orang lain.
-            if (!/^TW-\\d+-[a-f0-9]{16}$/i.test(query)) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID lengkap (format TW-...). Nomor/email tidak bisa digunakan untuk pencarian publik.</td></tr>';
+            const isOrderId = /^TW-\d+-[a-f0-9]{16}$/i.test(query);
+            const isIdentifier = query.length >= 5 && query.length <= 100 && !/[<>]/.test(query);
+            if (!isOrderId && !isIdentifier) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID lengkap, nomor HP/nomor pelanggan, atau email yang digunakan saat transaksi.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
 
             try {
-                const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(query), {
+                const lookupParam = isOrderId ? 'orderId' : 'identifier';
+                const res = await fetch('/api/transactions?' + lookupParam + '=' + encodeURIComponent(query), {
                     method: 'GET',
                     headers: { 'Accept': 'application/json' },
                     cache: 'no-store'
@@ -1690,7 +1691,9 @@
                 }
 
                 const filtered = Array.isArray(data)
-                    ? data.filter(t => String(t?.order_id || '').toLowerCase() === query.toLowerCase())
+                    ? data.filter(t => isOrderId
+                        ? String(t?.order_id || '').toLowerCase() === query.toLowerCase()
+                        : String(t?.target_id || '').trim().toLowerCase() === query.toLowerCase())
                     : [];
 
                 if (filtered.length === 0) {
