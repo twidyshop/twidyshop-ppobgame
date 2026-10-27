@@ -1658,81 +1658,105 @@
             const query = document.getElementById('searchOrderId').value.trim();
             const tbody = document.getElementById('transactionResultBody');
 
-            if(query.length < 5) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400"><i class="fas fa-shield-alt"></i> Masukkan Order ID lengkap untuk menjaga privasi transaksi.</td></tr>';
+            // Pencarian publik hanya memakai Order ID agar data transaksi/SN tidak bocor
+            // melalui pencarian nomor telepon atau email milik orang lain.
+            if (!/^TW-\\d+-[a-f0-9]{16}$/i.test(query)) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-yellow-400">Masukkan Order ID lengkap (format TW-...). Nomor/email tidak bisa digunakan untuk pencarian publik.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-textMuted"><i class="fas fa-spinner fa-spin"></i> Mencari transaksi...</td></tr>';
 
             try {
-                const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(query));
-                const data = await res.json();
-                const filtered = Array.isArray(data) ? data.filter(t => t.order_id.toLowerCase() === query.toLowerCase()) : [];
+                const res = await fetch('/api/transactions?orderId=' + encodeURIComponent(query), {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    cache: 'no-store'
+                });
 
-                if(filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan.</td></tr>';
+                let data;
+                try {
+                    data = await res.json();
+                } catch (_) {
+                    throw new Error('Server mengirim respons yang bukan JSON. Periksa layanan backend/API.');
+                }
+
+                if (res.status === 404) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID.</td></tr>';
+                    return;
+                }
+                if (!res.ok) {
+                    throw new Error(data?.message || ('Permintaan gagal (HTTP ' + res.status + ').'));
+                }
+
+                const filtered = Array.isArray(data)
+                    ? data.filter(t => String(t?.order_id || '').toLowerCase() === query.toLowerCase())
+                    : [];
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Transaksi tidak ditemukan. Periksa kembali Order ID.</td></tr>';
                     return;
                 }
 
                 tbody.innerHTML = filtered.map(t => {
-                    let badgeColor = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
-                    if(t.status === 'SUKSES') badgeColor = 'bg-green-500/10 text-green-400 border-green-500/20';
-                    if(t.status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
+                    const orderId = String(t.order_id || '-');
+                    const targetId = String(t.target_id || '-');
+                    const productName = String(t.product_name || 'Produk');
+                    const amount = Number(t.amount || 0);
+                    const status = String(t.status || 'DIPROSES');
+                    const rawSn = String(t.sn || '-');
+                    const dateValue = t.created_at ? new Date(t.created_at) : null;
+                    const dateStr = dateValue && !Number.isNaN(dateValue.getTime())
+                        ? dateValue.toLocaleString('id-ID')
+                        : '-';
 
-                    const escapedProductName = t.product_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    let rawSn = t.sn ? t.sn : '-';
-                    
-                    let snDisplay = rawSn;
-                    if (snDisplay.includes('http')) {
-                        snDisplay = snDisplay.replace(/\n/g, '<br>');
-                        const urlRegex = /(https?:\/\/[^\s]+)/g;
-                        snDisplay = snDisplay.replace(urlRegex, '<a href="$1" target="_blank" class="text-blue-400 underline hover:text-blue-300 inline-flex items-center gap-1 mt-1"><i class="fas fa-external-link-alt"></i> Buka Link</a>');
-                    }
-                    
-                    const escapedSn = rawSn.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '<br>');
-                    const dateStr = new Date(t.created_at).toLocaleString('id-ID');
+                    let badgeColor = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+                    if (status === 'SUKSES') badgeColor = 'bg-green-500/10 text-green-400 border-green-500/20';
+                    if (status === 'GAGAL') badgeColor = 'bg-red-500/10 text-red-400 border-red-500/20';
+
+                    // Escape data sebelum dimasukkan ke HTML; data transaksi tidak dipercaya sebagai markup.
+                    const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                    })[ch]);
+                    const escapedOrderId = escapeHtml(orderId);
+                    const escapedTargetId = escapeHtml(targetId);
+                    const escapedProductName = escapeHtml(productName);
+                    const escapedStatus = escapeHtml(status);
+                    const escapedSn = escapeHtml(rawSn);
+                    const snDisplay = escapedSn.replace(/(https?:&#x2F;&#x2F;[^\\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Buka Link</a>');
+                    const safeAmount = amount.toLocaleString('id-ID');
 
                     return `
-                        <!-- PC/Tablet Row -->
                         <tr class="hidden md:table-row border-b border-borderDim">
-                            <td class="p-3 font-mono break-all"><div>${t.order_id}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
-                            <td class="p-3 font-medium break-all min-w-[100px]">${t.target_id}</td>
-                            <td class="p-3 break-words min-w-[150px]">${t.product_name}</td>
-                            <td class="p-3 font-bold text-blue-400 whitespace-nowrap">Rp ${t.amount.toLocaleString('id-ID')}</td>
-                            <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeColor}">${t.status}</span></td>
+                            <td class="p-3 font-mono break-all"><div>${escapedOrderId}</div><div class="text-[10px] text-textMuted">${dateStr}</div></td>
+                            <td class="p-3 font-medium break-all min-w-[100px]">${escapedTargetId}</td>
+                            <td class="p-3 break-words min-w-[150px]">${escapedProductName}</td>
+                            <td class="p-3 font-bold text-blue-400 whitespace-nowrap">Rp ${safeAmount}</td>
+                            <td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap ${badgeColor}">${escapedStatus}</span></td>
                             <td class="p-3 font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap break-all min-w-[150px]">${snDisplay}</td>
                             <td class="p-3 text-center min-w-[100px]">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <button onclick="openReceiptModal('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Lihat Struk"><i class="fas fa-print"></i></button>
-                                    <button onclick="hubungiCS('${t.order_id}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
+                                    <button onclick="openReceiptModal('${escapedOrderId}', '${escapeHtml(dateStr)}', '${escapedProductName}', '${escapedTargetId}', '${safeAmount}', '${escapedSn}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Lihat Struk"><i class="fas fa-print"></i></button>
+                                    <button onclick="hubungiCS('${escapedOrderId}')" class="bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white px-2.5 py-2 rounded transition text-xs" title="Bantuan Admin"><i class="fab fa-whatsapp"></i></button>
                                 </div>
                             </td>
                         </tr>
-
-                        <!-- Mobile Row -->
                         <tr class="md:hidden block border-b border-borderDim p-4 space-y-3">
                             <td colspan="7" class="block w-full p-0">
                                 <div class="bg-bgInput rounded-xl p-4 border border-borderDim space-y-3">
                                     <div class="flex justify-between items-start border-b border-borderDim pb-2 gap-2">
-                                        <div class="flex-1 min-w-0">
-                                            <div class="font-mono font-bold text-white text-xs break-all">${t.order_id}</div>
-                                            <div class="text-[10px] text-textMuted">${dateStr}</div>
-                                        </div>
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border shrink-0 ${badgeColor}">${t.status}</span>
+                                        <div class="flex-1 min-w-0"><div class="font-mono font-bold text-white text-xs break-all">${escapedOrderId}</div><div class="text-[10px] text-textMuted">${dateStr}</div></div>
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border shrink-0 ${badgeColor}">${escapedStatus}</span>
                                     </div>
                                     <div class="space-y-1 text-xs">
-                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Tujuan:</span> <span class="font-medium text-white break-all text-right">${t.target_id}</span></div>
-                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Produk:</span> <span class="font-medium text-white break-words text-right">${t.product_name}</span></div>
-                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Total:</span> <span class="font-bold text-blue-400 shrink-0">Rp ${t.amount.toLocaleString('id-ID')}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Tujuan:</span><span class="font-medium text-white break-all text-right">${escapedTargetId}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Produk:</span><span class="font-medium text-white break-words text-right">${escapedProductName}</span></div>
+                                        <div class="flex justify-between gap-4"><span class="text-textMuted shrink-0">Total:</span><span class="font-bold text-blue-400 shrink-0">Rp ${safeAmount}</span></div>
                                     </div>
-                                    <div class="bg-bgCard p-2.5 rounded-lg border border-borderDim font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap break-all">
-                                        <div class="text-[10px] text-textMuted uppercase mb-1">SN / Link Download:</div>
-                                        ${snDisplay}
-                                    </div>
+                                    <div class="bg-bgCard p-2.5 rounded-lg border border-borderDim font-mono text-xs text-green-300 font-bold leading-relaxed whitespace-pre-wrap break-all"><div class="text-[10px] text-textMuted uppercase mb-1">SN / Link Download:</div>${snDisplay}</div>
                                     <div class="flex gap-2 pt-1">
-                                        <button onclick="openReceiptModal('${t.order_id}', '${dateStr}', '${escapedProductName}', '${t.target_id}', '${t.amount.toLocaleString('id-ID')}', '${escapedSn}')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fas fa-print"></i> Cek Struk</button>
-                                        <button onclick="hubungiCS('${t.order_id}')" class="flex-1 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fab fa-whatsapp"></i> Bantuan CS</button>
+                                        <button onclick="openReceiptModal('${escapedOrderId}', '${escapeHtml(dateStr)}', '${escapedProductName}', '${escapedTargetId}', '${safeAmount}', '${escapedSn}')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fas fa-print"></i> Cek Struk</button>
+                                        <button onclick="hubungiCS('${escapedOrderId}')" class="flex-1 bg-green-600/20 text-green-400 hover:bg-green-600 hover:text-white py-2 rounded-lg transition text-xs font-bold flex items-center justify-center gap-1.5"><i class="fab fa-whatsapp"></i> Bantuan CS</button>
                                     </div>
                                 </div>
                             </td>
@@ -1740,7 +1764,12 @@
                     `;
                 }).join('');
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">Kesalahan memuat data.</td></tr>';
+                console.error('[Riwayat Transaksi] Gagal mencari transaksi:', e);
+                const message = String(e?.message || '');
+                const displayMessage = message.includes('Failed to fetch')
+                    ? 'Tidak bisa menghubungi API transaksi. Periksa koneksi/backend.'
+                    : (message || 'Terjadi kesalahan saat memuat data.');
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-red-400">' + displayMessage.replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])) + '</td></tr>';
             }
         }
 
